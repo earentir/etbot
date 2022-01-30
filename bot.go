@@ -237,8 +237,11 @@ func (bb *BasicBot) HandleChat() error {
 						case "pro": //check if they stream and say pro streamer otherwise pro viewer
 							bb.Say("soon")
 
+						case "time":
+							bb.Say(timeStamp())
+
 						case "commands":
-							bb.Say("Available Commands: hi, so, bofh, joke, oil, weather, hype, lurk")
+							bb.Say("Available Commands: hi, so, bofh, joke, oil, weather, hype, lurk, time")
 
 						case "so":
 							if inArray(AdminUsers, userName) || inArray(MODUsers, userName) || inArray(VIPUsers, userName) {
