@@ -196,7 +196,7 @@ func (bb *BasicBot) HandleChat() error {
 						case "hi":
 							atIndex := strings.Index(msg, "@")
 							if atIndex > -1 {
-								atUser := msg[strings.Index(msg, "@")+1:]
+								atUser := getAttributedUser(msg)
 								bb.Say(fmt.Sprintf("Hey @%s, @%s says Hi!", atUser, userName))
 							} else {
 								bb.Say(fmt.Sprintf("Hey @%s", userName))
@@ -221,9 +221,13 @@ func (bb *BasicBot) HandleChat() error {
 						case "discord":
 							bb.Say("no")
 
-						case "temperature":
-							fallthrough
 						case "hype": // tell the user to stop stupidly spending money
+							atUser := getAttributedUser(msg)
+							if atUser != "" {
+								bb.Say(fmt.Sprintf("earentFfs @%s, dont you think there is better places to spend your money ? Stop wasting it !!!", atUser))
+							}
+
+						case "temperature":
 							fallthrough
 						case "pro": //check if they stream and say pro streamer otherwise pro viewer
 							bb.Say("soon")
