@@ -197,9 +197,9 @@ func (bb *BasicBot) HandleChat() error {
 							atIndex := strings.Index(msg, "@")
 							if atIndex > -1 {
 								atUser := getAttributedUser(msg)
-								bb.Say(fmt.Sprintf("Hey @%s, @%s says Hi!", atUser, userName))
+								bb.Say(fmt.Sprintf("earentHey @%s, @%s says Hi!", atUser, userName))
 							} else {
-								bb.Say(fmt.Sprintf("Hey @%s", userName))
+								bb.Say(fmt.Sprintf("earentHey @%s", userName))
 							}
 
 						case "oil":
@@ -221,14 +221,19 @@ func (bb *BasicBot) HandleChat() error {
 						case "discord":
 							bb.Say("no")
 
-						case "hype": // tell the user to stop stupidly spending money
+						case "hype":
 							atUser := getAttributedUser(msg)
 							if atUser != "" {
 								bb.Say(fmt.Sprintf("earentFfs @%s, dont you think there is better places to spend your money ? Stop wasting it !!!", atUser))
 							}
 
 						case "temperature":
-							fallthrough
+							if msg == "!"+cmd {
+								bb.Say(getWeather("Athens, Greece"))
+							} else {
+								bb.Say(getWeather(msg[len(cmd)+1:]))
+							}
+
 						case "pro": //check if they stream and say pro streamer otherwise pro viewer
 							bb.Say("soon")
 
