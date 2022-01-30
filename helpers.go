@@ -2,6 +2,7 @@ package main
 
 import (
 	"sort"
+	"strings"
 )
 
 func inArray(array []string, lookup string) bool {
@@ -13,3 +14,11 @@ func inArray(array []string, lookup string) bool {
 	}
 	return false
 }
+
+func getAttributedUser(msg string) string {
+	return msg[strings.Index(msg, "@")+1:]
+}
+
+// func IsItOnTimeout(command string) bool {
+
+// }
