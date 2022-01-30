@@ -227,7 +227,7 @@ func (bb *BasicBot) HandleChat() error {
 								bb.Say(fmt.Sprintf("earentFfs @%s, dont you think there is better places to spend your money ? Stop wasting it !!!", atUser))
 							}
 
-						case "temperature":
+						case "weather":
 							if msg == "!"+cmd {
 								bb.Say(getWeather("Athens, Greece"))
 							} else {
@@ -238,7 +238,7 @@ func (bb *BasicBot) HandleChat() error {
 							bb.Say("soon")
 
 						case "commands":
-							bb.Say("Available Commands: hi, so, bofh, joke, oil, etbdown")
+							bb.Say("Available Commands: hi, so, bofh, joke, oil, weather, hype, lurk")
 
 						case "so":
 							if inArray(AdminUsers, userName) || inArray(MODUsers, userName) || inArray(VIPUsers, userName) {
