@@ -25,10 +25,10 @@ import (
 var AllowedUsers = []string{}
 var AdminUsers = []string{"earentir"}
 var MODUsers = []string{"tarudesu", "TheRujum", "MrPewPewLaser", "Wulgaru", "Juliestrator"}
-var VIPUsers = []string{"nopogo_tv", "evel_cult_leader", "sireeeki", "passivestar", "Jaynein"}
+var VIPUsers = []string{"nopogo_tv", "evel_cult_leader", "sireeeki", "passivestar", "Jaynein", "SmartAssGamer"}
 
 // const PSTFormat = "Jan 2 15:04:05 PST"
-const PSTFormat = "2022-01-01T13:00:00Z"
+const UTCFormat = time.RFC3339
 
 // Regex for parsing PRIVMSG strings.
 //
@@ -146,6 +146,8 @@ func (bb *BasicBot) HandleChat() error {
 	for {
 		line, err := tp.ReadLine()
 
+		rawLine := line
+
 		if nil != err {
 
 			// officially disconnects the bot from the server
@@ -163,7 +165,6 @@ func (bb *BasicBot) HandleChat() error {
 			bb.conn.Write([]byte("PONG :tmi.twitch.tv\r\n"))
 			continue
 		} else {
-
 			// handle a PRIVMSG message
 			matches := MsgRegex.FindStringSubmatch(line)
 			if nil != matches {
@@ -193,7 +194,16 @@ func (bb *BasicBot) HandleChat() error {
 							}
 
 						case "hi":
-							bb.Say("Hey @" + userName)
+							atIndex := strings.Index(msg, "@")
+							if atIndex > -1 {
+								atUser := msg[strings.Index(msg, "@")+1:]
+								bb.Say(fmt.Sprintf("Hey @%s, @%s says Hi!", atUser, userName))
+							} else {
+								bb.Say(fmt.Sprintf("Hey @%s", userName))
+							}
+
+						case "oil":
+							bb.Say(oliveoil())
 
 						case "bofh":
 							bb.Say(JokesBOFH(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/bofh")))
@@ -213,13 +223,13 @@ func (bb *BasicBot) HandleChat() error {
 
 						case "temperature":
 							fallthrough
-						case "hype":
+						case "hype": // tell the user to stop stupidly spending money
 							fallthrough
-						case "":
+						case "pro": //check if they stream and say pro streamer otherwise pro viewer
 							bb.Say("soon")
 
 						case "commands":
-							bb.Say("Available Commands: hi, so, bofh, joke, etbdown")
+							bb.Say("Available Commands: hi, so, bofh, joke, oil, etbdown")
 
 						case "so":
 							if inArray(AdminUsers, userName) || inArray(MODUsers, userName) || inArray(VIPUsers, userName) {
@@ -246,9 +256,11 @@ func (bb *BasicBot) HandleChat() error {
 				default:
 					// fmt.Printf("no priv: %s", line)
 				}
+			} else {
+				fmt.Println(rawLine)
 			}
+			time.Sleep(bb.MsgRate)
 		}
-		time.Sleep(bb.MsgRate)
 	}
 }
 
@@ -328,7 +340,7 @@ func (bb *BasicBot) Start() {
 }
 
 func timeStamp() string {
-	return TimeStamp(PSTFormat)
+	return TimeStamp(UTCFormat)
 }
 
 func TimeStamp(format string) string {
