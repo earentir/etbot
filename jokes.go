@@ -1,11 +1,9 @@
 package main
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
 	"math/rand"
-	"os"
 	"time"
 )
 
@@ -51,21 +49,7 @@ func JokesJoke(msg string) string {
 }
 
 func oliveoil() string {
-	jokefile, err := os.Open("oliveoillines.txt")
-	if err != nil {
-		fmt.Print(err)
-	}
-
-	defer jokefile.Close()
-
-	var lines []string
-
-	scanner := bufio.NewScanner(jokefile)
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
 	rand.Seed(time.Now().UnixNano())
+	lines := readTextFile("oliveoillines.txt")
 	return lines[rand.Intn(len(lines))]
 }
