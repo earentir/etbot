@@ -25,9 +25,10 @@ import (
 var AllowedUsers = []string{}
 var AdminUsers = []string{"earentir"}
 var MODUsers = []string{"tarudesu", "TheRujum", "MrPewPewLaser", "Wulgaru", "Juliestrator"}
-var VIPUsers = []string{"nopogo_tv", "evel_cult_leader", "sireeeki", "passivestar"}
+var VIPUsers = []string{"nopogo_tv", "evel_cult_leader", "sireeeki", "passivestar", "Jaynein"}
 
-const PSTFormat = "Jan 2 15:04:05 PST"
+// const PSTFormat = "Jan 2 15:04:05 PST"
+const PSTFormat = "2022-01-01T13:00:00Z"
 
 // Regex for parsing PRIVMSG strings.
 //
@@ -129,7 +130,7 @@ func (bb *BasicBot) Connect() {
 // Officially disconnects the bot from the Twitch IRC server.
 func (bb *BasicBot) Disconnect() {
 	bb.conn.Close()
-	upTime := time.Now().Sub(bb.startTime).Seconds()
+	upTime := time.Since(time.Now()) // time.Now().Sub(bb.startTime).Seconds()
 	rgb.YPrintf("[%s] Closed connection from %s! | Live for: %fs\n", timeStamp(), bb.Server, upTime)
 }
 
@@ -150,13 +151,13 @@ func (bb *BasicBot) HandleChat() error {
 			// officially disconnects the bot from the server
 			bb.Disconnect()
 
-			return errors.New("bb.Bot.HandleChat: Failed to read line from channel. Disconnected.")
+			return errors.New("bb.Bot.HandleChat: Failed to read line from channel. Disconnected")
 		}
 
 		// logs the response from the IRC server
 		rgb.YPrintf("[%s] %s\n", timeStamp(), line)
 
-		if "PING :tmi.twitch.tv" == line {
+		if line == "PING :tmi.twitch.tv" {
 
 			// respond to PING message with a PONG message, to maintain the connection
 			bb.conn.Write([]byte("PONG :tmi.twitch.tv\r\n"))
@@ -179,9 +180,7 @@ func (bb *BasicBot) HandleChat() error {
 					if nil != cmdMatches {
 						cmd := cmdMatches[1]
 
-						// channel-owner specific commands
-						// if strings.ToLower(userName) == bb.Channel || inArray(AdminUsers, userName) {
-						switch cmd { //add socials (twitch etc)
+						switch cmd {
 						case "etbdown":
 							if inArray(AdminUsers, userName) {
 								rgb.CPrintf(
@@ -190,7 +189,7 @@ func (bb *BasicBot) HandleChat() error {
 								)
 
 								bb.Disconnect()
-								return nil
+								// return nil
 							}
 
 						case "hi":
@@ -204,12 +203,20 @@ func (bb *BasicBot) HandleChat() error {
 						case "yoke":
 							bb.Say(JokesJoke(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/joke")))
 
+						case "lurk":
+							bb.Say(fmt.Sprintf("Thank you for lurking %s, you smart hooman, go have as much fun as possible on your endeavours", userName))
+
 						case "socials":
 							fallthrough
 						case "discord":
+							bb.Say("no")
+
+						case "temperature":
 							fallthrough
 						case "hype":
-							bb.Say("no")
+							fallthrough
+						case "":
+							bb.Say("soon")
 
 						case "commands":
 							bb.Say("Available Commands: hi, so, bofh, joke, etbdown")
@@ -218,15 +225,17 @@ func (bb *BasicBot) HandleChat() error {
 							if inArray(AdminUsers, userName) || inArray(MODUsers, userName) || inArray(VIPUsers, userName) {
 								var souser string
 
-								if msg[4:5] == "@" {
-									souser = msg[5:]
+								if msg != "!so" {
+									if msg[4:5] == "@" {
+										souser = msg[5:]
+									} else {
+										souser = msg[4:]
+									}
 								} else {
-									souser = msg[4:]
+									bb.Say(fmt.Sprintf("@%s Please use !so @username", userName))
 								}
 
-								if HTTPCheckReponce("https://twitch.tv/" + souser) { //doesnt work, twitch never returns a 400+
-									bb.Say("Please check out and follow " + souser + ", @ https://twitch.tv/" + souser + " they are amazing.")
-								}
+								bb.Say(fmt.Sprintf("Please check out & follow %s @ https://twitch.tv/%s they are amazing.", souser, souser))
 							}
 
 						default:
@@ -235,7 +244,7 @@ func (bb *BasicBot) HandleChat() error {
 						}
 					}
 				default:
-					// do nothing
+					// fmt.Printf("no priv: %s", line)
 				}
 			}
 		}
@@ -275,8 +284,8 @@ func (bb *BasicBot) ReadCredentials() error {
 
 // Makes the bot send a message to the chat channel.
 func (bb *BasicBot) Say(msg string) error {
-	if "" == msg {
-		return errors.New("BasicBot.Say: msg was empty.")
+	if msg == "" {
+		return errors.New("BasicBot.Say: msg was empty")
 	}
 
 	// check if message is too large for IRC
