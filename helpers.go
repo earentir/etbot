@@ -1,6 +1,9 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
+	"os"
 	"sort"
 	"strings"
 )
@@ -17,6 +20,25 @@ func inArray(array []string, lookup string) bool {
 
 func getAttributedUser(msg string) string {
 	return msg[strings.Index(msg, "@")+1:]
+}
+
+func readTextFile(filename string) []string {
+	textfile, err := os.Open(filename)
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	defer textfile.Close()
+
+	var lines []string
+
+	scanner := bufio.NewScanner(textfile)
+
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	return lines
 }
 
 // func IsItOnTimeout(command string) bool {
