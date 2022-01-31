@@ -24,10 +24,9 @@ import (
 
 var AllowedUsers = []string{}
 var AdminUsers = []string{"earentir"}
-var MODUsers = []string{"tarudesu", "TheRujum", "MrPewPewLaser", "Wulgaru", "Juliestrator"}
-var VIPUsers = []string{"nopogo_tv", "evel_cult_leader", "sireeeki", "passivestar", "Jaynein", "SmartAssGamer"}
+var MODUsers = []string{"tarudesu", "therujum", "mrpewpewlaser", "wulgaru", "juliestrator"}
+var VIPUsers = []string{"nopogo_tv", "evel_cult_leader", "sireeeki", "passivestar", "jaynein", "smartassgamer", "flyingthread"}
 
-// const PSTFormat = "Jan 2 15:04:05 PST"
 const UTCFormat = time.RFC3339
 
 // Regex for parsing PRIVMSG strings.
@@ -197,7 +196,7 @@ func (bb *BasicBot) HandleChat() error {
 							atIndex := strings.Index(msg, "@")
 							if atIndex > -1 {
 								atUser := getAttributedUser(msg)
-								bb.Say(fmt.Sprintf("earentHey @%s, @%s says Hi!", atUser, userName))
+								bb.Say(fmt.Sprintf("earentHey %s, @%s says Hi!", atUser, userName))
 							} else {
 								bb.Say(fmt.Sprintf("earentHey @%s", userName))
 							}
@@ -224,14 +223,17 @@ func (bb *BasicBot) HandleChat() error {
 						case "hype":
 							atUser := getAttributedUser(msg)
 							if atUser != "" {
-								bb.Say(fmt.Sprintf("earentFfs @%s, dont you think there is better places to spend your money ? Stop wasting it !!!", atUser))
+								bb.Say(fmt.Sprintf("earentFfs %s, dont you think there is better places to spend your money ? Stop wasting it !!!", atUser))
 							}
 
+						case "w":
+							fallthrough
 						case "weather":
 							if msg == "!"+cmd {
 								bb.Say(getWeather("Athens, Greece"))
 							} else {
-								bb.Say(getWeather(msg[len(cmd)+1:]))
+								// bb.Say(getWeather(msg[len(cmd)+1:]))
+								bb.Say(getWeather(getCleanMessage(cmd, msg)) + " " + getAttributedUser(msg))
 							}
 
 						case "pro": //check if they stream and say pro streamer otherwise pro viewer
