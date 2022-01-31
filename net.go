@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func HTTPCheckReponce(url string) bool {
+func HTTPCheckResponse(url string) bool {
 	responce, err := http.Get(url)
 	if err != nil {
 		fmt.Print(err)
