@@ -62,7 +62,7 @@ func getWeather(city string) string {
 		}
 
 		// fmt.Println(openweathermapdata.Weather[0].Description)
-		return fmt.Sprintf("%v° (%v°) with %s", openweathermapdata.Main.Temp, openweathermapdata.Main.FeelsLike, openweathermapdata.Weather[0].Description)
+		return fmt.Sprintf("The temp in %s is %v° (feels like %v°) with %s", city, openweathermapdata.Main.Temp, openweathermapdata.Main.FeelsLike, openweathermapdata.Weather[0].Description)
 	}
 
 	return "Please add a correct City, Country combination, like  \"Athens, Greece\""
