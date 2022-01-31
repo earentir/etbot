@@ -155,7 +155,6 @@ func (bb *BasicBot) HandleChat() error {
 		rgb.YPrintf("[%s] %s\n", timeStamp(), line)
 
 		if line == "PING :tmi.twitch.tv" {
-
 			// respond to PING message with a PONG message, to maintain the connection
 			bb.conn.Write([]byte("PONG :tmi.twitch.tv\r\n"))
 			continue
@@ -269,9 +268,7 @@ func (bb *BasicBot) HandleChat() error {
 								if len(getCleanMessage(cmd, msg)) > 1 {
 
 									title := getCleanMessage(cmd, msg)[1:]
-
 									cmdres := exec.Command("gh", "issue", "create", fmt.Sprintf("-t %s from %s", title, userName), "-b \"\" ", "-lchat-bot")
-									fmt.Println(cmdres)
 
 									var errbuf bytes.Buffer
 									cmdres.Stderr = &errbuf
@@ -281,15 +278,7 @@ func (bb *BasicBot) HandleChat() error {
 										bb.Say("Feature Request Issue Opened")
 									}
 									fmt.Println(errbuf.String())
-
 								}
-
-								// stdout, err := cmdres.Output()
-								// if err != nil {
-								// 	fmt.Println(err)
-								// }
-
-								// fmt.Println(string(stdout))
 							}
 
 						default:
