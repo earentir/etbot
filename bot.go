@@ -202,18 +202,22 @@ func (bb *BasicBot) HandleChat() error {
 							}
 
 						case "oil":
-							bb.Say(oliveoil())
+							bb.Say(oliveoil() + " " + getAttributedUser(msg))
 
 						case "bofh":
-							bb.Say(JokesBOFH(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/bofh")))
+							bb.Say(JokesBOFH(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/bofh")) + " " + getAttributedUser(msg))
 
 						case "joke":
 							fallthrough
 						case "yoke":
-							bb.Say(JokesJoke(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/joke")))
+							bb.Say(JokesJoke(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/joke")) + " " + getAttributedUser(msg))
 
 						case "lurk":
-							bb.Say(fmt.Sprintf("Thank you for lurking %s, you smart hooman, go have as much fun as possible on your endeavours", userName))
+							if msg == "!"+cmd {
+								bb.Say(fmt.Sprintf("Thank you for lurking %s, you smart hooman, go have as much fun as possible on your endeavours", userName))
+							} else {
+								bb.Say(fmt.Sprintf("Thank you for lurking %s, you smart hooman, go have fun with %s", userName, getCleanMessage(cmd, msg)))
+							}
 
 						case "socials":
 							fallthrough
@@ -224,6 +228,8 @@ func (bb *BasicBot) HandleChat() error {
 							atUser := getAttributedUser(msg)
 							if atUser != "" {
 								bb.Say(fmt.Sprintf("earentFfs %s, dont you think there is better places to spend your money ? Stop wasting it !!!", atUser))
+							} else {
+								bb.Say("Please @ a user")
 							}
 
 						case "w":
@@ -232,7 +238,6 @@ func (bb *BasicBot) HandleChat() error {
 							if msg == "!"+cmd {
 								bb.Say(getWeather("Athens, Greece"))
 							} else {
-								// bb.Say(getWeather(msg[len(cmd)+1:]))
 								bb.Say(getWeather(getCleanMessage(cmd, msg)) + " " + getAttributedUser(msg))
 							}
 
