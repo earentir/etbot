@@ -1,9 +1,3 @@
-/**
- * bot.go
- * Parts Copyright (c) 2017 Forest Hoffman. All Rights Reserved.
- * License: MIT License (see the included LICENSE file)
- */
-
 package main
 
 import (
@@ -264,7 +258,7 @@ func (bb *BasicBot) HandleChat() error {
 									bb.Say(fmt.Sprintf("@%s Please use !so @username", userName))
 								}
 
-								bb.Say(fmt.Sprintf("Please check out & follow %s @ https://twitch.tv/%s they are amazing.", souser, souser))
+								bb.Say(fmt.Sprintf("Please check out & follow %s @ https://twitch.tv/%s they are amazing.%s", souser, souser, getItchIOProfile(getAttributedUser(msg)[1:])))
 							}
 
 						default:
