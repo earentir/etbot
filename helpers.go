@@ -18,7 +18,7 @@ func inArray(array []string, lookup string) bool {
 }
 
 func getAttributedUser(msg string) string {
-	if strings.Index(msg, "@") > -1 {
+	if strings.Contains(msg, "@") {
 		return msg[strings.Index(msg, "@"):]
 	} else {
 		return ""
@@ -26,7 +26,7 @@ func getAttributedUser(msg string) string {
 }
 
 func getCleanMessage(cmd, msg string) string {
-	if strings.Index(msg, "@") > -1 {
+	if strings.Contains(msg, "@") {
 		return msg[len(cmd)+1 : strings.Index(msg, "@")-1]
 	} else {
 		return msg[len(cmd)+1:]
@@ -49,6 +49,12 @@ func readTextFile(filename string) []string {
 	return lines
 }
 
-// func IsItOnTimeout(command string) bool {
-
-// }
+func IsItOnTimeout(command, userName string) bool {
+	if inArray(MODUsers, userName) || inArray(VIPUsers, userName) {
+		//store now epoch on call if empty
+		// convert diff(epoch, now) to ms > timeout(ms)
+		return true
+	} else {
+		return false
+	}
+}
