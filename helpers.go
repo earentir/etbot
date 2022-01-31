@@ -52,9 +52,18 @@ func readTextFile(filename string) []string {
 func IsItOnTimeout(command, userName string) bool {
 	if inArray(MODUsers, userName) || inArray(VIPUsers, userName) {
 		//store now epoch on call if empty
-		// convert diff(epoch, now) to ms > timeout(ms)
+		//convert diff(epoch, now) to ms > timeout(ms)
 		return true
 	} else {
 		return false
+	}
+}
+
+func getItchIOProfile(userName string) string {
+	itchioprofile := fmt.Sprintf("https://%s.itch.io", userName)
+	if HTTPCheckResponse(itchioprofile) {
+		return fmt.Sprintf(" Check their itch.io profile @ %s", itchioprofile)
+	} else {
+		return ""
 	}
 }
