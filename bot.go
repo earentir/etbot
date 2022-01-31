@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -9,6 +10,7 @@ import (
 	"io/ioutil"
 	"net"
 	"net/textproto"
+	"os/exec"
 	"regexp"
 	"strings"
 	"time"
@@ -189,22 +191,22 @@ func (bb *BasicBot) HandleChat() error {
 						case "hi":
 							atIndex := strings.Index(msg, "@")
 							if atIndex > -1 {
-								atUser := getAttributedUser(msg)
+								atUser := getAttributedUser(msg, true)
 								bb.Say(fmt.Sprintf("earentHey %s, @%s says Hi!", atUser, userName))
 							} else {
 								bb.Say(fmt.Sprintf("earentHey @%s", userName))
 							}
 
 						case "oil":
-							bb.Say(oliveoil() + " " + getAttributedUser(msg))
+							bb.Say(oliveoil() + " " + getAttributedUser(msg, true))
 
 						case "bofh":
-							bb.Say(JokesBOFH(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/bofh")) + " " + getAttributedUser(msg))
+							bb.Say(JokesBOFH(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/bofh")) + " " + getAttributedUser(msg, true))
 
 						case "joke":
 							fallthrough
 						case "yoke":
-							bb.Say(JokesJoke(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/joke")) + " " + getAttributedUser(msg))
+							bb.Say(JokesJoke(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/joke")) + " " + getAttributedUser(msg, true))
 
 						case "lurk":
 							if msg == "!"+cmd {
@@ -219,7 +221,7 @@ func (bb *BasicBot) HandleChat() error {
 							bb.Say("no")
 
 						case "hype":
-							atUser := getAttributedUser(msg)
+							atUser := getAttributedUser(msg, true)
 							if atUser != "" {
 								bb.Say(fmt.Sprintf("earentFfs %s, dont you think there is better places to spend your money ? Stop wasting it !!!", atUser))
 							} else {
@@ -232,7 +234,7 @@ func (bb *BasicBot) HandleChat() error {
 							if msg == "!"+cmd {
 								bb.Say(getWeather("Athens, Greece"))
 							} else {
-								bb.Say(getWeather(getCleanMessage(cmd, msg)) + " " + getAttributedUser(msg))
+								bb.Say(getWeather(getCleanMessage(cmd, msg)) + " " + getAttributedUser(msg, true))
 							}
 
 						case "pro": //check if they stream and say pro streamer otherwise pro viewer
@@ -242,7 +244,7 @@ func (bb *BasicBot) HandleChat() error {
 							bb.Say(timeStamp())
 
 						case "commands":
-							bb.Say("Available Commands: hi, so, bofh, joke, oil, weather, hype, lurk, time")
+							bb.Say("Available Commands: hi, so, bofh, joke, oil, weather, hype, lurk, time, fr")
 
 						case "so":
 							if inArray(AdminUsers, userName) || inArray(MODUsers, userName) || inArray(VIPUsers, userName) {
@@ -258,7 +260,36 @@ func (bb *BasicBot) HandleChat() error {
 									bb.Say(fmt.Sprintf("@%s Please use !so @username", userName))
 								}
 
-								bb.Say(fmt.Sprintf("Please check out & follow %s @ https://twitch.tv/%s they are amazing.%s", souser, souser, getItchIOProfile(getAttributedUser(msg)[1:])))
+								bb.Say(fmt.Sprintf("Please check out & follow %s @ https://twitch.tv/%s they are amazing.%s", souser, souser, getItchIOProfile(souser)))
+							}
+
+						case "fr":
+							if inArray(AdminUsers, userName) || inArray(MODUsers, userName) || inArray(VIPUsers, userName) {
+
+								if len(getCleanMessage(cmd, msg)) > 1 {
+
+									title := getCleanMessage(cmd, msg)[1:]
+
+									cmdres := exec.Command("gh", "issue", "create", fmt.Sprintf("-t %s from %s", title, userName), "-b \"\" ", "-lchat-bot")
+									fmt.Println(cmdres)
+
+									var errbuf bytes.Buffer
+									cmdres.Stderr = &errbuf
+
+									cmdres.Run()
+									if len(errbuf.String()) == 0 {
+										bb.Say("Feature Request Issue Opened")
+									}
+									fmt.Println(errbuf.String())
+
+								}
+
+								// stdout, err := cmdres.Output()
+								// if err != nil {
+								// 	fmt.Println(err)
+								// }
+
+								// fmt.Println(string(stdout))
 							}
 
 						default:
