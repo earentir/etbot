@@ -17,9 +17,14 @@ func inArray(array []string, lookup string) bool {
 	return false
 }
 
-func getAttributedUser(msg string) string {
+func getAttributedUser(msg string, at bool) string {
 	if strings.Contains(msg, "@") {
-		return msg[strings.Index(msg, "@"):]
+		if at {
+			return msg[strings.Index(msg, "@"):]
+		} else {
+			return msg[strings.Index(msg, "@")+1:]
+		}
+
 	} else {
 		return ""
 	}
