@@ -65,9 +65,13 @@ func IsItOnTimeout(command, userName string) bool {
 }
 
 func getItchIOProfile(userName string) string {
-	itchioprofile := fmt.Sprintf("https://%s.itch.io", userName)
-	if HTTPCheckResponse(itchioprofile) {
-		return fmt.Sprintf(" Check their itch.io profile @ %s", itchioprofile)
+	if userName != "" {
+		itchioprofile := fmt.Sprintf("https://%s.itch.io", userName)
+		if HTTPCheckResponse(itchioprofile) {
+			return fmt.Sprintf(" Check their itch.io profile @ %s", itchioprofile)
+		} else {
+			return ""
+		}
 	} else {
 		return ""
 	}
