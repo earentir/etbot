@@ -4,18 +4,27 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 )
 
-func HTTPCheckResponse(url string) bool {
-	responce, err := http.Get(url)
-	if err != nil {
-		fmt.Print(err)
-	}
+func HTTPCheckResponse(uri string) bool {
 
-	if responce.StatusCode >= 200 && responce.StatusCode <= 299 {
-		return true
-	} else {
+	good, err := url.ParseRequestURI(uri)
+	if err != nil {
+		fmt.Printf("err: %e\n", err)
 		return false
+	} else {
+		responce, err := http.Get(good.String())
+		if err != nil {
+			fmt.Print(err)
+			return false
+		} else {
+			if responce.StatusCode >= 200 && responce.StatusCode <= 299 {
+				return true
+			} else {
+				return false
+			}
+		}
 	}
 }
 
