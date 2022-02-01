@@ -72,6 +72,9 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					bb.Say("Please @ a user")
 				}
 
+			case "exchange":
+				bb.Say(CurrencyConversion("EUR", "USD", 10))
+
 			case "w":
 				fallthrough
 			case "weather":
