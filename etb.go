@@ -11,6 +11,7 @@ type Credentials struct {
 	TwitchPassword    string `json:"twitch_password,omitempty"`
 	TwitchClientID    string `json:"twitch_client_id,omitempty"`
 	OpenWeatherAPIKey string `json:"openweathermapapi,omitempty"`
+	CurrencyAPIKey    string `json:"currconvapi,omitempty"`
 }
 
 var creds Credentials
