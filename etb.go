@@ -33,9 +33,6 @@ func main() {
 
 	LoadJSONTOStruct(etb.PrivatePath, &creds)
 
-	fmt.Println(etb.PrivatePath)
-	fmt.Println(creds.OpenWeatherAPIKey)
-
 	etb.Start()
 }
 
