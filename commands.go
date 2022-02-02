@@ -33,6 +33,7 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					// return nil
 				}
 
+				//region joke commands
 			case "hi":
 				atIndex := strings.Index(msg, "@")
 				if atIndex > -1 {
@@ -41,17 +42,27 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 				} else {
 					bb.Say(fmt.Sprintf("earentHey @%s", userName))
 				}
-
+			case "olive":
+				fallthrough
 			case "oil":
 				bb.Say(oliveoil() + " " + getAttributedUser(msg, true))
-
+			case "yogurt":
+				bb.Say(yogurt() + " " + getAttributedUser(msg, true))
 			case "bofh":
 				bb.Say(JokesBOFH(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/bofh")) + " " + getAttributedUser(msg, true))
-
+			case "socials":
+				fallthrough
+			case "discord":
+				bb.Say("no")
+			case "sudo":
+				bb.Say("Fuck Off")
 			case "joke":
 				fallthrough
 			case "yoke":
 				bb.Say(JokesJoke(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/joke")) + " " + getAttributedUser(msg, true))
+			case "pro": //check if they stream and say pro streamer otherwise pro viewer
+				bb.Say("soon")
+				//endregion
 
 			case "lurk":
 				if msg == "!"+cmd {
@@ -59,11 +70,6 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 				} else {
 					bb.Say(fmt.Sprintf("Thank you for lurking %s, you smart hooman, go have fun with %s", userName, getCleanMessage(cmd, msg)))
 				}
-
-			case "socials":
-				fallthrough
-			case "discord":
-				bb.Say("no")
 
 			case "hype":
 				atUser := getAttributedUser(msg, true)
@@ -73,8 +79,10 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					bb.Say("Please @ a user")
 				}
 
+			case "ex":
+				fallthrough
 			case "exchange":
-				parts := strings.Fields(msg)
+				parts := strings.Fields(strings.ToUpper(msg))
 
 				switch len(parts) {
 				case 1:
@@ -103,14 +111,11 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					bb.Say(getWeather(getCleanMessage(cmd, msg)) + " " + getAttributedUser(msg, true))
 				}
 
-			case "pro": //check if they stream and say pro streamer otherwise pro viewer
-				bb.Say("soon")
-
 			case "time":
 				bb.Say(timeStamp())
 
 			case "commands":
-				bb.Say("Available Commands: hi, so, bofh, joke, oil, weather, hype, lurk, time, fr, exchange")
+				bb.Say("Available Commands: hi, so, bofh, joke, oil, yogurt, weather, hype, lurk, time, fr, exchange")
 
 			case "so":
 				if inArray(AdminUsers, userName) || inArray(MODUsers, userName) || inArray(VIPUsers, userName) {
@@ -130,7 +135,7 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 				}
 
 			case "fr":
-				if inArray(AdminUsers, userName) || inArray(MODUsers, userName) || inArray(VIPUsers, userName) {
+				if inArray(AdminUsers, userName) || inArray(MODUsers, userName) || inArray(VIPUsers, userName) || inArray(SubbedUsers, userName) {
 
 					if len(getCleanMessage(cmd, msg)) > 1 {
 
