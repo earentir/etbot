@@ -67,6 +67,6 @@ func getWeather(city string) string {
 
 		return "Please add a correct City, Country combination, like  \"Athens, Greece\""
 	} else {
-		return "Please setup your openweathermap API key @ https://openweathermap.org"
+		return "Please setup your OpenWeather API key @ https://openweathermap.org"
 	}
 }
