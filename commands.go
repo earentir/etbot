@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"os/exec"
+	"strconv"
 	"strings"
 
 	rgb "github.com/foresthoffman/rgblog"
@@ -73,7 +74,25 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 				}
 
 			case "exchange":
-				bb.Say(CurrencyConversion("EUR", "USD", 10))
+				parts := strings.Fields(msg)
+
+				switch len(parts) {
+				case 1:
+					bb.Say(CurrencyConversion(settings.General.Curency.DefaultCurrency, settings.General.Curency.CurrencyTo, 1))
+				case 2:
+					bb.Say(CurrencyConversion(settings.General.Curency.DefaultCurrency, parts[1], 1))
+				case 3:
+					_, err := strconv.Atoi(parts[2])
+					if err != nil {
+						bb.Say(CurrencyConversion(parts[1], parts[2], 1))
+					} else {
+						mnt, _ := strconv.ParseFloat(parts[2], 64)
+						bb.Say(CurrencyConversion(settings.General.Curency.DefaultCurrency, parts[1], mnt))
+					}
+				case 4:
+					mnt, _ := strconv.ParseFloat(parts[3], 64)
+					bb.Say(CurrencyConversion(parts[1], parts[2], mnt))
+				}
 
 			case "w":
 				fallthrough
@@ -91,7 +110,7 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 				bb.Say(timeStamp())
 
 			case "commands":
-				bb.Say("Available Commands: hi, so, bofh, joke, oil, weather, hype, lurk, time, fr")
+				bb.Say("Available Commands: hi, so, bofh, joke, oil, weather, hype, lurk, time, fr, exchange")
 
 			case "so":
 				if inArray(AdminUsers, userName) || inArray(MODUsers, userName) || inArray(VIPUsers, userName) {
@@ -107,7 +126,7 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						bb.Say(fmt.Sprintf("@%s Please use !so @username", userName))
 					}
 
-					bb.Say(fmt.Sprintf("Please check out & follow %s @ https://twitch.tv/%s they are amazing.%s", souser, souser, getItchIOProfile(souser)))
+					bb.Say(fmt.Sprintf("Please check out & follow %s @ https://twitch.tv/%s they are amazing.%s", souser, strings.ToLower(souser), getItchIOProfile(souser)))
 				}
 
 			case "fr":
