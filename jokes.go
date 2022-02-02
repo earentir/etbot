@@ -53,3 +53,14 @@ func oliveoil() string {
 	lines := readTextFile("oliveoillines.txt")
 	return lines[rand.Intn(len(lines))]
 }
+
+func yogurt() string {
+	rand.Seed(time.Now().UnixNano())
+	lines := readTextFile("yogurt.txt")
+	ouryogurt := lines[rand.Intn(len(lines))]
+	if ouryogurt == "Greek" {
+		return ouryogurt + " yogurt is a good Yogurt"
+	} else {
+		return ouryogurt + " yogurt is disgusting"
+	}
+}
