@@ -19,7 +19,7 @@ import (
 var AllowedUsers = []string{}
 var AdminUsers = []string{"earentir"}
 var MODUsers = []string{"tarudesu", "therujum", "mrpewpewlaser", "wulgaru", "juliestrator"}
-var VIPUsers = []string{"nopogo_tv", "evel_cult_leader", "sireeeki", "passivestar", "jaynein", "smartassgamer", "flyingthread"}
+var VIPUsers = []string{"nopogo_tv", "evel_cult_leader", "sireeeki", "passivestar", "jaynein", "smartassgamer", "flyingthread", "sortlarz"}
 
 const UTCFormat = time.RFC3339
 
