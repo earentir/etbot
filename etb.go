@@ -7,40 +7,59 @@ import (
 	"time"
 )
 
-type Credentials struct {
-	TwitchPassword    string `json:"twitch_password,omitempty"`
-	TwitchClientID    string `json:"twitch_client_id,omitempty"`
-	OpenWeatherAPIKey string `json:"openweathermapapi,omitempty"`
-	CurrencyAPIKey    string `json:"currconvapi,omitempty"`
-}
-
-var creds Credentials
-
-var settings Settings
-
 func main() {
 
-	LoadJSONTOStruct("etb-settings.json", &settings)
+	LoadJSONFileTOStruct("etb-settings.json", &settings)
 
 	etb := BasicBot{
-		Channel:     "earentir",
-		Name:        "duotronics",
-		Port:        "6667",
-		PrivatePath: "etb-auth.json",
-		Server:      "irc.twitch.tv",
-		MsgRate:     time.Duration(4000),
+		Channel:     settings.General.Twitch.Channel,
+		Name:        settings.General.Twitch.BotUserName,
+		Port:        settings.General.Twitch.IRCPort,
+		PrivatePath: settings.General.CredentialFile,
+		Server:      settings.General.Twitch.Server,
+		MsgRate:     time.Duration(settings.General.Twitch.MSGRate),
 	}
 
-	LoadJSONTOStruct(etb.PrivatePath, &creds)
+	LoadJSONFileTOStruct(etb.PrivatePath, &creds)
 
+	//We can do stuff after
+
+	// fmt.Println(SearchUser("mrpewpewlaser"))
+	// fmt.Println(UserLevel("mrpewpewlaser"))
+	// fmt.Println(getLevelCoolDown(UserLevel("mrpewpewlaser")))
+
+	// fmt.Println(getUserSocials("sireeeki"))
+
+	// for _, soc := range getUserSocials("earentir") {
+	// 	fmt.Println(soc)
+	// }
+
+	// fmt.Println(CMDCanRun("wulgaru", "fr"))
+
+	// if userExists("earentir") {
+	// 	twusr := getTwitchUser("earentir")
+	// 	fmt.Println(twusr[0].ID)
+	// 	fmt.Println(twusr[0].Description)
+	// 	fmt.Println(twusr[0].ViewCount)
+	// 	fmt.Println(twusr[0].CreatedAt)
+	// }
+
+	// if settings.General.Servers.BotServers.Chat {
 	etb.Start()
+	// }
+
 }
 
-func LoadJSONTOStruct(jsonFileName string, onTo interface{}) {
+func LoadJSONFileTOStruct(jsonFileName string, onTo interface{}) {
 	//read json here
 	jsonFile, err := ioutil.ReadFile(jsonFileName)
 	if nil != err {
 		fmt.Println(err)
 	}
 	json.Unmarshal([]byte(jsonFile), &onTo)
+}
+
+func LoadJSONTOStruct(jsondata []byte, onTo interface{}) {
+	//read json here
+	json.Unmarshal(jsondata, &onTo)
 }
