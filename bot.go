@@ -12,8 +12,6 @@ import (
 	"regexp"
 	"strings"
 	"time"
-
-	rgb "github.com/foresthoffman/rgblog"
 )
 
 var AllowedUsers = []string{}
@@ -104,16 +102,16 @@ type BasicBot struct {
 // succeeds or is forcefully shutdown.
 func (bb *BasicBot) Connect() {
 	var err error
-	rgb.YPrintf("[%s] Connecting to %s...\n", timeStamp(), bb.Server)
+	CPrint("y", fmt.Sprintf("[%s] Connecting to %s...\n", timeStamp(), bb.Server))
 
 	// makes connection to Twitch IRC server
 	bb.conn, err = net.Dial("tcp", bb.Server+":"+bb.Port)
 	if nil != err {
-		rgb.YPrintf("[%s] Cannot connect to %s, retrying.\n", timeStamp(), bb.Server)
+		CPrint("y", fmt.Sprintf("[%s] Cannot connect to %s, retrying.\n", timeStamp(), bb.Server))
 		bb.Connect()
 		return
 	}
-	rgb.YPrintf("[%s] Connected to %s!\n", timeStamp(), bb.Server)
+	CPrint("y", fmt.Sprintf("[%s] Connected to %s!\n", timeStamp(), bb.Server))
 	bb.startTime = time.Now()
 }
 
@@ -121,13 +119,13 @@ func (bb *BasicBot) Connect() {
 func (bb *BasicBot) Disconnect() {
 	bb.conn.Close()
 	upTime := time.Since(time.Now()) // time.Now().Sub(bb.startTime).Seconds()
-	rgb.YPrintf("[%s] Closed connection from %s! | Live for: %fs\n", timeStamp(), bb.Server, upTime)
+	CPrint("y", fmt.Sprintf("[%s] Closed connection from %s! | Live for: %vs\n", timeStamp(), bb.Server, upTime))
 }
 
 // Listens for and logs messages from chat. Responds to commands from the channel owner. The bot
 // continues until it gets disconnected, told to shutdown, or forcefully shutdown.
 func (bb *BasicBot) HandleChat() error {
-	rgb.YPrintf("[%s] Watching #%s...\n", timeStamp(), bb.Channel)
+	CPrint("y", fmt.Sprintf("[%s] Watching #%s...\n", timeStamp(), bb.Channel))
 
 	// reads from connection
 	tp := textproto.NewReader(bufio.NewReader(bb.conn))
@@ -144,7 +142,7 @@ func (bb *BasicBot) HandleChat() error {
 		}
 
 		// logs the response from the IRC server
-		rgb.YPrintf("[%s] %s\n", timeStamp(), line)
+		CPrint("y", fmt.Sprintf("[%s] %s\n", timeStamp(), line))
 
 		if line == "PING :tmi.twitch.tv" {
 			// respond to PING message with a PONG message, to maintain the connection
@@ -162,6 +160,7 @@ func (bb *BasicBot) HandleChat() error {
 
 			} else {
 				// fmt.Println(rawLine)
+				fmt.Print("")
 			}
 			time.Sleep(bb.MsgRate)
 		}
@@ -170,12 +169,12 @@ func (bb *BasicBot) HandleChat() error {
 
 // Makes the bot join its pre-specified channel.
 func (bb *BasicBot) JoinChannel() {
-	rgb.YPrintf("[%s] Joining #%s...\n", timeStamp(), bb.Channel)
+	CPrint("y", fmt.Sprintf("[%s] Joining #%s...\n", timeStamp(), bb.Channel))
 	bb.conn.Write([]byte("PASS " + bb.Credentials.TwitchPassword + "\r\n"))
 	bb.conn.Write([]byte("NICK " + bb.Name + "\r\n"))
 	bb.conn.Write([]byte("JOIN #" + bb.Channel + "\r\n"))
 
-	rgb.YPrintf("[%s] Joined #%s as @%s!\n", timeStamp(), bb.Channel, bb.Name)
+	CPrint("y", fmt.Sprintf("[%s] Joined #%s as @%s!\n", timeStamp(), bb.Channel, bb.Name))
 }
 
 // Reads from the private credentials file and stores the data in the bot's Credentials field.
