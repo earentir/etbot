@@ -69,7 +69,7 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 				case "pro": //check if they stream and say pro streamer otherwise pro viewer
 					cmdSoon(bb)
 				case "time":
-					bb.Say(timeStamp())
+					cmdTime(bb, cmd, msg)
 				default:
 					// do nothing
 					// }

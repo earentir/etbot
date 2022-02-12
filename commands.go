@@ -162,3 +162,7 @@ func cmdFr(bb *BasicBot, userName, cmd, msg string) {
 func cmdList(bb *BasicBot, userName string) {
 	botSay(bb, fmt.Sprintf("Available Commands:  %s", getCMDS(userName)))
 }
+
+func cmdTime(bb *BasicBot, cmd, msg string) {
+	botSay(bb, timeStamp())
+}
