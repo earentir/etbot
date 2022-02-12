@@ -7,6 +7,7 @@ import (
 
 const (
 	UTCFormat = time.RFC3339
+	etbver    = "20220212A"
 )
 
 var (
