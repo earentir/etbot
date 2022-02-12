@@ -16,6 +16,7 @@ import (
 // 	return false
 // }
 
+// getAttributedUser at returns @ or not in the reply
 func getAttributedUser(msg string, at bool) string {
 	if strings.Contains(msg, "@") {
 		if at {
@@ -23,9 +24,25 @@ func getAttributedUser(msg string, at bool) string {
 		} else {
 			return msg[strings.Index(msg, "@")+1:]
 		}
-
 	} else {
 		return ""
+	}
+}
+
+// isAttr return if there is an attr user in msg
+func isAttr(msg string) bool {
+	exists := false
+	if getAttributedUser(msg, true) != "" {
+		exists = true
+	}
+	return exists
+}
+
+func isCMD(cmd, msg string) bool {
+	if cmd == strings.ReplaceAll(msg, "!", "") {
+		return true
+	} else {
+		return false
 	}
 }
 
