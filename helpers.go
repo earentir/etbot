@@ -5,16 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 )
-
-// func inArray(array []string, lookup string) bool {
-// 	sort.Strings(array)
-// 	i := sort.SearchStrings(array, lookup)
-// 	if i < len(array) && array[i] == lookup {
-// 		return true
-// 	}
-// 	return false
-// }
 
 // getAttributedUser at returns @ or not in the reply
 func getAttributedUser(msg string, at bool) string {
@@ -38,6 +30,7 @@ func isAttr(msg string) bool {
 	return exists
 }
 
+// isCMD Checks if we only got the cmd in the prompt
 func isCMD(cmd, msg string) bool {
 	if cmd == strings.ReplaceAll(msg, "!", "") {
 		return true
@@ -46,6 +39,7 @@ func isCMD(cmd, msg string) bool {
 	}
 }
 
+// getCleanMessage removes attr and cmd from msg
 func getCleanMessage(cmd, msg string) string {
 	if strings.Contains(msg, "@") {
 		return msg[len(cmd)+1 : strings.Index(msg, "@")-1]
@@ -134,4 +128,12 @@ func CPrint(color, msg string) {
 
 	fmt.Println(string(colorCode), msg)
 	fmt.Print(string(resetcolor))
+}
+
+func timeStamp() string {
+	return TimeStamp(UTCFormat)
+}
+
+func TimeStamp(format string) string {
+	return time.Now().Format(format)
 }
