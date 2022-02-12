@@ -9,30 +9,9 @@ import (
 	"io/ioutil"
 	"net"
 	"net/textproto"
-	"regexp"
 	"strings"
 	"time"
 )
-
-var AllowedUsers = []string{}
-var SubbedUsers = []string{"elmusfire"}
-var AdminUsers = []string{"earentir"}
-var MODUsers = []string{"tarudesu", "therujum", "mrpewpewlaser", "wulgaru", "juliestrator"}
-var VIPUsers = []string{"nopogo_tv", "evel_cult_leader", "sireeeki", "passivestar", "jaynein", "smartassgamer", "flyingthread", "sortlarz", "dutchy01", "steve7411"}
-
-const UTCFormat = time.RFC3339
-
-// Regex for parsing PRIVMSG strings.
-//
-// First matched group is the user's name and the second matched group is the content of the
-// user's message.
-var MsgRegex *regexp.Regexp = regexp.MustCompile(`^:(\w+)!\w+@\w+\.tmi\.twitch\.tv (PRIVMSG) #\w+(?: :(.*))?$`)
-
-// Regex for parsing user commands, from already parsed PRIVMSG strings.
-//
-// First matched group is the command name and the second matched group is the argument for the
-// command.
-var CmdRegex *regexp.Regexp = regexp.MustCompile(`^!(\w+)\s?(\w+)?`)
 
 type OAuthCred struct {
 	TwitchPassword    string `json:"twitch_password,omitempty"`
@@ -240,12 +219,4 @@ func (bb *BasicBot) Start() {
 			return
 		}
 	}
-}
-
-func timeStamp() string {
-	return TimeStamp(UTCFormat)
-}
-
-func TimeStamp(format string) string {
-	return time.Now().Format(format)
 }
