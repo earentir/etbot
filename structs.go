@@ -40,27 +40,27 @@ type Settings struct {
 			Server      string `json:"server"`
 			MSGRate     int    `json:"msgrate"`
 		} `json:"twitch"`
-		Servers struct {
-			WebServers struct {
-				Spotify struct {
-					Currentlyplaying bool `json:"currentlyplaying,omitempty"`
-				} `json:"spotify"`
-				Twitch struct {
-					Goals bool `json:"goals,omitempty"`
-				} `json:"twitch"`
-			} `json:"web"`
-			BotServers struct {
-				Chat bool `json:"chat"`
-			} `json:"bot"`
-		} `json:"servers"`
-		Weather struct {
-			DefaultCity string `json:"default,omitempty"`
-		} `json:"weather"`
-		Curency struct {
-			DefaultCurrency string `json:"default,omitempty"`
-			CurrencyTo      string `json:"to,omitempty"`
-		} `json:"currency"`
 	} `json:"general"`
+	Servers struct {
+		WebServers struct {
+			Spotify struct {
+				Currentlyplaying bool `json:"currentlyplaying,omitempty"`
+			} `json:"spotify"`
+			Twitch struct {
+				Goals bool `json:"goals,omitempty"`
+			} `json:"twitch"`
+		} `json:"web"`
+		BotServers struct {
+			Chat bool `json:"chat"`
+		} `json:"bot"`
+	} `json:"servers"`
+	Weather struct {
+		DefaultCity string `json:"default,omitempty"`
+	} `json:"weather"`
+	Curency struct {
+		DefaultCurrency string `json:"default,omitempty"`
+		CurrencyTo      string `json:"to,omitempty"`
+	} `json:"currency"`
 	Users      []User          `json:"users"`
 	Commands   []Command       `json:"commands"`
 	Lurklists  []LurkList      `json:"lurklist"`
@@ -68,10 +68,10 @@ type Settings struct {
 }
 
 type User struct {
-	Name    string   `json:"name"`
-	Nick    string   `json:"nick,omitempty"`
-	Type    string   `json:"type"`
-	Socials []Social `json:"socials"`
+	Name    string `json:"name"`
+	Nick    string `json:"nick,omitempty"`
+	Type    string `json:"type"`
+	Socials Social `json:"socials"`
 }
 
 type Command struct {

@@ -45,13 +45,10 @@ func getUserSocials(userName string) []string {
 
 	for _, usr := range setusers {
 		if usr.Name == userName {
-			usrsoc := usr.Socials
-			for _, soc := range usrsoc {
-				found = append(found, strings.ReplaceAll(fmt.Sprintf("%v", soc), " ", ""))
-			}
+			soc := usr.Socials
+			found = strings.Fields(strings.ReplaceAll(strings.ReplaceAll(fmt.Sprintf("%v", soc), "{", ""), "}", ""))
 		}
 	}
-
 	return found
 }
 

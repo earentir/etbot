@@ -44,10 +44,11 @@ func main() {
 	// 	fmt.Println(twusr[0].CreatedAt)
 	// }
 
-	// if settings.General.Servers.BotServers.Chat {
-	etb.Start()
-	// }
+	// fmt.Println(getUserSocials("earentir"))
 
+	if settings.Servers.BotServers.Chat {
+		etb.Start()
+	}
 }
 
 func LoadJSONFileTOStruct(jsonFileName string, onTo interface{}) {
