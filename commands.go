@@ -166,3 +166,7 @@ func cmdList(bb *BasicBot, userName string) {
 func cmdTime(bb *BasicBot, cmd, msg string) {
 	botSay(bb, timeStamp())
 }
+
+func cmdVersion(bb *BasicBot) {
+	botSay(bb, etbver)
+}

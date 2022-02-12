@@ -19,6 +19,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 				case "etbdown":
 					CPrint("c", fmt.Sprintf("[%s] Shutdown command received. Shutting down now...\n", timeStamp()))
 					bb.Disconnect()
+				case "version":
+					cmdVersion(bb)
 
 					//region joke commands
 				case "hi":
