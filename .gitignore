@@ -13,10 +13,8 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
-etb-auth.json
 etb
 redemptions.txt
 owapikey.txt
-etb-settings.json
-jokes.json
-builds/etb-20220212A
+*.json
+builds/
