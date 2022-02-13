@@ -2,7 +2,9 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 	"time"
@@ -136,4 +138,18 @@ func timeStamp() string {
 
 func TimeStamp(format string) string {
 	return time.Now().Format(format)
+}
+
+func LoadJSONFileTOStruct(jsonFileName string, onTo interface{}) {
+	//read json here
+	jsonFile, err := ioutil.ReadFile(jsonFileName)
+	if nil != err {
+		fmt.Println(err)
+	}
+	json.Unmarshal([]byte(jsonFile), &onTo)
+}
+
+func LoadJSONTOStruct(jsondata []byte, onTo interface{}) {
+	//read json here
+	json.Unmarshal(jsondata, &onTo)
 }
