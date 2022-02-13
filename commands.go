@@ -34,7 +34,7 @@ func cmdVulgar(bb *BasicBot) {
 	botSay(bb, "Fuck Off")
 }
 
-func cmdJoke(bb *BasicBot, cmd, msg string) {
+func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
 	var jokes []string
 	var jkstr string
 
@@ -169,4 +169,13 @@ func cmdTime(bb *BasicBot, cmd, msg string) {
 
 func cmdVersion(bb *BasicBot) {
 	botSay(bb, etbver)
+}
+
+func cmdMic(bb *BasicBot) {
+	botSay(bb, "earentFfs Check your mic moron @earentir")
+}
+
+func cmdJoke(bb *BasicBot, cmd string) {
+	//attributed add
+	botSay(bb, jokesJSON(cmd))
 }

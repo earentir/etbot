@@ -28,19 +28,21 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 				case "olive":
 					fallthrough
 				case "oil":
-					bb.Say(oliveoil() + " " + getAttributedUser(msg, true))
+					cmdJoke(bb, cmd)
 				case "yogurt":
-					bb.Say(yogurt() + " " + getAttributedUser(msg, true))
+					cmdJoke(bb, cmd)
 				case "bofh":
-					cmdJoke(bb, cmd, msg)
+					cmdJokeAPI(bb, cmd, msg)
 				case "joke":
 					fallthrough
 				case "yoke":
-					cmdJoke(bb, cmd, msg)
+					cmdJokeAPI(bb, cmd, msg)
 				case "ban":
 					cmdBan(bb, userName, cmd, msg)
 				case "unban":
 					cmdBan(bb, userName, cmd, msg)
+				case "mic":
+					cmdMic(bb)
 					//endregion
 				case "lurk":
 					cmdLurk(bb, userName, cmd, msg)
