@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -19,8 +18,6 @@ func main() {
 	}
 
 	LoadJSONFileTOStruct(etb.PrivatePath, &creds)
-
-	fmt.Println(jokesJSON("oil"))
 
 	if settings.Servers.BotServers.Chat {
 		etb.Start()
