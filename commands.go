@@ -77,7 +77,7 @@ func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
 
 func cmdHype(bb *BasicBot, msg string) {
 	if isAttr(msg) {
-		msgOut := fmt.Sprintf("earentFfs %s, dont you think there is better places to spend your money ? Stop wasting it !!!", getAttributedUser(msg, true))
+		msgOut := fmt.Sprintf(jokesJSON("sub_insults"), getAttributedUser(msg, true))
 		botSay(bb, msgOut)
 	} else {
 		botSay(bb, "Please @ a user")
