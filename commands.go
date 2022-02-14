@@ -122,9 +122,11 @@ func cmdWeather(bb *BasicBot, cmd, msg string) {
 		botSay(bb, getWeather(settings.Weather.DefaultCity))
 	} else {
 		if isAttr(msg) {
-			botSay(bb, getWeather(getCleanMessage(cmd, msg))+" "+getAttributedUser(msg, true))
+			msgOut := getWeather(getCleanMessage(cmd, msg)) + " " + getAttributedUser(msg, true)
+			botSay(bb, msgOut)
 		} else {
-			botSay(bb, getWeather(getCleanMessage(cmd, msg)))
+			msgOut := getWeather(getCleanMessage(cmd, msg))
+			botSay(bb, msgOut)
 		}
 	}
 }
@@ -133,9 +135,11 @@ func cmdSO(bb *BasicBot, userName, cmd, msg string) {
 	fmt.Println(getAttributedUser(msg, true))
 	if userExists(getAttributedUser(msg, false)) {
 		if isCMD(cmd, msg) {
-			botSay(bb, fmt.Sprintf("@%s Please use !so @username", userName))
+			msgOut := fmt.Sprintf("@%s Please use !so @username", userName)
+			botSay(bb, msgOut)
 		} else {
-			botSay(bb, fmt.Sprintf("Please check out & follow %s @ https://twitch.tv/%s they are amazing.%s", getAttributedUser(msg, true), strings.ToLower(getAttributedUser(msg, false)), getItchIOProfile(getAttributedUser(msg, false))))
+			msgOut := fmt.Sprintf("Please check out & follow %s @ https://twitch.tv/%s they are amazing.%s", getAttributedUser(msg, true), strings.ToLower(getAttributedUser(msg, false)), getItchIOProfile(getAttributedUser(msg, false)))
+			botSay(bb, msgOut)
 		}
 	}
 }
@@ -151,20 +155,24 @@ func cmdFr(bb *BasicBot, userName, cmd, msg string) {
 
 		cmdres.Run()
 		if len(errbuf.String()) == 0 {
-			botSay(bb, fmt.Sprintf("Feature Request Ticket Opened by %s with a title of \"%s\"", userName, title))
+			msgOut := fmt.Sprintf("Feature Request Ticket Opened by %s with a title of \"%s\"", userName, title)
+			botSay(bb, msgOut)
 		}
 		fmt.Println(errbuf.String())
 	} else {
-		botSay(bb, "Please type your feature request after the cmd, ex: !fr add more stuff FFS")
+		msgOut := "Please type your feature request after the cmd, ex: !fr add more stuff FFS"
+		botSay(bb, msgOut)
 	}
 }
 
 func cmdList(bb *BasicBot, userName string) {
-	botSay(bb, fmt.Sprintf("Available Commands:  %s", getCMDS(userName)))
+	msgOut := fmt.Sprintf("Available Commands:  %s", getCMDS(userName))
+	botSay(bb, msgOut)
 }
 
 func cmdTime(bb *BasicBot, cmd, msg string) {
-	botSay(bb, timeStamp())
+	msgOut := timeStamp()
+	botSay(bb, msgOut)
 }
 
 func cmdVersion(bb *BasicBot) {
@@ -172,10 +180,11 @@ func cmdVersion(bb *BasicBot) {
 }
 
 func cmdMic(bb *BasicBot) {
-	botSay(bb, "earentFfs Check your mic moron @earentir")
+	msgOut := "earentFfs Check your mic moron @earentir"
+	botSay(bb, msgOut)
 }
 
 func cmdJoke(bb *BasicBot, cmd string) {
-	//attributed add
-	botSay(bb, jokesJSON(cmd))
+	msgOut := jokesJSON(cmd)
+	botSay(bb, msgOut)
 }
