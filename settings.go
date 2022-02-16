@@ -26,7 +26,7 @@ func CMDCanRun(userName, cmd string) bool {
 	ourcmdopts = getCMDOptions(cmd)
 
 	if ourcmdopts.Enabled && (IsItOnTimeout(cmd, userName) || ourcmdopts.Lastuse == 0) {
-		itcan = ourcmdopts.UserLevel >= UserLevel(userName)
+		itcan = ourcmdopts.UserLevel >= UserLevel(userName).Level
 		setCMDUsed(cmd)
 	}
 
@@ -79,35 +79,18 @@ func SearchUser(userName string) bool {
 	return found
 }
 
-func convertLevelType(LevelType string) int {
-	var level int = 10
-	setusers := settings.UserLevels
-	for _, lvl := range setusers {
-		if LevelType == lvl.Name {
-			level = lvl.Level
-		}
-	}
-	return level
-}
-
-func getLevelCoolDown(level int) int {
-	var cooldown int = 30000
-	setusers := settings.UserLevels
-	for _, lvl := range setusers {
-		if level == lvl.Level {
-			cooldown = lvl.Cooldown
-		}
-	}
-	return cooldown
-}
-
-func UserLevel(userName string) int {
-	var level int = 10
+func UserLevel(userName string) UserLevelList {
+	var userLevelReturn UserLevelList
 	setusers := settings.Users
 	for _, usr := range setusers {
 		if userName == usr.Name {
-			level = convertLevelType(usr.Type)
+			userLevel := settings.UserLevels
+			for _, lvl := range userLevel {
+				if usr.Type == lvl.Name {
+					userLevelReturn = lvl
+				}
+			}
 		}
 	}
-	return level
+	return userLevelReturn
 }

@@ -50,24 +50,11 @@ func getCleanMessage(cmd, msg string) string {
 
 func IsItOnTimeout(cmd, userName string) bool {
 	var allowed bool = false
-	if (getCMDOptions(cmd).Cooldown / 1000) < int(time.Now().Unix())-getCMDOptions(cmd).Lastuse {
+
+	if (UserLevel(userName).Cooldown * (getCMDOptions(cmd).Cooldown / 1000)) < int(time.Now().Unix())-getCMDOptions(cmd).Lastuse {
 		allowed = true
 	}
-
 	return allowed
-}
-
-func getItchIOProfile(userName string) string {
-	if userName != "" {
-		itchioprofile := fmt.Sprintf("https://%s.itch.io", userName)
-		if HTTPCheckResponse(itchioprofile) {
-			return fmt.Sprintf(" Check their itch.io profile @ %s", itchioprofile)
-		} else {
-			return ""
-		}
-	} else {
-		return ""
-	}
 }
 
 func CPrint(color, msg string) {
