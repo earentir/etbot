@@ -29,6 +29,16 @@ type TwitchUserData []struct {
 	CreatedAt       time.Time `json:"created_at"`
 }
 
+type TwitchChannelData []struct {
+	BroadcasterID       string `json:"broadcaster_id"`
+	BroadcasterName     string `json:"broadcaster_name"`
+	BroadcasterLanguage string `json:"broadcaster_language"`
+	GameID              string `json:"game_id"`
+	GameName            string `json:"game_name"`
+	Title               string `json:"title"`
+	Delay               int    `json:"delay"`
+}
+
 //Settings struct
 type Settings struct {
 	General struct {
@@ -88,6 +98,15 @@ type Social struct {
 	Instagram  string `json:"instagram,omitempty"`
 	Facebook   string `json:"facebook,omitempty"`
 	Artstation string `json:"artstation,omitempty"`
+	TikTok     string `json:"tiktok,omitempty"`
+	Reddit     string `json:"reddit,omitempty"`
+	LinkedIn   string `json:"linkedin,omitempty"`
+	Pinterest  string `json:"pinterest,omitempty"`
+	Discord    string `json:"discord,omitempty"`
+	AboutMe    string `json:"aboutme,omitempty"`
+	Udemy      string `json:"udemy,omitempty"`
+	WWW        string `json:"www,omitempty"`
+	Links      string `json:"links,omitempty"`
 }
 
 type CommandOption struct {
