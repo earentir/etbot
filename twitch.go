@@ -42,3 +42,31 @@ func getTwitchUser(userName string) TwitchUserData {
 	LoadJSONTOStruct(jsonuserdata, &twitchUserData)
 	return twitchUserData
 }
+
+func getChannelInfo(loginID string) TwitchChannelData {
+	var twitchChannelData TwitchChannelData
+
+	client, err := helix.NewClient(&helix.Options{
+		ClientID:        creds.TwitchClientID,
+		UserAccessToken: creds.TwitchAppToken,
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	resp, err := client.GetChannelInformation(&helix.GetChannelInformationParams{
+		BroadcasterID: loginID,
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	userdata := &resp.Data.Channels
+	jsonchanneldata, err := json.Marshal(userdata)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	LoadJSONTOStruct(jsonchanneldata, &twitchChannelData)
+	return twitchChannelData
+}
