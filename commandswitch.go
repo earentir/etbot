@@ -28,9 +28,9 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 				case "olive":
 					fallthrough
 				case "oil":
-					cmdJoke(bb, cmd)
+					cmdJoke(bb, cmd, msg)
 				case "yogurt":
-					cmdJoke(bb, cmd)
+					cmdJoke(bb, cmd, msg)
 				case "bofh":
 					cmdJokeAPI(bb, cmd, msg)
 				case "joke":

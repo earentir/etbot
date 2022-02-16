@@ -49,10 +49,23 @@ func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
 	}
 
 	if isAttr(msg) {
-		botSay(bb, jkstr)
+		botSay(bb, jkstr+" "+getAttributedUser(msg, true))
 	} else {
 		botSay(bb, jkstr)
 	}
+}
+
+func cmdJoke(bb *BasicBot, cmd, msg string) {
+	var msgOut string
+	atrUser := getAttributedUser(msg, true)
+
+	if isAttr(msg) {
+		msgOut = jokesJSON(cmd) + " " + atrUser
+	} else {
+		msgOut = jokesJSON(cmd)
+	}
+
+	botSay(bb, msgOut)
 }
 
 func cmdBan(bb *BasicBot, userName, cmd, msg string) {
@@ -203,10 +216,5 @@ func cmdVersion(bb *BasicBot) {
 
 func cmdMic(bb *BasicBot) {
 	msgOut := "earentFfs Check your mic moron @earentir"
-	botSay(bb, msgOut)
-}
-
-func cmdJoke(bb *BasicBot, cmd string) {
-	msgOut := jokesJSON(cmd)
 	botSay(bb, msgOut)
 }
