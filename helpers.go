@@ -48,30 +48,13 @@ func getCleanMessage(cmd, msg string) string {
 	}
 }
 
-// func readTextFile(filename string) []string {
-// 	textfile, err := os.Open(filename)
-// 	if err != nil {
-// 		fmt.Print(err)
-// 	}
-// 	defer textfile.Close()
-
-// 	var lines []string
-// 	scanner := bufio.NewScanner(textfile)
-
-// 	for scanner.Scan() {
-// 		lines = append(lines, scanner.Text())
-// 	}
-// 	return lines
-// }
-
-func IsItOnTimeout(command, userName string) bool {
-	if true {
-		//store now epoch on call if empty
-		//convert diff(epoch, now) to ms > timeout(ms)
-		return true
-	} else {
-		return false
+func IsItOnTimeout(cmd, userName string) bool {
+	var allowed bool = false
+	if (getCMDOptions(cmd).Cooldown / 1000) < int(time.Now().Unix())-getCMDOptions(cmd).Lastuse {
+		allowed = true
 	}
+
+	return allowed
 }
 
 func getItchIOProfile(userName string) string {
