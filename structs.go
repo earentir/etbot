@@ -107,6 +107,8 @@ type Social struct {
 	Udemy      string `json:"udemy,omitempty"`
 	WWW        string `json:"www,omitempty"`
 	Links      string `json:"links,omitempty"`
+	Soundcloud string `json:"soundcloud,omitempty"`
+	Bandcamp   string `json:"bandcamp,omitempty"`
 }
 
 type CommandOption struct {
