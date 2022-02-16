@@ -108,8 +108,8 @@ func TimeStamp(format string) string {
 	return time.Now().Format(format)
 }
 
+//read json file to struct here
 func LoadJSONFileTOStruct(jsonFileName string, onTo interface{}) {
-	//read json here
 	jsonFile, err := ioutil.ReadFile(jsonFileName)
 	if nil != err {
 		fmt.Println(err)
@@ -117,8 +117,8 @@ func LoadJSONFileTOStruct(jsonFileName string, onTo interface{}) {
 	json.Unmarshal([]byte(jsonFile), &onTo)
 }
 
+//read json data to struct here
 func LoadJSONTOStruct(jsondata []byte, onTo interface{}) {
-	//read json here
 	json.Unmarshal(jsondata, &onTo)
 }
 
