@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strings"
+	"time"
 )
 
 func getCMDS(userName string) string {
@@ -19,10 +20,13 @@ func getCMDS(userName string) string {
 }
 
 func CMDCanRun(userName, cmd string) bool {
+	var ourcmdopts CommandOption
 	itcan := false
 
-	if CmdOpts(cmd).Enabled {
-		itcan = CmdOpts(cmd).UserLevel >= UserLevel(userName)
+	ourcmdopts = CmdOpts(cmd)
+
+	if ourcmdopts.Enabled {
+		itcan = ourcmdopts.UserLevel >= UserLevel(userName)
 	}
 
 	return itcan
@@ -30,12 +34,16 @@ func CMDCanRun(userName, cmd string) bool {
 
 func CmdOpts(cmd string) CommandOption {
 	var commandOption CommandOption
-	cmds := settings.Commands
-	for _, cm := range cmds {
-		if (cmd == cm.CommandName) || (cmd == cm.CommandOptions.Alias) {
-			return cm.CommandOptions
+
+	for i := 0; i <= len(settings.Commands); i++ {
+		if (cmd == settings.Commands[i].CommandName) || (cmd == settings.Commands[i].CommandOptions.Alias) {
+			settings.Commands[i].CommandOptions.Counter++
+			settings.Commands[i].CommandOptions.Lastuse = int(time.Now().Unix())
+
+			return settings.Commands[i].CommandOptions
 		}
 	}
+
 	return commandOption
 }
 
