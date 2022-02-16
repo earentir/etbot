@@ -23,28 +23,35 @@ func CMDCanRun(userName, cmd string) bool {
 	var ourcmdopts CommandOption
 	itcan := false
 
-	ourcmdopts = CmdOpts(cmd)
+	ourcmdopts = getCMDOptions(cmd)
 
-	if ourcmdopts.Enabled {
+	if ourcmdopts.Enabled && (IsItOnTimeout(cmd, userName) || ourcmdopts.Lastuse == 0) {
 		itcan = ourcmdopts.UserLevel >= UserLevel(userName)
+		setCMDUsed(cmd)
 	}
 
 	return itcan
 }
 
-func CmdOpts(cmd string) CommandOption {
+func getCMDOptions(cmd string) CommandOption {
 	var commandOption CommandOption
 
-	for i := 0; i <= len(settings.Commands); i++ {
+	for i := 0; i <= len(settings.Commands)-1; i++ {
 		if (cmd == settings.Commands[i].CommandName) || (cmd == settings.Commands[i].CommandOptions.Alias) {
-			settings.Commands[i].CommandOptions.Counter++
-			settings.Commands[i].CommandOptions.Lastuse = int(time.Now().Unix())
-
 			return settings.Commands[i].CommandOptions
 		}
 	}
 
 	return commandOption
+}
+
+func setCMDUsed(cmd string) {
+	for i := 0; i <= len(settings.Commands)-1; i++ {
+		if (cmd == settings.Commands[i].CommandName) || (cmd == settings.Commands[i].CommandOptions.Alias) {
+			settings.Commands[i].CommandOptions.Lastuse = int(time.Now().Unix())
+			settings.Commands[i].CommandOptions.Counter++
+		}
+	}
 }
 
 func getUserSocials(userName string) []string {
