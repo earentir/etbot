@@ -110,15 +110,15 @@ type Social struct {
 }
 
 type CommandOption struct {
-	Msg                string `json:"msg,omitempty"`
-	Atmsg              string `json:"atmsg,omitempty"`
-	Help               string `json:"help,omitempty"`
-	Alias              string `json:"alias,omitempty"`
-	Lastuse            int    `json:"lastuse,omitempty"`
-	Counter            int    `json:"counter,omitempty"`
-	UserLevel          int    `json:"userlevel"`
-	CooldownMultiplier int    `json:"cooldownmultiplier"`
-	Enabled            bool   `json:"enabled"`
+	Msg       string `json:"msg,omitempty"`
+	Atmsg     string `json:"atmsg,omitempty"`
+	Help      string `json:"help,omitempty"`
+	Alias     string `json:"alias,omitempty"`
+	Lastuse   int    `json:"lastuse,omitempty"`
+	Counter   int    `json:"counter,omitempty"`
+	UserLevel int    `json:"userlevel"`
+	Cooldown  int    `json:"cooldown"`
+	Enabled   bool   `json:"enabled"`
 }
 
 type UserLevelList struct {
