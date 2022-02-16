@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func botSay(bb *BasicBot, msg string) {
@@ -79,6 +80,12 @@ func cmdBan(bb *BasicBot, userName, cmd, msg string) {
 }
 
 func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
+	var lurker LurkerList
+
+	lurker.Lurker = "earentir"
+	lurker.LurkedOn = int(time.Now().Unix())
+	settings.Lurklists = append(settings.Lurklists, lurker)
+
 	if isCMD(cmd, msg) {
 		msgOut := fmt.Sprintf("Thank you for lurking %s, you smart hooman, go have as much fun as possible on your endeavours", userName)
 		botSay(bb, msgOut)
