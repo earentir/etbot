@@ -132,13 +132,31 @@ func cmdWeather(bb *BasicBot, cmd, msg string) {
 }
 
 func cmdSO(bb *BasicBot, userName, cmd, msg string) {
-	fmt.Println(getAttributedUser(msg, true))
-	if userExists(getAttributedUser(msg, false)) {
+	var twitchChannelData TwitchChannelData
+	var msgOut string
+
+	atrUser := getAttributedUser(msg, false)
+	if userExists(atrUser) {
 		if isCMD(cmd, msg) {
 			msgOut := fmt.Sprintf("@%s Please use !so @username", userName)
 			botSay(bb, msgOut)
 		} else {
-			msgOut := fmt.Sprintf("Please check out & follow %s @ https://twitch.tv/%s they are amazing.%s", getAttributedUser(msg, true), strings.ToLower(getAttributedUser(msg, false)), getItchIOProfile(getAttributedUser(msg, false)))
+
+			tu := getTwitchUser(strings.ToLower(atrUser))[0]
+			if tu.ID != "" {
+				twitchChannelData = getChannelInfo(tu.ID)
+			}
+
+			if twitchChannelData[0].GameName == "" || twitchChannelData[0].Title == "" {
+				msgOut = fmt.Sprintf("Please check out & follow %s they are amazing. You can find them here: %s", getAttributedUser(msg, true), strings.Join(getUserSocials(strings.ToLower(atrUser)), " "))
+			} else {
+				msgOut = fmt.Sprintf("Please check out & follow %s they are amazing. They streamed in %s about \"%s\",  You can find them here: %s",
+					getAttributedUser(msg, true),
+					twitchChannelData[0].GameName,
+					twitchChannelData[0].Title,
+					strings.Join(getUserSocials(strings.ToLower(atrUser)), " "))
+			}
+
 			botSay(bb, msgOut)
 		}
 	}
