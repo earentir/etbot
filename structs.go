@@ -73,7 +73,7 @@ type Settings struct {
 	} `json:"currency"`
 	Users      []User          `json:"users"`
 	Commands   []Command       `json:"commands"`
-	Lurklists  []LurkList      `json:"lurklist"`
+	Lurklists  []LurkerList    `json:"lurklist"`
 	UserLevels []UserLevelList `json:"userlevels"`
 }
 
@@ -128,10 +128,7 @@ type UserLevelList struct {
 	Name     string `json:"name"`
 	Cooldown int    `json:"cooldown"`
 }
-
-type LurkList struct {
-	Lurkers []struct {
-		Lurker   string `json:"lurker"`
-		LurkedOn int64  `json:"lurkedon,omitempty"`
-	} `json:"lurklist"`
+type LurkerList struct {
+	Lurker   string `json:"lurker"`
+	LurkedOn int    `json:"lurkedon,omitempty"`
 }
