@@ -1,11 +1,9 @@
 package main
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"os"
 	"strings"
 	"time"
 )
@@ -50,21 +48,21 @@ func getCleanMessage(cmd, msg string) string {
 	}
 }
 
-func readTextFile(filename string) []string {
-	textfile, err := os.Open(filename)
-	if err != nil {
-		fmt.Print(err)
-	}
-	defer textfile.Close()
+// func readTextFile(filename string) []string {
+// 	textfile, err := os.Open(filename)
+// 	if err != nil {
+// 		fmt.Print(err)
+// 	}
+// 	defer textfile.Close()
 
-	var lines []string
-	scanner := bufio.NewScanner(textfile)
+// 	var lines []string
+// 	scanner := bufio.NewScanner(textfile)
 
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	return lines
-}
+// 	for scanner.Scan() {
+// 		lines = append(lines, scanner.Text())
+// 	}
+// 	return lines
+// }
 
 func IsItOnTimeout(command, userName string) bool {
 	if true {
@@ -152,4 +150,14 @@ func LoadJSONFileTOStruct(jsonFileName string, onTo interface{}) {
 func LoadJSONTOStruct(jsondata []byte, onTo interface{}) {
 	//read json here
 	json.Unmarshal(jsondata, &onTo)
+}
+
+func saveSettings() {
+	file, _ := json.MarshalIndent(settings, "", "\t")
+	_ = ioutil.WriteFile("testsave.json", file, 0644)
+}
+
+func cleanup() {
+	saveSettings()
+	fmt.Println("Saved Data")
 }
