@@ -81,11 +81,16 @@ type Settings struct {
 }
 
 type User struct {
-	Name    string `json:"name"`
-	Nick    string `json:"nick,omitempty"`
-	Type    string `json:"type"`
-	Love    string `json:"love"`
-	Socials Social `json:"socials"`
+	Name    string   `json:"name"`
+	Nick    string   `json:"nick,omitempty"`
+	Type    string   `json:"type"`
+	Love    string   `json:"love"`
+	Socials []social `json:"socials"`
+}
+
+type social struct {
+	SocNet string `json:"socnet"`
+	Link   string `json:"link"`
 }
 
 type Command struct {
