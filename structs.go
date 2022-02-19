@@ -97,29 +97,6 @@ type Command struct {
 	CommandName    string        `json:"name"`
 	CommandOptions CommandOption `json:"options"`
 }
-
-type Social struct {
-	Twitch     string `json:"twitch,omitempty"`
-	Github     string `json:"github,omitempty"`
-	Itchio     string `json:"itchio,omitempty"`
-	Youtube    string `json:"youtube,omitempty"`
-	Twitter    string `json:"twiter,omitempty"`
-	Instagram  string `json:"instagram,omitempty"`
-	Facebook   string `json:"facebook,omitempty"`
-	Artstation string `json:"artstation,omitempty"`
-	TikTok     string `json:"tiktok,omitempty"`
-	Reddit     string `json:"reddit,omitempty"`
-	LinkedIn   string `json:"linkedin,omitempty"`
-	Pinterest  string `json:"pinterest,omitempty"`
-	Discord    string `json:"discord,omitempty"`
-	AboutMe    string `json:"aboutme,omitempty"`
-	Udemy      string `json:"udemy,omitempty"`
-	WWW        string `json:"www,omitempty"`
-	Links      string `json:"links,omitempty"`
-	Soundcloud string `json:"soundcloud,omitempty"`
-	Bandcamp   string `json:"bandcamp,omitempty"`
-}
-
 type CommandOption struct {
 	Msg       string `json:"msg,omitempty"`
 	Atmsg     string `json:"atmsg,omitempty"`
