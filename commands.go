@@ -234,6 +234,16 @@ func cmdSocial(bb *BasicBot, cmd string) {
 	}
 }
 
+func cmdProject(bb *BasicBot, cmd, userName, msg string) {
+	if isCMD(cmd, msg) {
+		botSay(bb, settings.General.Project.Description)
+	} else {
+		if userName == settings.General.Twitch.Channel {
+			settings.General.Project.Description = msg[len(cmd)+1:]
+		}
+	}
+}
+
 func cmdUPDSoc(bb *BasicBot, cmd, msg string) {
 	// 	if isAttr(msg) {
 	// 		attrUser := getAttributedUser(msg, false)

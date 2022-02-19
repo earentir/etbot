@@ -90,6 +90,11 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					cmdTime(bb, cmd, msg)
 				case "updsoc":
 					cmdUPDSoc(bb, cmd, msg)
+				case "current":
+					fallthrough
+				case "project":
+					cmdProject(bb, cmd, userName, msg)
+
 				default:
 					// do nothing
 					// }

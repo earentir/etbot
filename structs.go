@@ -50,6 +50,9 @@ type Settings struct {
 			Server      string `json:"server"`
 			MSGRate     int    `json:"msgrate"`
 		} `json:"twitch"`
+		Project struct {
+			Description string `json:"description,omitempty"`
+		} `json:"project"`
 	} `json:"general"`
 	Servers struct {
 		WebServers struct {
