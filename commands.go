@@ -82,7 +82,7 @@ func cmdBan(bb *BasicBot, userName, cmd, msg string) {
 func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
 	var lurker LurkerList
 
-	lurker.Lurker = "earentir"
+	lurker.Lurker = userName
 	lurker.LurkedOn = int(time.Now().Unix())
 	settings.Lurklists = append(settings.Lurklists, lurker)
 
@@ -224,4 +224,30 @@ func cmdVersion(bb *BasicBot) {
 func cmdMic(bb *BasicBot) {
 	msgOut := "earentFfs Check your mic moron @earentir"
 	botSay(bb, msgOut)
+}
+
+func cmdSocial(bb *BasicBot, cmd string) {
+	for _, j := range settings.Users {
+		if j.Type == "root" {
+			fmt.Printf("%#v", j.Socials)
+		}
+	}
+}
+
+func cmdUPDSoc(bb *BasicBot, cmd, msg string) {
+	// 	if isAttr(msg) {
+	// 		attrUser := getAttributedUser(msg, false)
+	// 		_ = attrUser
+
+	// 		for _, j := range settings.Users {
+	// 			for _, k := range j.Socials {
+	// 				if strings.Fields(msg)[1] == k {
+
+	// 				}
+	// 			}
+	// 		}
+
+	// 	} else {
+
+	// 	}
 }
