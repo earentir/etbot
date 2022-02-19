@@ -56,12 +56,13 @@ func setCMDUsed(cmd string) {
 
 func getUserSocials(userName string) []string {
 	setusers := settings.Users
-	found := []string{}
+	var found []string
 
 	for _, usr := range setusers {
 		if usr.Name == userName {
-			soc := usr.Socials
-			found = strings.Fields(strings.ReplaceAll(strings.ReplaceAll(fmt.Sprintf("%v", soc), "{", ""), "}", ""))
+			for _, k := range usr.Socials {
+				found = append(found, k.Link)
+			}
 		}
 	}
 	return found
