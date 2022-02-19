@@ -278,22 +278,30 @@ func cmdProject(bb *BasicBot, cmd, userName, msg string) {
 	}
 }
 
-func cmdUPDSoc(bb *BasicBot, cmd, msg string) {
-	// 	if isAttr(msg) {
-	// 		attrUser := getAttributedUser(msg, false)
-	// 		_ = attrUser
-
-	// 		for _, j := range settings.Users {
-	// 			for _, k := range j.Socials {
-	// 				if strings.Fields(msg)[1] == k {
-
-	// 				}
-	// 			}
-	// 		}
-
-	// 	} else {
-
-	// 	}
+func cmdUPDSoc(bb *BasicBot, cmd, userName, msg string) {
+	if levelNameTolvl("mod") <= UserLevel(userName).Level {
+		if isCMD(cmd, msg) {
+			botSay(bb, "Set a users social. ex. !updsoc @earentir github https://github.com/earentir")
+		} else {
+			fields := strings.Fields(msg[len(cmd)+2:])
+			if len(fields) == 3 {
+				for i := 0; i < len(settings.Users)-1; i++ {
+					if settings.Users[i].Name == strings.ToLower(fields[0][1:]) {
+						for j := 0; j < len(settings.Users[0].Socials)-1; j++ {
+							if settings.Users[0].Socials[j].SocNet == fields[1] {
+								settings.Users[0].Socials[j].Link = fields[2]
+								botSay(bb, fmt.Sprintf("%s's %s profile is now %s", fields[0][1:], fields[1], fields[2]))
+							}
+						}
+					}
+				}
+			} else {
+				botSay(bb, "Set a users social. ex. !updsoc @earentir github https://github.com/earentir")
+			}
+		}
+	} else {
+		botSay(bb, "Only mods can update socials manually, please ask a mod for help.")
+	}
 }
 
 func cmdILOVE(bb *BasicBot, cmd, userName, msg string) {
