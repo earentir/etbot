@@ -21,14 +21,15 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					bb.Disconnect()
 				case "version":
 					cmdVersion(bb)
-
 					//region joke commands
 				case "hi":
 					cmdHi(bb, userName, cmd, msg)
 				case "olive":
 					fallthrough
 				case "oil":
-					cmdJoke(bb, cmd, msg)
+					fallthrough
+				case "nvidia":
+					fallthrough
 				case "yogurt":
 					cmdJoke(bb, cmd, msg)
 				case "bofh":
@@ -62,18 +63,33 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					cmdList(bb, userName)
 				case "fr":
 					cmdFr(bb, userName, cmd, msg)
-
 					//Not Final
 				case "socials":
 					fallthrough
+				case "github":
+					fallthrough
+				case "youtube":
+					fallthrough
+				case "itchio":
+					fallthrough
+				case "instagram":
+					fallthrough
+				case "artstation":
+					fallthrough
+				case "aboutme":
+					fallthrough
+				case "udemy":
+					fallthrough
 				case "discord":
-					cmdNo(bb)
+					cmdSocial(bb, cmd)
 				case "sudo":
 					cmdVulgar(bb)
 				case "pro": //check if they stream and say pro streamer otherwise pro viewer
 					cmdSoon(bb)
 				case "time":
 					cmdTime(bb, cmd, msg)
+				case "updsoc":
+					cmdUPDSoc(bb, cmd, msg)
 				default:
 					// do nothing
 					// }
