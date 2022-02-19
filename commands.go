@@ -295,3 +295,11 @@ func cmdUPDSoc(bb *BasicBot, cmd, msg string) {
 
 	// 	}
 }
+
+func cmdILOVE(bb *BasicBot, cmd, userName, msg string) {
+	for i := 0; i < len(settings.Users); i++ {
+		if settings.Users[i].Name == userName || settings.Users[i].Nick == userName {
+			settings.Users[i].Love = msg[len(cmd)+2:]
+		}
+	}
+}
