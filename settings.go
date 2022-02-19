@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"strings"
 	"time"
 )
 
@@ -83,6 +81,7 @@ func SearchUser(userName string) bool {
 func UserLevel(userName string) UserLevelList {
 	var userLevelReturn UserLevelList
 	setusers := settings.Users
+
 	for _, usr := range setusers {
 		if userName == usr.Name {
 			userLevel := settings.UserLevels
@@ -93,6 +92,7 @@ func UserLevel(userName string) UserLevelList {
 			}
 		}
 	}
+
 	return userLevelReturn
 }
 
