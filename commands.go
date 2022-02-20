@@ -275,19 +275,29 @@ func cmdProject(bb *BasicBot, cmd, userName, msg string) {
 }
 
 func cmdUPDSoc(bb *BasicBot, cmd, userName, msg string) {
+	var socs Social
 	if levelNameTolvl("mod") <= UserLevel(userName).Level {
 		if isCMD(cmd, msg) {
 			botSay(bb, "Set a users social. ex. !updsoc @earentir github https://github.com/earentir")
 		} else {
 			fields := strings.Fields(msg[len(cmd)+2:])
 			if len(fields) == 3 {
-				for i := 0; i < len(settings.Users)-1; i++ {
+				for i := 0; i < len(settings.Users); i++ {
 					if settings.Users[i].Name == strings.ToLower(fields[0][1:]) {
-						for j := 0; j < len(settings.Users[0].Socials)-1; j++ {
-							if settings.Users[0].Socials[j].SocNet == fields[1] {
-								settings.Users[0].Socials[j].Link = fields[2]
+						var socexists = false
+						for j := 0; j < len(settings.Users[i].Socials); j++ {
+							if settings.Users[i].Socials[j].SocNet == fields[1] {
+								settings.Users[i].Socials[j].Link = fields[2]
 								botSay(bb, fmt.Sprintf("%s's %s profile is now %s", fields[0][1:], fields[1], fields[2]))
+								socexists = true
 							}
+						}
+						fmt.Println(socexists)
+						if !socexists {
+							socs.SocNet = fields[1]
+							socs.Link = fields[2]
+							settings.Users[i].Socials = append(settings.Users[i].Socials, socs)
+							botSay(bb, fmt.Sprintf("%s's %s profile is now %s", fields[0][1:], fields[1], fields[2]))
 						}
 					}
 				}
