@@ -153,6 +153,15 @@ func cmdSO(bb *BasicBot, userName, cmd, msg string) {
 	var msgOut string
 
 	atrUser := getAttributedUser(msg, false)
+
+	//lets try to get a user without @
+	if atrUser == "" {
+		fields := strings.Fields(msg)
+		if len(fields) > 1 {
+			atrUser = fields[1]
+		}
+	}
+
 	if userExists(atrUser) {
 		if isCMD(cmd, msg) {
 			msgOut := fmt.Sprintf("@%s Please use !so @username", userName)
