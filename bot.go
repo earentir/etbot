@@ -2,22 +2,12 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
-	"io/ioutil"
 	"net"
 	"net/textproto"
-	"strings"
 	"time"
 )
-
-type OAuthCred struct {
-	TwitchPassword    string `json:"twitch_password,omitempty"`
-	TwitchClientID    string `json:"twitch_client_id,omitempty"`
-	OpenWeatherAPIKey string `json:"openweathermapapi,omitempty"`
-}
 
 type Bot interface {
 	// Opens a connection to the Twitch.tv IRC chat server.
@@ -50,9 +40,6 @@ type BasicBot struct {
 
 	// A reference to the bot's connection to the server.
 	conn net.Conn
-
-	// The credentials necessary for authentication.
-	Credentials *OAuthCred
 
 	// A forced delay between bot responses. This prevents the bot from breaking the message limit
 	// rules. A 20/30 millisecond delay is enough for a non-modded bot. If you decrease the delay
@@ -149,31 +136,11 @@ func (bb *BasicBot) HandleChat() error {
 // Makes the bot join its pre-specified channel.
 func (bb *BasicBot) JoinChannel() {
 	CPrint("y", fmt.Sprintf("[%s] Joining #%s...\n", timeStamp(), bb.Channel))
-	bb.conn.Write([]byte("PASS " + bb.Credentials.TwitchPassword + "\r\n"))
+	bb.conn.Write([]byte("PASS " + creds.TwitchPassword + "\r\n"))
 	bb.conn.Write([]byte("NICK " + bb.Name + "\r\n"))
 	bb.conn.Write([]byte("JOIN #" + bb.Channel + "\r\n"))
 
 	CPrint("y", fmt.Sprintf("[%s] Joined #%s as @%s!\n", timeStamp(), bb.Channel, bb.Name))
-}
-
-// Reads from the private credentials file and stores the data in the bot's Credentials field.
-func (bb *BasicBot) ReadCredentials() error {
-
-	// reads from the file
-	credFile, err := ioutil.ReadFile(bb.PrivatePath)
-	if nil != err {
-		return err
-	}
-
-	bb.Credentials = &OAuthCred{}
-
-	// parses the file contents
-	dec := json.NewDecoder(strings.NewReader(string(credFile)))
-	if err = dec.Decode(bb.Credentials); nil != err && io.EOF != err {
-		return err
-	}
-
-	return nil
 }
 
 // Makes the bot send a message to the chat channel.
@@ -198,17 +165,10 @@ func (bb *BasicBot) Say(msg string) error {
 // pre-specified channel, and then handle the chat. It will attempt to reconnect until it is told to
 // shut down, or is forcefully shutdown.
 func (bb *BasicBot) Start() {
-	err := bb.ReadCredentials()
-	if nil != err {
-		fmt.Println(err)
-		fmt.Println("Aborting...")
-		return
-	}
-
 	for {
 		bb.Connect()
 		bb.JoinChannel()
-		err = bb.HandleChat()
+		err := bb.HandleChat()
 		if nil != err {
 
 			// attempts to reconnect upon unexpected chat error
