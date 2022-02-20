@@ -94,10 +94,10 @@ type User struct {
 	Nick    string   `json:"nick,omitempty"`
 	Type    string   `json:"type"`
 	Love    string   `json:"love"`
-	Socials []social `json:"socials"`
+	Socials []Social `json:"socials"`
 }
 
-type social struct {
+type Social struct {
 	SocNet string `json:"socnet"`
 	Link   string `json:"link"`
 }
