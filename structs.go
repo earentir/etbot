@@ -187,3 +187,16 @@ type TMDBSpokenLanguages struct {
 type MediaDATAResults struct {
 	MediaDATAResults []MediaData
 }
+
+type MediaData struct {
+	Adult     bool
+	ID        int
+	Title     string
+	Type      string
+	Date      string
+	Runtime   int
+	Overview  string
+	Homepage  string
+	Votes     int
+	VoteCount int
+}
