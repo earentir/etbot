@@ -119,7 +119,11 @@ func LoadJSONFileTOStruct(jsonFileName string, onTo interface{}) {
 
 //read json data to struct here
 func LoadJSONTOStruct(jsondata []byte, onTo interface{}) {
-	json.Unmarshal(jsondata, &onTo)
+	err := json.Unmarshal(jsondata, &onTo)
+	if err != nil {
+		fmt.Println("LoadJSONTOStruct>\n", err)
+	}
+
 }
 
 func saveSettings() {
