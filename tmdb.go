@@ -15,6 +15,7 @@ func tmdbSearch(mediaTitle string) MediaDATAResults {
 		foundtitle   MediaData
 		cannonical   string
 		relDate      string
+		found        bool = false
 	)
 
 	tmdbconfig := tmdb.Config{
@@ -37,55 +38,75 @@ func tmdbSearch(mediaTitle string) MediaDATAResults {
 	LoadJSONTOStruct([]byte(mediaInfoJSON), &searchresult)
 
 	for _, j := range searchresult.Results {
+		cannonical = getUniqueMediaTitle(j.Title, j.OriginalTitle, j.Name, j.OriginalName)
 
-		if j.Title != "" {
-			cannonical = j.Title
-		} else {
-			if j.OriginalTitle != "" {
-				cannonical = j.OriginalTitle
-			} else {
-				if j.Name != "" {
-					cannonical = j.Name
-				} else {
-					if j.OriginalName != "" {
-						cannonical = j.OriginalName
-					}
-				}
+		if strings.EqualFold(cannonical, mediaTitle) {
+			found = true
+			switch j.MediaType {
+			case "movie":
+				foundtitles.MediaDATAResults = append(foundtitles.MediaDATAResults, tmdbMovie(j.ID))
+			case "tv":
+				// foundtitles = append(foundtitles, tmdbTV(j.ID))
 			}
 		}
+	}
 
-		if j.FirstAirDate != "" {
-			relDate = j.FirstAirDate
-		} else {
-			relDate = j.ReleaseDate
-		}
+	for i := 0; i < 3; i++ {
 
-		if strings.ToLower(cannonical) == strings.ToLower(mediaTitle) {
-			if !j.Adult {
-				switch j.MediaType {
-				case "movie":
-					foundtitles.MediaDATAResults = append(foundtitles.MediaDATAResults, tmdbMovie(j.ID))
-					// fmt.Println(tmdbMovie(j.ID))
-				case "tv":
-					// foundtitles = append(foundtitles, tmdbTV(j.ID))
-				}
-			} else {
-				foundtitle.Adult = true
-				foundtitles.MediaDATAResults = append(foundtitles.MediaDATAResults, foundtitle)
-			}
-		} else {
+		if !found {
+			cannonical = getUniqueMediaTitle(searchresult.Results[i].Title, searchresult.Results[i].OriginalTitle, searchresult.Results[i].Name, searchresult.Results[i].OriginalName)
+
+			fmt.Println(checkAllstrings(cannonical, strings.Fields(mediaTitle)))
+
 			foundtitle.Title = cannonical
-			foundtitle.ID = j.ID
+			foundtitle.ID = searchresult.Results[i].ID
 			foundtitle.Date = relDate
-			foundtitle.Type = j.MediaType
-			foundtitle.Overview = j.Overview
+			foundtitle.Type = searchresult.Results[i].MediaType
+			foundtitle.Overview = searchresult.Results[i].Overview
+
+			if searchresult.Results[i].FirstAirDate != "" {
+				relDate = searchresult.Results[i].FirstAirDate
+			} else {
+				relDate = searchresult.Results[i].ReleaseDate
+			}
 
 			foundtitles.MediaDATAResults = append(foundtitles.MediaDATAResults, foundtitle)
-			fmt.Printf("%#v\n", foundtitle)
 		}
 	}
 
 	return foundtitles
+}
+
+func checkAllstrings(str string, subs []string) (bool, int) {
+
+	matches := 0
+	isCompleteMatch := true
+
+	str = strings.ToLower(str)
+
+	// fmt.Printf("Search in: \"%s\", subs: %s\n", str, subs)
+
+	for _, sub := range subs {
+		if strings.Contains(str, sub) {
+			matches += 1
+		} else {
+			isCompleteMatch = false
+		}
+	}
+
+	return isCompleteMatch, matches
+}
+
+func getUniqueMediaTitle(comparestrings ...string) string {
+	var name string = ""
+
+	for i := 0; i < len(comparestrings); i++ {
+		if comparestrings[i] != "" {
+			name = comparestrings[i]
+		}
+	}
+
+	return name
 }
 
 func tmdbMovie(mediaID int) MediaData {
@@ -115,7 +136,10 @@ func tmdbMovie(mediaID int) MediaData {
 
 	LoadJSONTOStruct([]byte(mediaInfoJSON), &tmdbmovieData)
 
+	mediadata.Adult = tmdbmovieData.Adult
+	mediadata.ID = tmdbmovieData.ID
 	mediadata.Title = tmdbmovieData.Title
+	mediadata.Type = "movie"
 	mediadata.Date = tmdbmovieData.ReleaseDate
 	mediadata.Runtime = tmdbmovieData.Runtime
 	if len(tmdbmovieData.Overview) < 233 {

@@ -404,11 +404,16 @@ func cmdTMDB(bb *BasicBot, cmd, userName, msg string) {
 	} else {
 		searchresults := tmdbSearch(msg[len(cmd)+2:]).MediaDATAResults
 
-		if len(tmdbSearch(msg[len(cmd)+2:]).MediaDATAResults) > 0 {
-			botSay(bb, fmt.Sprintf("📕 %s 📅 %s 🕒 %v  |  %s", searchresults[0].Title, searchresults[0].Date, searchresults[0].Runtime, searchresults[0].Overview))
+		if len(searchresults) > 0 {
+			for i := 0; i < len(searchresults); i++ {
+				if searchresults[i].Runtime > 0 {
+					botSay(bb, fmt.Sprintf("📇 %s 📅 %s 🕒 %v | (%v)", searchresults[i].Title, searchresults[i].Date, searchresults[i].Runtime, searchresults[i].ID))
+				} else {
+					botSay(bb, fmt.Sprintf("📇 %s 📅 %s  | (%v)", searchresults[i].Title, searchresults[i].Date, searchresults[i].ID))
+				}
+			}
 		} else {
 			botSay(bb, fmt.Sprintf("%s Cant find your movie", getAttributedUser(msg, true)))
 		}
 	}
-
 }
