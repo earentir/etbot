@@ -312,3 +312,45 @@ func cmdILOVE(bb *BasicBot, cmd, userName, msg string) {
 		}
 	}
 }
+
+func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
+	if isCMD(cmd, msg) {
+		botSay(bb, "!zoe pet or !zoe feed or !zoe name")
+	} else {
+		cmdFields := strings.Fields(msg)
+		if len(cmdFields) > 1 {
+			if len(settings.Pets) < 1 {
+				var pet Pet
+				pet.Feed = 1
+				pet.Pet = 1
+
+				settings.Pets = append(settings.Pets, pet)
+			} else {
+				switch cmdFields[1] {
+				case "pet":
+					if len(cmdFields) == 3 {
+						settings.Pets[0].Pet = 0
+					} else {
+						settings.Pets[0].Pet++
+					}
+				case "feed":
+					if len(cmdFields) == 3 {
+						settings.Pets[0].Feed = 0
+					} else {
+						settings.Pets[0].Feed++
+					}
+				case "name":
+					if len(cmdFields) == 3 {
+						if userName == settings.General.Twitch.Channel {
+							settings.Pets[0].Name = cmdFields[2]
+						}
+					} else {
+						botSay(bb, fmt.Sprintf("Pet name is %s", settings.Pets[0].Name))
+					}
+				}
+			}
+		} else {
+			botSay(bb, "!zoe pet or !zoe feed")
+		}
+	}
+}

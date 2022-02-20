@@ -65,6 +65,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					cmdFr(bb, userName, cmd, msg)
 				case "love":
 					cmdILOVE(bb, cmd, userName, msg)
+				case "zoe":
+					cmdZoe(bb, cmd, userName, msg)
 					//Not Final
 				case "socials":
 					fallthrough

@@ -78,6 +78,13 @@ type Settings struct {
 	Commands   []Command       `json:"commands"`
 	Lurklists  []LurkerList    `json:"lurklist"`
 	UserLevels []UserLevelList `json:"userlevels"`
+	Pets       []Pet           `json:"pets"`
+}
+
+type Pet struct {
+	Name string `json:"name,omitempty"`
+	Pet  int    `json:"pet,omitempty"`
+	Feed int    `json:"feed,omitempty"`
 }
 
 type User struct {
