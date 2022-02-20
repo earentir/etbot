@@ -98,6 +98,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					fallthrough
 				case "project":
 					cmdProject(bb, cmd, userName, msg)
+				case "tmdb":
+					cmdTMDB(bb, cmd, userName, msg)
 
 				default:
 					// do nothing
