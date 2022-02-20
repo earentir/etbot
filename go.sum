@@ -2,3 +2,5 @@ github.com/golang-jwt/jwt/v4 v4.0.0 h1:RAqyYixv1p7uEnocuy8P1nru5wprCh/MH2BIlW5z5
 github.com/golang-jwt/jwt/v4 v4.0.0/go.mod h1:/xlHOz8bRuivTWchD4jCa+NbatV+wEUSzwAxVc6locg=
 github.com/nicklaw5/helix/v2 v2.3.0 h1:smh3HcJJeoPQ+9x2Brp1iQiKbAqvvrue/xXV6p8s2x4=
 github.com/nicklaw5/helix/v2 v2.3.0/go.mod h1:0ONzvVi1cH+k3a7EDIFNNqxfW0podhf+CqlmFvuexq8=
+github.com/ryanbradynd05/go-tmdb v0.0.0-20201006144520-c0566c3d1506 h1:UJ2ing2xklR2MHms4DNR0jd0kiPa9x1kFSLQs1/31qk=
+github.com/ryanbradynd05/go-tmdb v0.0.0-20201006144520-c0566c3d1506/go.mod h1:k/112WTJ3EoR7wjhtx8kOXO22CKNvJy+rNzGPXnuEsI=
