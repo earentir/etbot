@@ -83,9 +83,10 @@ type Settings struct {
 }
 
 type Pet struct {
-	Name string `json:"name,omitempty"`
-	Pet  int    `json:"pet,omitempty"`
-	Feed int    `json:"feed,omitempty"`
+	Name      string `json:"name,omitempty"`
+	Pet       int    `json:"pet,omitempty"`
+	Feed      int    `json:"feed,omitempty"`
+	FeedLimit int    `json:"feedlimit,omitempty"`
 }
 
 type User struct {
