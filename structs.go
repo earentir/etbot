@@ -13,6 +13,7 @@ type Credentials struct {
 	TwitchClientsecret string `json:"twitch_client_secret,omitempty"`
 	OpenWeatherAPIKey  string `json:"openweathermapapi,omitempty"`
 	CurrencyAPIKey     string `json:"currconvapi,omitempty"`
+	TMDBToken          string `json:"tmdb_token,omitempty"`
 }
 
 type TwitchUserData []struct {
