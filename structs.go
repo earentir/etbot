@@ -127,3 +127,63 @@ type LurkerList struct {
 	Lurker   string `json:"lurker"`
 	LurkedOn int    `json:"lurkedon,omitempty"`
 }
+
+type TMDBSearch struct {
+	Results      []TMDBSearchResults `json:"results"`
+	TotalPages   int                 `json:"total_pages"`
+	TotalResults int                 `json:"total_results"`
+}
+
+type TMDBSearchResults struct {
+	OriginalName     string   `json:"original_name,omitempty"`
+	OriginalTitle    string   `json:"original_title,omitempty"`
+	Name             string   `json:"Name,omitempty"`
+	Title            string   `json:"title,omitempty"`
+	OriginalLanguage string   `json:"original_language,omitempty"`
+	Overview         string   `json:"overview,omitempty"`
+	FirstAirDate     string   `json:"first_air_date,omitempty"`
+	ReleaseDate      string   `json:"release_date,omitempty"`
+	OriginCountry    []string `json:"origin_country,omitempty"`
+	PosterPath       string   `json:"poster_path,omitempty"`
+	VoteAverage      float64  `json:"vote_average,omitempty"`
+	VoteCount        int      `json:"vote_count,omitempty"`
+	ID               int      `json:"ID"`
+	MediaType        string   `json:"media_type"`
+	Adult            bool     `json:"Adult,omitempty"`
+}
+
+type TMDBMovie struct {
+	Adult            bool                  `json:"Adult"`
+	Budget           int                   `json:"Budget"`
+	Genres           []TMDBGenres          `json:"Genres"`
+	Homepage         string                `json:"Homepage"`
+	ID               int                   `json:"ID"`
+	ImdbID           string                `json:"imdb_id"`
+	OriginalLanguage string                `json:"original_language"`
+	OriginalTitle    string                `json:"original_title"`
+	Overview         string                `json:"Overview"`
+	PosterPath       string                `json:"poster_path"`
+	ReleaseDate      string                `json:"release_date"`
+	Revenue          int                   `json:"Revenue"`
+	Runtime          int                   `json:"Runtime"`
+	SpokenLanguages  []TMDBSpokenLanguages `json:"spoken_languages"`
+	Status           string                `json:"Status"`
+	Tagline          string                `json:"Tagline"`
+	Title            string                `json:"Title"`
+	VoteAverage      float64               `json:"vote_average"`
+	VoteCount        int                   `json:"vote_count"`
+}
+
+type TMDBGenres struct {
+	ID   int    `json:"ID"`
+	Name string `json:"Name"`
+}
+
+type TMDBSpokenLanguages struct {
+	Iso6391 string `json:"iso_639_1"`
+	Name    string `json:"Name"`
+}
+
+type MediaDATAResults struct {
+	MediaDATAResults []MediaData
+}
