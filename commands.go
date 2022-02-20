@@ -321,10 +321,11 @@ func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 		if len(cmdFields) > 1 {
 			if len(settings.Pets) < 1 {
 				var pet Pet
-				pet.Feed = 1
-				pet.Pet = 1
+				pet.Feed = 0
+				pet.Pet = 0
 
 				settings.Pets = append(settings.Pets, pet)
+				botSay(bb, "Pet Registered")
 			} else {
 				switch cmdFields[1] {
 				case "pet":
@@ -332,12 +333,14 @@ func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 						settings.Pets[0].Pet = 0
 					} else {
 						settings.Pets[0].Pet++
+						botSay(bb, fmt.Sprintf("%s needs to be peted for %v minutes", settings.Pets[0].Name, settings.Pets[0].Pet))
 					}
 				case "feed":
 					if len(cmdFields) == 3 {
 						settings.Pets[0].Feed = 0
 					} else {
 						settings.Pets[0].Feed++
+						botSay(bb, fmt.Sprintf("%s needs to be given %v treats", settings.Pets[0].Name, settings.Pets[0].Feed))
 					}
 				case "name":
 					if len(cmdFields) == 3 {
@@ -350,7 +353,7 @@ func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 				}
 			}
 		} else {
-			botSay(bb, "!zoe pet or !zoe feed")
+			botSay(bb, "!zoe pet or !zoe feed or !zoe name")
 		}
 	}
 }
