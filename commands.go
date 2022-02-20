@@ -343,7 +343,7 @@ func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 						if userName == settings.General.Twitch.Channel {
 							rem, err := strconv.Atoi(cmdFields[2])
 							if err != nil {
-						settings.Pets[0].Pet = 0
+								settings.Pets[0].Pet = 0
 								botSay(bb, "Pet Reset")
 							} else {
 								settings.Pets[0].Pet = settings.Pets[0].Pet - rem
@@ -359,7 +359,7 @@ func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 						if userName == settings.General.Twitch.Channel {
 							rem, err := strconv.Atoi(cmdFields[2])
 							if err != nil {
-						settings.Pets[0].Feed = 0
+								settings.Pets[0].Feed = 0
 								botSay(bb, "Feed Reset")
 							} else {
 								settings.Pets[0].Feed = settings.Pets[0].Feed - rem
@@ -369,9 +369,9 @@ func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 					} else {
 						if settings.Pets[0].FeedLimit > settings.Pets[0].Feed+1 {
 							botSay(bb, "No more feed can be added, feed the pet first")
-					} else {
-						settings.Pets[0].Feed++
-						botSay(bb, fmt.Sprintf("%s needs to be given %v treats", settings.Pets[0].Name, settings.Pets[0].Feed))
+						} else {
+							settings.Pets[0].Feed++
+							botSay(bb, fmt.Sprintf("%s needs to be given %v treats", settings.Pets[0].Name, settings.Pets[0].Feed))
 						}
 					}
 				case "name":
@@ -393,8 +393,22 @@ func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 				}
 			}
 		} else {
-			botSay(bb, fmt.Sprintf("%s | Treat: %v(%vv)  Petting Minutes: %v", "!zoe pet or !zoe feed or !zoe name", settings.Pets[0].Feed, settings.Pets[0].FeedLimit, settings.Pets[0].Pet))
+			botSay(bb, fmt.Sprintf("%s | Treat: %v(%v)  Petting Minutes: %v", "!zoe pet or !zoe feed or !zoe name", settings.Pets[0].Feed, settings.Pets[0].FeedLimit, settings.Pets[0].Pet))
 		}
 	}
 }
+
+func cmdTMDB(bb *BasicBot, cmd, userName, msg string) {
+	if isCMD(cmd, msg) {
+		botSay(bb, "Get Movie & TV Information. ex. !tmdb Blade Runner")
+	} else {
+		searchresults := tmdbSearch(msg[len(cmd)+2:]).MediaDATAResults
+
+		if len(tmdbSearch(msg[len(cmd)+2:]).MediaDATAResults) > 0 {
+			botSay(bb, fmt.Sprintf("📕 %s 📅 %s 🕒 %v  |  %s", searchresults[0].Title, searchresults[0].Date, searchresults[0].Runtime, searchresults[0].Overview))
+		} else {
+			botSay(bb, fmt.Sprintf("%s Cant find your movie", getAttributedUser(msg, true)))
+		}
+	}
+
 }
