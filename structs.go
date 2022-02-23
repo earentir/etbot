@@ -185,19 +185,54 @@ type TMDBSpokenLanguages struct {
 	Name    string `json:"Name"`
 }
 
-type MediaDATAResults struct {
-	MediaDATAResults []MediaData
+type TMDBNetworks struct {
+	ID            int64  `json:"ID"`
+	Name          string `json:"Name"`
+	LogoPath      string `json:"logo_path"`
+	OriginCountry string `json:"origin_country"`
 }
 
-type MediaData struct {
-	Adult     bool
-	ID        int
-	Title     string
-	Type      string
-	Date      string
-	Runtime   int
-	Overview  string
-	Homepage  string
-	Votes     int
-	VoteCount int
+type TMDBTVSeasons struct {
+	ID           int64  `json:"ID"`
+	Name         string `json:"Name"`
+	Overview     string `json:"Overview"`
+	AirDate      string `json:"air_date"`
+	EpisodeCount int64  `json:"episode_count"`
+	PosterPath   string `json:"poster_path"`
+	SeasonNumber int64  `json:"season_number"`
+}
+
+type TMDBProductionCompanies struct {
+	ID            int64  `json:"ID"`
+	Name          string `json:"Name"`
+	LogoPath      string `json:"logo_path"`
+	OriginCountry string `json:"origin_country"`
+}
+type TMDBTV struct {
+	CreatedBy           interface{}               `json:"CreatedBy"`
+	Genres              []TMDBGenres              `json:"Genres"`
+	Homepage            string                    `json:"Homepage"`
+	ID                  int                       `json:"ID"`
+	Languages           []string                  `json:"Languages"`
+	Name                string                    `json:"Name"`
+	Networks            []TMDBNetworks            `json:"Networks"`
+	Overview            string                    `json:"Overview"`
+	Popularity          float64                   `json:"Popularity"`
+	Seasons             []TMDBTVSeasons           `json:"Seasons"`
+	Status              string                    `json:"Status"`
+	Type                string                    `json:"Type"`
+	BackdropPath        string                    `json:"backdrop_path"`
+	EpisodeRunTime      []int                     `json:"episode_run_time"`
+	FirstAirDate        string                    `json:"first_air_date"`
+	InProduction        bool                      `json:"in_production"`
+	LastAirDate         string                    `json:"last_air_date"`
+	NumberOfEpisodes    int                       `json:"number_of_episodes"`
+	NumberOfSeasons     int                       `json:"number_of_seasons"`
+	OriginCountry       []string                  `json:"origin_country"`
+	OriginalLanguage    string                    `json:"original_language"`
+	OriginalName        string                    `json:"original_name"`
+	PosterPath          string                    `json:"poster_path"`
+	ProductionCompanies []TMDBProductionCompanies `json:"production_companies"`
+	VoteAverage         float64                   `json:"vote_average"`
+	VoteCount           int                       `json:"vote_count"`
 }
