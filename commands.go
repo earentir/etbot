@@ -336,7 +336,7 @@ func cmdILOVE(bb *BasicBot, cmd, userName, msg string) {
 
 func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 	if isCMD(cmd, msg) {
-		botSay(bb, fmt.Sprintf("%s | Treat: %v(%vv)  Petting Minutes: %v", "!zoe pet or !zoe feed or !zoe name", settings.Pets[0].Feed, settings.Pets[0].FeedLimit, settings.Pets[0].Pet))
+		botSay(bb, fmt.Sprintf("%s | Treat: %v(%v)  Petting Minutes: %v", "!zoe pet or !zoe feed or !zoe name", settings.Pets[0].Feed, settings.Pets[0].FeedLimit, settings.Pets[0].Pet))
 	} else {
 		cmdFields := strings.Fields(msg)
 		if len(cmdFields) > 1 {
