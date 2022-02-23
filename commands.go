@@ -13,6 +13,8 @@ import (
 func botSay(bb *BasicBot, msg string) {
 	if settings.Servers.BotServers.AllowedToSay {
 		bb.Say(msg)
+	} else {
+		fmt.Println(msg)
 	}
 }
 
