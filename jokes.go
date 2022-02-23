@@ -26,10 +26,14 @@ func JokesAPI(msg string) []string {
 		fmt.Print(err)
 	}
 
-	retuarr = append(retuarr, jokejson.JOKE.BOFHline)
-	retuarr = append(retuarr, jokejson.JOKE.Q)
-	retuarr = append(retuarr, jokejson.JOKE.A)
-
+	if jokejson.JOKE.BOFHline != "" {
+		retuarr = append(retuarr, jokejson.JOKE.BOFHline)
+	} else {
+		retuarr = append(retuarr, jokejson.JOKE.Q)
+		if jokejson.JOKE.A != "" {
+			retuarr = append(retuarr, jokejson.JOKE.A)
+		}
+	}
 	return retuarr
 }
 
