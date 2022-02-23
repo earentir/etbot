@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"time"
 )
 
@@ -106,4 +107,15 @@ func levelNameTolvl(levelName string) int {
 	}
 
 	return found
+}
+
+func getUserData(userName string) User {
+	var outUser User
+	for i := 0; i < len(settings.Users); i++ {
+		if strings.EqualFold(settings.Users[i].Name, userName) {
+			outUser = settings.Users[i]
+		}
+	}
+
+	return outUser
 }

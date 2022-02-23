@@ -153,8 +153,11 @@ func cmdWeather(bb *BasicBot, cmd, msg string) {
 }
 
 func cmdSO(bb *BasicBot, userName, cmd, msg string) {
-	var twitchChannelData TwitchChannelData
-	var msgOut string
+	var (
+		twitchChannelData TwitchChannelData
+		lovestr           string = ""
+		msgOut            string
+	)
 
 	atrUser := getAttributedUser(msg, false)
 
@@ -184,11 +187,16 @@ func cmdSO(bb *BasicBot, userName, cmd, msg string) {
 			if twitchChannelData[0].GameName == "" || twitchChannelData[0].Title == "" {
 				msgOut = fmt.Sprintf("Please check out & follow %s they are amazing. You can find them here: %s", getAttributedUser(msg, true), solinks)
 			} else {
-				msgOut = fmt.Sprintf("Please check out & follow %s they are amazing. They streamed in %s about \"%s\",  You can find them here: %s",
+
+				if getUserData(atrUser).Love != "" {
+					lovestr = fmt.Sprintf(" and they love %s", getUserData(atrUser).Love)
+				}
+
+				msgOut = fmt.Sprintf("Please check out & follow %s they are amazing. They streamed in %s about \"%s\",  You can find them here: %s%s",
 					getAttributedUser(msg, true),
 					twitchChannelData[0].GameName,
 					twitchChannelData[0].Title,
-					solinks)
+					solinks, lovestr)
 			}
 
 			botSay(bb, msgOut)
