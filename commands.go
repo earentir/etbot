@@ -11,7 +11,9 @@ import (
 )
 
 func botSay(bb *BasicBot, msg string) {
+	if settings.Servers.BotServers.AllowedToSay {
 	bb.Say(msg)
+}
 }
 
 func cmdHi(bb *BasicBot, userName, cmd, msg string) {

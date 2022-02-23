@@ -65,7 +65,8 @@ type Settings struct {
 			} `json:"twitch"`
 		} `json:"web"`
 		BotServers struct {
-			Chat bool `json:"chat"`
+			Chat         bool `json:"chat"`
+			AllowedToSay bool `json:"allowedtosay"`
 		} `json:"bot"`
 	} `json:"servers"`
 	Weather struct {
