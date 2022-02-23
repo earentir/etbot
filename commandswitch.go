@@ -100,6 +100,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					cmdProject(bb, cmd, userName, msg)
 				case "tmdb":
 					cmdTMDB(bb, cmd, userName, msg)
+				case "level":
+					cmdLevel(bb, cmd, userName, msg)
 
 				default:
 					// do nothing

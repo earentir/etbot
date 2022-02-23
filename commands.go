@@ -470,3 +470,12 @@ func cmdTMDB(bb *BasicBot, cmd, userName, msg string) {
 		}
 	}
 }
+
+func cmdLevel(bb *BasicBot, cmd, userName, msg string) {
+	if isAttr(msg) {
+		atrUser := getAttributedUser(msg, false)
+		botSay(bb, fmt.Sprintf("@%s level is %v as a %s", atrUser, UserLevel(atrUser).Level, UserLevel(atrUser).Name))
+	} else {
+		botSay(bb, fmt.Sprintf("@%s level is %v as a %s", userName, UserLevel(userName).Level, UserLevel(userName).Name))
+	}
+}
