@@ -111,7 +111,6 @@ func cmdExchange(bb *BasicBot, msg string) {
 	var petFound bool = false
 
 	for _, j := range fields {
-		fmt.Println(j)
 		if strings.EqualFold(j, settings.Pets[0].Name) {
 			petFound = true
 		}
