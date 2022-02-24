@@ -5,9 +5,19 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	cli "github.com/jawher/mow.cli"
 )
 
 func main() {
+
+	app := cli.App("etbot", "Twitch & Discord & OBS Bot")
+	app.Version("v", etbver)
+	// app.Spec = ""
+
+	app.Command("twitchbot", "Manage Twitch Bot Funtions", func(twitchbot *cli.Cmd) {
+		twitchbot.Command("start", "Start Bot", cliTBStart)
+	})
 
 	if _, err := os.Stat("etb-settings.json"); err == nil {
 
