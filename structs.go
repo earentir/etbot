@@ -75,6 +75,7 @@ type Settings struct {
 	Curency struct {
 		DefaultCurrency string `json:"default,omitempty"`
 		CurrencyTo      string `json:"to,omitempty"`
+		CryptoDefault   string `json:"cryptodefault,omitempty"`
 	} `json:"currency"`
 	Users      []User          `json:"users"`
 	Commands   []Command       `json:"commands"`
@@ -235,4 +236,28 @@ type TMDBTV struct {
 	ProductionCompanies []TMDBProductionCompanies `json:"production_companies"`
 	VoteAverage         float64                   `json:"vote_average"`
 	VoteCount           int                       `json:"vote_count"`
+}
+
+type BinanceData struct {
+	AskPrice           string `json:"askPrice"`
+	AskQty             string `json:"askQty"`
+	BidPrice           string `json:"bidPrice"`
+	BidQty             string `json:"bidQty"`
+	CloseTime          int    `json:"closeTime"`
+	Count              int    `json:"count"`
+	FirstID            int    `json:"firstId"`
+	HighPrice          string `json:"highPrice"`
+	LastID             int    `json:"lastId"`
+	LastPrice          string `json:"lastPrice"`
+	LastQty            string `json:"lastQty"`
+	LowPrice           string `json:"lowPrice"`
+	OpenPrice          string `json:"openPrice"`
+	OpenTime           int    `json:"openTime"`
+	PrevClosePrice     string `json:"prevClosePrice"`
+	PriceChange        string `json:"priceChange"`
+	PriceChangePercent string `json:"priceChangePercent"`
+	QuoteVolume        string `json:"quoteVolume"`
+	Symbol             string `json:"symbol"`
+	Volume             string `json:"volume"`
+	WeightedAvgPrice   string `json:"weightedAvgPrice"`
 }

@@ -102,6 +102,10 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					cmdTMDB(bb, cmd, userName, msg)
 				case "level":
 					cmdLevel(bb, cmd, userName, msg)
+				case "crypto":
+					fallthrough
+				case "cr":
+					cmdCryptoExchange(bb, cmd, userName, msg)
 
 				default:
 					// do nothing
