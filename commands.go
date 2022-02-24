@@ -174,7 +174,7 @@ func cmdSO(bb *BasicBot, userName, cmd, msg string) {
 
 	atrUser := getAttributedUser(msg, false)
 
-	//lets try to get a user without @
+	//lets try to get a user without @ special SO case, we SO event without an @
 	if atrUser == "" {
 		fields := strings.Fields(msg)
 		if len(fields) > 1 {
@@ -326,7 +326,7 @@ func cmdUPDSoc(bb *BasicBot, cmd, userName, msg string) {
 								socexists = true
 							}
 						}
-						fmt.Println(socexists)
+
 						if !socexists {
 							socs.SocNet = fields[1]
 							socs.Link = fields[2]
