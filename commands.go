@@ -106,35 +106,49 @@ func cmdHype(bb *BasicBot, msg string) {
 }
 
 func cmdExchange(bb *BasicBot, msg string) {
-	parts := strings.Fields(strings.ToUpper(msg))
-	switch len(parts) {
-	case 1:
-		botSay(bb, CurrencyConversion(settings.Curency.DefaultCurrency, settings.Curency.CurrencyTo, 1))
+	fields := strings.Fields(strings.ToUpper(msg))
 
-	case 2:
-		amount, err := strconv.ParseFloat(parts[1], 64)
-		if err != nil {
-			msgOut := CurrencyConversion(settings.Curency.DefaultCurrency, parts[0], 1)
-			botSay(bb, msgOut)
-		} else {
-			msgOut := CurrencyConversion(settings.Curency.DefaultCurrency, settings.Curency.CurrencyTo, amount)
+	var petFound bool = false
+
+	for _, j := range fields {
+		fmt.Println(j)
+		if strings.EqualFold(j, settings.Pets[0].Name) {
+			petFound = true
+		}
+	}
+
+	if !petFound {
+		switch len(fields) {
+		case 1:
+			botSay(bb, CurrencyConversion(settings.Curency.DefaultCurrency, settings.Curency.CurrencyTo, 1))
+
+		case 2:
+			amount, err := strconv.ParseFloat(fields[1], 64)
+			if err != nil {
+				msgOut := CurrencyConversion(settings.Curency.DefaultCurrency, fields[0], 1)
+				botSay(bb, msgOut)
+			} else {
+				msgOut := CurrencyConversion(settings.Curency.DefaultCurrency, settings.Curency.CurrencyTo, amount)
+				botSay(bb, msgOut)
+			}
+
+		case 3:
+			amount, err := strconv.ParseFloat(fields[1], 64)
+			if err != nil {
+				msgOut := CurrencyConversion(fields[1], fields[2], 1)
+				botSay(bb, msgOut)
+			} else {
+				msgOut := CurrencyConversion(settings.Curency.DefaultCurrency, fields[2], amount)
+				botSay(bb, msgOut)
+			}
+
+		case 4:
+			amount, _ := strconv.ParseFloat(fields[1], 64)
+			msgOut := CurrencyConversion(fields[2], fields[3], amount)
 			botSay(bb, msgOut)
 		}
-
-	case 3:
-		amount, err := strconv.ParseFloat(parts[1], 64)
-		if err != nil {
-			msgOut := CurrencyConversion(parts[1], parts[2], 1)
-			botSay(bb, msgOut)
-		} else {
-			msgOut := CurrencyConversion(settings.Curency.DefaultCurrency, parts[2], amount)
-			botSay(bb, msgOut)
-		}
-
-	case 4:
-		amount, _ := strconv.ParseFloat(parts[1], 64)
-		msgOut := CurrencyConversion(parts[2], parts[3], amount)
-		botSay(bb, msgOut)
+	} else {
+		botSay(bb, fmt.Sprintf("%s is Priceless.", settings.Pets[0].Name))
 	}
 }
 
