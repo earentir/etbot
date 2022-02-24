@@ -418,7 +418,7 @@ func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 					}
 				case "limit":
 					if len(cmdFields) == 3 {
-						flimit, err := strconv.Atoi(cmdFields[1])
+						flimit, err := strconv.Atoi(cmdFields[2])
 						if err != nil {
 						} else {
 							settings.Pets[0].FeedLimit = flimit
