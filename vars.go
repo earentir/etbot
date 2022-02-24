@@ -20,4 +20,10 @@ var (
 	// First matched group is the command name and the second matched group is the argument for the
 	// command.
 	CmdRegex *regexp.Regexp = regexp.MustCompile(`^!(\w+)\s?(\w+)?`)
+
+	// Store credentials from etb-auth.json
+	creds Credentials
+
+	// Store In Memory accessible settings from et-settings.json
+	settings Settings
 )
