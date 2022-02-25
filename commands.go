@@ -93,6 +93,41 @@ func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
 	} else {
 		msgOut := fmt.Sprintf("Thank you for lurking %s, you smart hooman, go have fun with %s", userName, getCleanMessage(cmd, msg))
 		botSay(bb, msgOut)
+func isUserLurking(userName string) bool {
+	var arethey bool = false
+	for i := 0; i < len(settings.Lurklists); i++ {
+		if strings.EqualFold(userName, settings.Lurklists[i].Lurker) {
+			arethey = true
+		}
+	}
+	return arethey
+}
+
+func removeLurker(userName string) {
+	var newLurkList []LurkerList
+
+	for i := len(settings.Lurklists) - 1; i >= 0; i-- {
+		if !strings.EqualFold(userName, settings.Lurklists[i].Lurker) {
+			{
+				newLurkList = append(newLurkList, settings.Lurklists[i])
+			}
+		}
+	}
+
+	settings.Lurklists = newLurkList
+}
+
+func cmdUnlurk(bb *BasicBot, userName string) {
+	for i := 0; i < len(settings.Lurklists); i++ {
+		if strings.EqualFold(userName, settings.Lurklists[i].Lurker) {
+			if settings.Lurklists[i].LurkMessage == "" {
+				botSay(bb, fmt.Sprintf("Welcome back %s", userName))
+			} else {
+				botSay(bb, fmt.Sprintf("Welcome back %s, how was your %s", userName, settings.Lurklists[i].LurkMessage))
+			}
+
+			removeLurker(userName)
+		}
 	}
 }
 

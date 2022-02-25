@@ -90,8 +90,8 @@ func (bb *BasicBot) HandleChat() error {
 				msgType := matches[2]
 				msg := matches[3]
 
+				cmdUnlurk(bb, userName)
 				ParseCommand(bb, msgType, msg, userName)
-
 			} else {
 				// fmt.Println(rawLine)
 				fmt.Print("")
