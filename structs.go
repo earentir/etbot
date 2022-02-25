@@ -158,8 +158,9 @@ type UserLevelList struct {
 	Cooldown int    `json:"cooldown"`
 }
 type LurkerList struct {
-	Lurker   string `json:"lurker"`
-	LurkedOn int    `json:"lurkedon,omitempty"`
+	Lurker      string `json:"lurker"`
+	LurkedOn    int    `json:"lurkedon,omitempty"`
+	LurkMessage string `json:"lurkmessage"`
 }
 
 type TMDBSearch struct {

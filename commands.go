@@ -81,18 +81,53 @@ func cmdBan(bb *BasicBot, userName, cmd, msg string) {
 }
 
 func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
-	var lurker LurkerList
-
-	lurker.Lurker = userName
-	lurker.LurkedOn = int(time.Now().Unix())
-	settings.Lurklists = append(settings.Lurklists, lurker)
+	var (
+		lurklist []string
+	)
 
 	if isCMD(cmd, msg) {
 		msgOut := fmt.Sprintf("Thank you for lurking %s, you smart hooman, go have as much fun as possible on your endeavours", userName)
+		addLurker(userName, cmd, msg)
 		botSay(bb, msgOut)
 	} else {
-		msgOut := fmt.Sprintf("Thank you for lurking %s, you smart hooman, go have fun with %s", userName, getCleanMessage(cmd, msg))
-		botSay(bb, msgOut)
+		if strings.Fields(msg)[1] == "list" {
+			for i := 0; i < len(settings.Lurklists); i++ {
+				lurklist = append(lurklist, settings.Lurklists[i].Lurker)
+			}
+			botSay(bb, fmt.Sprintf("Current Lurkers %s", lurklist))
+		} else {
+			addLurker(userName, cmd, msg)
+			msgOut := fmt.Sprintf("Thank you for lurking %s, you smart hooman, go have fun with %s", userName, getCleanMessage(cmd, msg))
+			botSay(bb, msgOut)
+		}
+	}
+}
+
+func addLurker(userName, cmd, msg string) {
+	var (
+		lurker LurkerList
+		found  bool = false
+	)
+	for i := 0; i < len(settings.Lurklists); i++ {
+		if strings.EqualFold(userName, settings.Lurklists[i].Lurker) {
+			found = true
+			settings.Lurklists[i].LurkedOn = int(time.Now().Unix())
+			settings.Lurklists[i].LurkMessage = msg[len(cmd)+2:]
+		}
+	}
+
+	if !found {
+		lurker.Lurker = userName
+		lurker.LurkedOn = int(time.Now().Unix())
+		if msg == "" {
+			lurker.LurkMessage = msg[len(cmd)+2:]
+		} else {
+			lurker.LurkMessage = ""
+		}
+		settings.Lurklists = append(settings.Lurklists, lurker)
+	}
+}
+
 func isUserLurking(userName string) bool {
 	var arethey bool = false
 	for i := 0; i < len(settings.Lurklists); i++ {
