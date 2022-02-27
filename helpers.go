@@ -15,12 +15,12 @@ func getAttributedUser(msg string, at bool) string {
 
 	for _, j := range fields {
 		if strings.Contains(j, "@") {
-		if at {
+			if at {
 				return j // msg[strings.Index(msg, "@"):]
-		} else {
+			} else {
 				return j[1:] //msg[strings.Index(msg, "@")+1:]
+			}
 		}
-	}
 	}
 
 	return attrUser
