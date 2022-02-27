@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strings"
 	"time"
 )
@@ -27,6 +28,7 @@ func CMDCanRun(userName, cmd string) bool {
 	if ourcmdopts.Enabled && (IsItOnTimeout(cmd, userName) || ourcmdopts.Lastuse == 0) {
 		itcan = ourcmdopts.UserLevel >= UserLevel(userName).Level
 		setCMDUsed(cmd)
+		fmt.Printf("User: %s, used: %s ", userName, cmd)
 	}
 
 	return itcan
