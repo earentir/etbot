@@ -555,3 +555,92 @@ func cmdCryptoExchange(bb *BasicBot, cmd, userName, msg string) {
 		}
 	}
 }
+
+func cmdUser(bb *BasicBot, cmd, userName, msg string) {
+	if isCMD(cmd, msg) {
+		botSay(bb, "!user add @username type")
+	}
+
+	if UserLevel(userName).Level <= levelNameTolvl("mod") {
+		fields := strings.Fields(msg)
+		attrUsr := getAttributedUser(msg, false)
+
+		if len(fields) >= 3 && attrUsr != "" {
+			switch fields[1] {
+			case "add":
+				fallthrough
+			case "a":
+				if len(fields) > 3 {
+					if UserLevel(userName).Level < levelNameTolvl(fields[3]) {
+						botSay(bb, addUser(attrUsr, fields[3]))
+					} else {
+						botSay(bb, addUser(attrUsr, lvlToLevelName(UserLevel(userName).Level-2)))
+					}
+				} else {
+					botSay(bb, addUser(attrUsr, lvlToLevelName(10)))
+				}
+			case "delete":
+				fallthrough
+			case "del":
+				fallthrough
+			case "d":
+				if strings.EqualFold(userName, settings.General.Twitch.Channel) {
+					botSay(bb, delUser(attrUsr))
+				}
+			}
+		}
+	}
+}
+
+//add check for duplicates
+func addUser(userToAdd, UserType string) string {
+	var (
+		found   bool = false
+		newUser User
+		msgOut  string = ""
+	)
+
+	for i := 0; i < len(settings.Users); i++ {
+		if userToAdd == settings.Users[i].Name {
+			found = true
+		}
+	}
+
+	if !found {
+		newUser.Name = userToAdd
+		newUser.Type = UserType
+
+		settings.Users = append(settings.Users, newUser)
+		msgOut = fmt.Sprintf("User %s was added as a %s", userToAdd, UserType)
+	} else {
+		msgOut = fmt.Sprintf("User %s already exists", userToAdd)
+	}
+
+	return msgOut
+}
+
+func delUser(userToDelete string) string {
+
+	var (
+		newUserList []User
+		msgOut      string = ""
+		found       bool   = false
+	)
+
+	for i := len(settings.Users) - 1; i >= 0; i-- {
+		if !strings.EqualFold(userToDelete, settings.Users[i].Name) {
+			newUserList = append(newUserList, settings.Users[i])
+		} else {
+			found = true
+		}
+	}
+
+	if found {
+		msgOut = fmt.Sprintf("User %s deleted", userToDelete)
+	} else {
+		msgOut = fmt.Sprintf("User %s not found, nothing deleted", userToDelete)
+	}
+
+	settings.Users = newUserList
+	return msgOut
+}
