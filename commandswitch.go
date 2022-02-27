@@ -111,6 +111,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 				case "usr":
 					cmdUser(bb, cmd, userName, msg)
 
+				case "savesettings":
+					cmdSaveSettings(bb, cmd, userName, msg)
 				default:
 					// do nothing
 					// }

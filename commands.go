@@ -643,3 +643,10 @@ func delUser(userToDelete string) string {
 	settings.Users = newUserList
 	return msgOut
 }
+
+func cmdSaveSettings(bb *BasicBot, cmd, userName, msg string) {
+	if userName == settings.General.Twitch.Channel {
+		saveSettings()
+		botSay(bb, "Settings Saved")
+	}
+}
