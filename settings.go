@@ -124,6 +124,9 @@ func getUserData(userName string) User {
 			outUser = settings.Users[i]
 		}
 	}
+	return outUser
+}
+
 func addLurker(userName, cmd, msg string) {
 	var (
 		lurker LurkerList
