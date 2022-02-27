@@ -138,7 +138,6 @@ func (bb *BasicBot) Start() {
 		bb.JoinChannel()
 		err := bb.HandleChat()
 		if nil != err {
-
 			// attempts to reconnect upon unexpected chat error
 			time.Sleep(1000 * time.Millisecond)
 			fmt.Println(err)
