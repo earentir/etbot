@@ -7,7 +7,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"time"
 )
 
 func botSay(bb *BasicBot, msg string) {
@@ -422,7 +421,7 @@ func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 							}
 						}
 					} else {
-						if settings.Pets[0].FeedLimit > settings.Pets[0].Feed+1 {
+						if settings.Pets[0].FeedLimit < settings.Pets[0].Feed {
 							botSay(bb, "No more feed can be added, feed the pet first")
 						} else {
 							settings.Pets[0].Feed++
