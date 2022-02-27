@@ -10,15 +10,20 @@ import (
 
 // getAttributedUser at returns @ or not in the reply
 func getAttributedUser(msg string, at bool) string {
-	if strings.Contains(msg, "@") {
+	var attrUser string = ""
+	fields := strings.Fields(msg)
+
+	for _, j := range fields {
+		if strings.Contains(j, "@") {
 		if at {
-			return msg[strings.Index(msg, "@"):]
+				return j // msg[strings.Index(msg, "@"):]
 		} else {
-			return msg[strings.Index(msg, "@")+1:]
+				return j[1:] //msg[strings.Index(msg, "@")+1:]
 		}
-	} else {
-		return ""
 	}
+	}
+
+	return attrUser
 }
 
 // isAttr return if there is an attr user in msg
