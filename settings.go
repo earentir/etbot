@@ -99,12 +99,13 @@ func UserLevel(userName string) UserLevelList {
 
 func levelNameTolvl(levelName string) int {
 	var found int = -1
-
-	for i := 0; i > len(settings.UserLevels)-1; i++ {
+	for i := 0; i < len(settings.UserLevels); i++ {
 		if levelName == settings.UserLevels[i].Name {
 			found = settings.UserLevels[i].Level
 		}
 	}
+	return found
+}
 
 	return found
 }
