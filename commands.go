@@ -103,55 +103,6 @@ func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
 	}
 }
 
-func addLurker(userName, cmd, msg string) {
-	var (
-		lurker LurkerList
-		found  bool = false
-	)
-	for i := 0; i < len(settings.Lurklists); i++ {
-		if strings.EqualFold(userName, settings.Lurklists[i].Lurker) {
-			found = true
-			settings.Lurklists[i].LurkedOn = int(time.Now().Unix())
-			settings.Lurklists[i].LurkMessage = msg[len(cmd)+2:]
-		}
-	}
-
-	if !found {
-		lurker.Lurker = userName
-		lurker.LurkedOn = int(time.Now().Unix())
-		if msg == "" {
-			lurker.LurkMessage = msg[len(cmd)+2:]
-		} else {
-			lurker.LurkMessage = ""
-		}
-		settings.Lurklists = append(settings.Lurklists, lurker)
-	}
-}
-
-func isUserLurking(userName string) bool {
-	var arethey bool = false
-	for i := 0; i < len(settings.Lurklists); i++ {
-		if strings.EqualFold(userName, settings.Lurklists[i].Lurker) {
-			arethey = true
-		}
-	}
-	return arethey
-}
-
-func removeLurker(userName string) {
-	var newLurkList []LurkerList
-
-	for i := len(settings.Lurklists) - 1; i >= 0; i-- {
-		if !strings.EqualFold(userName, settings.Lurklists[i].Lurker) {
-			{
-				newLurkList = append(newLurkList, settings.Lurklists[i])
-			}
-		}
-	}
-
-	settings.Lurklists = newLurkList
-}
-
 func cmdUnlurk(bb *BasicBot, userName string) {
 	for i := 0; i < len(settings.Lurklists); i++ {
 		if strings.EqualFold(userName, settings.Lurklists[i].Lurker) {
