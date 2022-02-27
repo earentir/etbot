@@ -107,6 +107,13 @@ func levelNameTolvl(levelName string) int {
 	return found
 }
 
+func lvlToLevelName(lvl int) string {
+	var found string
+	for i := 0; i < len(settings.UserLevels); i++ {
+		if lvl == settings.UserLevels[i].Level {
+			found = settings.UserLevels[i].Name
+		}
+	}
 	return found
 }
 
