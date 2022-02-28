@@ -84,18 +84,26 @@ func SearchUser(userName string) bool {
 }
 
 func UserLevel(userName string) UserLevelList {
-	var userLevelReturn UserLevelList
-	setusers := settings.Users
+	var (
+		userLevelReturn UserLevelList
+		found           int = -1
+	)
 
-	for _, usr := range setusers {
-		if userName == usr.Name {
-			userLevel := settings.UserLevels
-			for _, lvl := range userLevel {
-				if usr.Type == lvl.Name {
+	for i := 0; i < len(settings.Users); i++ {
+		if userName == settings.Users[i].Name {
+			found = i
+			for _, lvl := range settings.UserLevels {
+				if settings.Users[i].Type == lvl.Name {
 					userLevelReturn = lvl
 				}
 			}
 		}
+	}
+
+	if found == -1 {
+		userLevelReturn.Cooldown = 10
+		userLevelReturn.Name = "viewer"
+		userLevelReturn.Level = 10
 	}
 
 	return userLevelReturn
