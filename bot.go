@@ -53,7 +53,7 @@ func (bb *BasicBot) Connect() {
 func (bb *BasicBot) Disconnect() {
 	bb.conn.Close()
 	upTime := time.Since(time.Now()) // time.Now().Sub(bb.startTime).Seconds()
-	CPrint("y", fmt.Sprintf("[%s] Closed connection from %s! | Live for: %vs\n", timeStamp(), bb.Server, upTime))
+	CPrint("y", fmt.Sprintf("[%s] Closed connection from %s! | Live for: %v\n", timeStamp(), bb.Server, upTime))
 }
 
 // Listens for and logs messages from chat. Responds to commands from the channel owner. The bot
