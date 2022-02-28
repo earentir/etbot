@@ -634,6 +634,25 @@ func cmdSaveSettings(bb *BasicBot, cmd, userName, msg string) {
 	}
 }
 
+func cmdSetting(bb *BasicBot, cmd, userName, msg string) {
+	fields := strings.Fields(msg)
+
+	switch fields[1] {
+	case "servers":
+		fallthrough
+	case "server":
+		fallthrough
+	case "srv":
+		switch fields[2] {
+		case "web":
+
+		case "bot":
+
+		}
+	}
+
+}
+
 func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 	var cleanmsg string
 	attrUser := getAttributedUser(msg, false)
