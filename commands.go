@@ -107,11 +107,10 @@ func cmdUnlurk(bb *BasicBot, userName string) {
 	for i := 0; i < len(settings.Lurklists); i++ {
 		if strings.EqualFold(userName, settings.Lurklists[i].Lurker) {
 			if settings.Lurklists[i].LurkMessage == "" {
-				botSay(bb, fmt.Sprintf("Welcome back %s", userName))
+				botSay(bb, fmt.Sprintf("Welcome back @%s", userName))
 			} else {
-				botSay(bb, fmt.Sprintf("Welcome back %s, how was your %s", userName, settings.Lurklists[i].LurkMessage))
+				botSay(bb, fmt.Sprintf("Welcome back @%s, how was your %s", userName, settings.Lurklists[i].LurkMessage))
 			}
-
 			removeLurker(userName)
 		}
 	}
