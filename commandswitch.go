@@ -16,12 +16,7 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 			cmd := cmdMatches[1]
 			if CMDCanRun(userName, cmd) {
 				switch cmd {
-				case "etbdown":
-					CPrint("c", fmt.Sprintf("[%s] Shutdown command received. Shutting down now...\n", timeStamp()))
-					bb.Disconnect()
-				case "version":
-					cmdVersion(bb)
-					//region joke commands
+				//region joke commands
 				case "hi":
 					cmdHi(bb, userName, cmd, msg)
 				case "olive":
@@ -61,8 +56,6 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					cmdWeather(bb, cmd, msg)
 				case "so":
 					cmdSO(bb, userName, cmd, msg)
-				case "commands":
-					cmdList(bb, userName)
 				case "fr":
 					cmdFr(bb, userName, cmd, msg)
 				case "love":
@@ -127,7 +120,6 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					fallthrough
 				case "usr":
 					cmdUser(bb, cmd, userName, msg)
-
 				case "savesettings":
 					cmdSaveSettings(bb, cmd, userName, msg)
 				default:
