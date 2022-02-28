@@ -30,6 +30,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					fallthrough
 				case "nvidia":
 					fallthrough
+				case "putin":
+					fallthrough
 				case "yogurt":
 					cmdJoke(bb, cmd, msg)
 				case "bofh":
