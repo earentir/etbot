@@ -8,15 +8,16 @@ import (
 
 func getCMDS(userName string) string {
 	cmds := settings.Commands
-	var allcommands string = ""
+	var allcommands []string
 
 	for _, cm := range cmds {
 		if CMDCanRun(userName, cm.CommandName) {
-			allcommands = allcommands + ", " + cm.CommandName
+			allcommands = append(allcommands, cm.CommandName)
 		}
 	}
 
-	return allcommands
+	sort.Strings(allcommands)
+	return fmt.Sprintf("%s", allcommands)
 }
 
 func CMDCanRun(userName, cmd string) bool {
@@ -28,8 +29,9 @@ func CMDCanRun(userName, cmd string) bool {
 	if ourcmdopts.Enabled && (IsItOnTimeout(cmd, userName) || ourcmdopts.Lastuse == 0) {
 		itcan = ourcmdopts.UserLevel >= UserLevel(userName).Level
 		setCMDUsed(cmd)
-		fmt.Printf("User: %s, used: %s ", userName, cmd)
 	}
+
+	fmt.Printf("User: %s | CMD: %s | Permitted: %v\n", userName, cmd, itcan)
 
 	return itcan
 }
