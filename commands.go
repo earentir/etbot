@@ -218,7 +218,11 @@ func cmdSO(bb *BasicBot, userName, cmd, msg string) {
 			}
 
 			if twitchChannelData[0].GameName == "" || twitchChannelData[0].Title == "" {
-				msgOut = fmt.Sprintf("Please check out & follow %s they are amazing. You can find them here: %s", getAttributedUser(msg, true), solinks)
+				if getUserData(atrUser).Love != "" {
+					lovestr = fmt.Sprintf(" and they love %s", getUserData(atrUser).Love)
+				}
+
+				msgOut = fmt.Sprintf("Please check out & follow %s they are amazing. You can find them here: %s%s", getAttributedUser(msg, true), solinks, lovestr)
 			} else {
 
 				if getUserData(atrUser).Love != "" {
