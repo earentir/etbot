@@ -177,3 +177,29 @@ func removeLurker(userName string) {
 
 	settings.Lurklists = newLurkList
 }
+
+func addQuote(userName, attrUser, cleanmsg string) string {
+	var (
+		quotelist QuoteList
+		found     bool = false
+	)
+
+	for i := 0; i < len(settings.Quotes); i++ {
+
+		if settings.Quotes[i].QuotedMessage == cleanmsg {
+			found = true
+		}
+	}
+
+	fmt.Println("|", cleanmsg, "|")
+
+	if !found {
+		quotelist.Quoter = userName
+		quotelist.QuotedMessage = cleanmsg
+		quotelist.AtributedUser = attrUser
+		quotelist.QuoteDate = time.Now().Unix()
+		settings.Quotes = append(settings.Quotes, quotelist)
+	}
+
+	return fmt.Sprintf("Quote from %s. \"%s\" added ", quotelist.Quoter, cleanmsg)
+}

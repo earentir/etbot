@@ -114,6 +114,14 @@ type Settings struct {
 	Lurklists  []LurkerList    `json:"lurklist"`
 	UserLevels []UserLevelList `json:"userlevels"`
 	Pets       []Pet           `json:"pets"`
+	Quotes     []QuoteList     `json:"quotes"`
+}
+
+type QuoteList struct {
+	QuotedMessage string `json:"quotedmessage"`
+	QuoteDate     int64  `json:"quotedate"`
+	AtributedUser string `json:"attibuteduser"`
+	Quoter        string `json:"quoter"`
 }
 
 type Pet struct {

@@ -650,3 +650,45 @@ func cmdSaveSettings(bb *BasicBot, cmd, userName, msg string) {
 		botSay(bb, "Settings Saved")
 	}
 }
+
+func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
+	var cleanmsg string
+	attrUser := getAttributedUser(msg, false)
+	fields := strings.Fields(msg)
+
+	if attrUser != "" {
+		cleanmsg = msg[len(cmd)+1+1+len(fields[1])+1+len(attrUser)+1:]
+	} else {
+		cleanmsg = msg[len(cmd)+1+1+len(fields[1])+1:]
+	}
+
+	if isCMD(cmd, msg) {
+		msgOut := "!quote add @user message | !quote search @user | !quote search string"
+		botSay(bb, msgOut)
+	} else {
+
+		switch fields[1] {
+		case "add":
+			if len(fields) > 2 {
+				addQuote(userName, attrUser, cleanmsg)
+			}
+
+		case "search":
+			for i := 0; i < len(settings.Quotes); i++ {
+				if strings.EqualFold(settings.Quotes[i].AtributedUser, attrUser) {
+					// fmt.Println(settings.Quotes[i])
+					time := time.Unix(settings.Quotes[i].QuoteDate, 0)
+					botSay(bb, fmt.Sprintf("%s Said \"%s\" on %v", settings.Quotes[i].AtributedUser, settings.Quotes[i].QuotedMessage, time.UTC()))
+
+				} else {
+					if strings.Contains(settings.Quotes[i].QuotedMessage, cleanmsg) && cleanmsg != "" {
+						// fmt.Println(settings.Quotes[i].QuotedMessage, cleanmsg)
+						time := time.Unix(settings.Quotes[i].QuoteDate, 0)
+						botSay(bb, fmt.Sprintf("%s Said \"%s\" on %v", settings.Quotes[i].AtributedUser, settings.Quotes[i].QuotedMessage, time.UTC()))
+					}
+				}
+			}
+		}
+
+	}
+}

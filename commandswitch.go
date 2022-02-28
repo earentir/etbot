@@ -106,6 +106,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					fallthrough
 				case "cr":
 					cmdCryptoExchange(bb, cmd, userName, msg)
+				case "quote":
+					cmdQuote(bb, cmd, userName, msg)
 				case "user":
 					fallthrough
 				case "usr":
