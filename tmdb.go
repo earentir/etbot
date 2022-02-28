@@ -42,12 +42,16 @@ func tmdbSearch(mediaTitle string) TMDBSearch {
 		mediaFound, commonWords := checkAllstrings(cannonical, strings.Fields(mediaTitle))
 		if (mediaFound && commonWords >= len(strings.Fields(cannonical))) || levenshtein.ComputeDistance(strings.ToLower(cannonical), strings.ToLower(mediaTitle)) < 3 {
 			found = true
-			// fmt.Println("found", mediaFound, commonWords, cannonical, levenshtein.ComputeDistance(strings.ToLower(cannonical), strings.ToLower(mediaTitle)))
+
+			j.Overview = limitOverview(j.Overview)
+
 			switch j.MediaType {
 			case "movie":
 				search.Results = append(search.Results, j)
+				fmt.Println("found mv", mediaFound, commonWords, cannonical, levenshtein.ComputeDistance(strings.ToLower(cannonical), strings.ToLower(mediaTitle)))
 			case "tv":
 				search.Results = append(search.Results, j)
+				fmt.Println("found tv", mediaFound, commonWords, cannonical, levenshtein.ComputeDistance(strings.ToLower(cannonical), strings.ToLower(mediaTitle)))
 			}
 		}
 	}
@@ -64,7 +68,7 @@ func tmdbSearch(mediaTitle string) TMDBSearch {
 			var relDate string = ""
 
 			cannonical = getUniqueMediaTitle(jsonreply.Results[i].Title, jsonreply.Results[i].OriginalTitle, jsonreply.Results[i].Name, jsonreply.Results[i].OriginalName)
-
+			fmt.Println("not found accurate ", cannonical)
 			if jsonreply.Results[i].FirstAirDate != "" {
 				relDate = jsonreply.Results[i].FirstAirDate
 			} else {
@@ -75,7 +79,7 @@ func tmdbSearch(mediaTitle string) TMDBSearch {
 			searchresults.ID = jsonreply.Results[i].ID
 			searchresults.FirstAirDate = relDate
 			searchresults.MediaType = jsonreply.Results[i].MediaType
-			searchresults.Overview = jsonreply.Results[i].Overview
+			searchresults.Overview = limitOverview(jsonreply.Results[i].Overview)
 
 			search.Results = append(search.Results, searchresults)
 		}
