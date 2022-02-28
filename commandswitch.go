@@ -110,6 +110,19 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					cmdCryptoExchange(bb, cmd, userName, msg)
 				case "quote":
 					cmdQuote(bb, cmd, userName, msg)
+
+					//Not allowed to be renamed - System Commands
+				case "setting":
+					fallthrough
+				case "set":
+					cmdSetting(bb, cmd, userName, msg)
+				case "etbdown":
+					CPrint("c", fmt.Sprintf("[%s] Shutdown command received. Shutting down now...\n", timeStamp()))
+					bb.Disconnect()
+				case "version":
+					cmdVersion(bb)
+				case "commands":
+					cmdList(bb, userName)
 				case "user":
 					fallthrough
 				case "usr":
