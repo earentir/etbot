@@ -334,7 +334,7 @@ func cmdProject(bb *BasicBot, cmd, userName, msg string) {
 
 func cmdUPDSoc(bb *BasicBot, cmd, userName, msg string) {
 	var socs Social
-	if levelNameTolvl("mod") <= UserLevel(userName).Level {
+	if UserLevel(userName).Level <= levelNameTolvl("mod") {
 		if isCMD(cmd, msg) {
 			botSay(bb, "Set a users social. ex. !updsoc @earentir github https://github.com/earentir")
 		} else {
