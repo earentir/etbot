@@ -140,3 +140,15 @@ func cleanup() {
 	saveSettings()
 	fmt.Println("Saved Data")
 }
+
+func limitOverview(overview string) string {
+	var newOverview string
+
+	if len(overview) <= 233 {
+		newOverview = overview
+	} else {
+		newOverview = overview[:233]
+	}
+
+	return newOverview
+}
