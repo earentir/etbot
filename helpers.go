@@ -152,3 +152,34 @@ func limitOverview(overview string) string {
 
 	return newOverview
 }
+
+func timeZone(location string) string {
+	locs := []string{"Europe", "Africa", "America", "Asia", "Atlantic", "Australia", "Brazil", "Canada", "Indian", "US"}
+	var tme string
+	var msgOut string
+
+	if strings.Contains(location, "/") {
+		msgOut = tzNow(location)
+	} else {
+		for _, l := range locs {
+			newloc := l + "/" + strings.Title(strings.ToLower(location))
+			tme = tzNow(newloc)
+			if tme != "" {
+				msgOut = tme
+			}
+		}
+	}
+
+	return msgOut
+}
+
+func tzNow(locationToLookup string) string {
+	loc, err := time.LoadLocation(locationToLookup)
+	outMsg := ""
+	if err == nil {
+		now := time.Now()
+		outMsg = fmt.Sprintf("%v", now.In(loc))
+	}
+
+	return outMsg
+}

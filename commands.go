@@ -301,7 +301,14 @@ func cmdList(bb *BasicBot, userName string) {
 }
 
 func cmdTime(bb *BasicBot, cmd, msg string) {
-	msgOut := timeStamp()
+	var msgOut string = ""
+
+	if isCMD(cmd, msg) {
+		msgOut = timeStamp()
+	} else {
+		msgOut = timeZone(msg[len(cmd)+2:])
+	}
+
 	botSay(bb, msgOut)
 }
 
