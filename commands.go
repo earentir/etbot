@@ -464,22 +464,14 @@ func cmdTMDB(bb *BasicBot, cmd, userName, msg string) {
 	} else {
 		if strings.Fields(msg)[1] == "movie" || strings.Fields(msg)[1] == "tv" {
 			searchresults = tmdbSearch(msg[len(cmd)+2+len(strings.Fields(msg)[1]):]).Results
-
 			if len(searchresults) > 0 {
 				for i := 0; i < len(searchresults); i++ {
 					if !searchresults[i].Adult {
-						if strings.Fields(msg)[1] == "movie" && strings.Fields(msg)[1] != "tv" {
-							if searchresults[i].MediaType == "movie" {
-								botSay(bb, fmt.Sprintf("📇 %s |%v| 📅 %s  🎥%s", searchresults[i].Title, searchresults[i].ID, searchresults[i].ReleaseDate, searchresults[i].Overview))
-								fmt.Printf("📇 %s |%v| 📅 %s  🎥%s", searchresults[i].Title, searchresults[i].ID, searchresults[i].ReleaseDate, searchresults[i].Overview)
-							}
-						} else {
-							if searchresults[i].MediaType == "tv" && strings.Fields(msg)[1] != "movie" {
-								if searchresults[i].MediaType == "tv" {
-									botSay(bb, fmt.Sprintf("📇 %s |%v| 📅 %s  📺%s", searchresults[i].Name, searchresults[i].ID, searchresults[i].FirstAirDate, searchresults[i].Overview))
-									fmt.Printf("📇 %s |%v| 📅 %s  📺%s", searchresults[i].Name, searchresults[i].ID, searchresults[i].FirstAirDate, searchresults[i].Overview)
-								}
-							}
+						if searchresults[i].MediaType == "movie" {
+							botSay(bb, fmt.Sprintf("📇 %s | %v | 📅 %s  🎥%s", searchresults[i].Title, searchresults[i].ID, searchresults[i].ReleaseDate, searchresults[i].Overview))
+						}
+						if searchresults[i].MediaType == "tv" {
+							botSay(bb, fmt.Sprintf("📇 %s | %v | 📅 %s  📺%s", searchresults[i].Name, searchresults[i].ID, searchresults[i].FirstAirDate, searchresults[i].Overview))
 						}
 					} else {
 						botSay(bb, "Cant return adult movies")
@@ -488,29 +480,16 @@ func cmdTMDB(bb *BasicBot, cmd, userName, msg string) {
 			} else {
 				botSay(bb, fmt.Sprintf("%s Cant find your movie", getAttributedUser(msg, true)))
 			}
-		} else {
+		} else { //search by ID
 			id, err := strconv.Atoi(strings.Fields(msg)[1])
 			if err != nil {
 				fmt.Println(err)
 			} else {
-				searchbyid := tmdbSearch(strings.Fields(msg)[1])
-				if len(searchbyid.Results) > 0 {
-					if len(strings.Fields(msg)) > 2 {
-						if strings.Fields(msg)[2] == "movie" {
-							movieData := tmdbMovie(id)
-							botSay(bb, fmt.Sprintf("📇 %s |%v| 📅 %s  🎥%s", movieData.Title, movieData.ID, movieData.ReleaseDate, movieData.Overview))
-							fmt.Printf("📇 %s |%v| 📅 %s  🎥%s", movieData.Title, movieData.ID, movieData.ReleaseDate, movieData.Overview)
-						} else {
-							tvData := tmdbTV(id)
-							botSay(bb, fmt.Sprintf("📇 %s |%v| 📅 %s  📺%s", tvData.Name, tvData.ID, tvData.FirstAirDate, tvData.Overview))
-							fmt.Printf("📇 %s |%v| 📅 %s  📺%s", tvData.Name, tvData.ID, tvData.FirstAirDate, tvData.Overview)
-						}
-					} else {
-						movieData := tmdbMovie(id)
-						botSay(bb, fmt.Sprintf("📇 %s |%v| 📅 %s  🎥%s", movieData.Title, movieData.ID, movieData.ReleaseDate, movieData.Overview))
-						fmt.Printf("📇 %s |%v| 📅 %s  🎥%s", movieData.Title, movieData.ID, movieData.ReleaseDate, movieData.Overview)
-					}
-				}
+				movieData := tmdbMovie(id)
+				botSay(bb, fmt.Sprintf("📇 %s | %v | 📅 %s  🎥%s", movieData.Title, movieData.ID, movieData.ReleaseDate, movieData.Overview))
+
+				tvData := tmdbTV(id)
+				botSay(bb, fmt.Sprintf("📇 %s | %v | 📅 %s  📺%s", tvData.Name, tvData.ID, tvData.FirstAirDate, tvData.Overview))
 			}
 		}
 	}
