@@ -32,25 +32,37 @@ func CMDCanRun(userName, cmd string) bool {
 		setCMDUsed(cmd)
 	}
 
-	fmt.Printf("User: %s | CMD: %s | Permitted: %v\n", userName, cmd, itcan)
+	fmt.Printf("Usr: %s | CMD: %s | Perm: %v\n", userName, cmd, itcan)
 
 	return itcan
 }
 
 func getCMDOptions(cmd string) CommandOption {
 	var commandOption CommandOption
+	var cmdFound bool = false
 
 	if isUsrCmd(cmd) {
 		for i := 0; i <= len(usercommands)-1; i++ {
 			if (cmd == usercommands[i].UserCmdName) || isUsrCmdAlias(i, cmd) {
 				commandOption = usercommands[i].UserCmdOptions
+				cmdFound = true
 			}
 		}
 	} else {
 		for i := 0; i <= len(settings.Commands)-1; i++ {
 			if (cmd == settings.Commands[i].CommandName) || (cmd == settings.Commands[i].CommandOptions.Alias) {
 				commandOption = settings.Commands[i].CommandOptions
+				cmdFound = true
 			}
+		}
+	}
+
+	if !cmdFound {
+		if getUserSocial(cmd) != "" {
+			commandOption.UserLevel = 10
+			commandOption.Enabled = true
+			commandOption.Cooldown = 4000
+			commandOption.Lastuse = 0
 		}
 	}
 
@@ -61,7 +73,6 @@ func setCMDUsed(cmd string) {
 	if isUsrCmd(cmd) {
 		for i := 0; i <= len(usercommands)-1; i++ {
 			if (cmd == usercommands[i].UserCmdName) || isUsrCmdAlias(i, cmd) {
-				fmt.Println("usrcmd update")
 				usercommands[i].UserCmdOptions.Lastuse = int(time.Now().Unix())
 				usercommands[i].UserCmdOptions.Counter++
 			}

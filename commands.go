@@ -639,23 +639,23 @@ func isUsrCmdAlias(index int, cmd string) bool {
 
 func isUsrCmd(cmd string) bool {
 	var found bool = false
-	if _, err := os.Stat("usr-cmd.json"); err == nil {
-		LoadJSONFileTOStruct("usr-cmd.json", &usercommands)
-	}
-
 	for i := 0; i < len(usercommands); i++ {
 		if usercommands[i].UserCmdName == cmd || isUsrCmdAlias(i, cmd) {
 			found = true
 		}
 	}
+
+	if !found {
+		if getUserSocial(cmd) != "" {
+			found = true
+		}
+	}
+
 	return found
 }
 
 func usrCmdList() []string {
 	var list []string
-	if _, err := os.Stat("usr-cmd.json"); err == nil {
-		LoadJSONFileTOStruct("usr-cmd.json", &usercommands)
-	}
 
 	for i := 0; i < len(usercommands); i++ {
 		list = append(list, usercommands[i].UserCmdName)
@@ -668,37 +668,51 @@ func usrCmdSay(bb *BasicBot, userName, cmd, msg string) {
 }
 
 func usrCmd(userName, cmd, msg string) string {
-	var cmdType string
 	var outMessage string = ""
-
-	if _, err := os.Stat("usr-cmd.json"); err == nil {
-		LoadJSONFileTOStruct("usr-cmd.json", &usercommands)
-	}
+	var foundCMDIndex int = -1
 
 	for i := 0; i < len(usercommands); i++ {
 		if usercommands[i].UserCmdName == cmd || isUsrCmdAlias(i, cmd) {
-			fmt.Printf("usrCMD: %s\n", usercommands[i].UserCmdName)
-			cmdType = usercommands[i].UserCmdType
-			rand.Seed(time.Now().UnixNano())
+			foundCMDIndex = i
+		}
+	}
 
-			switch cmdType {
-			case "punchline":
-				outMessage = usercommands[i].Messages[rand.Intn(len(usercommands[i].Messages))]
-			case "tree":
-
-			case "counter":
-
-			case "varpunchline":
-				outMessage = usercommands[i].Messages[rand.Intn(len(usercommands[i].Messages))]
-
-				attrUser := getAttributedUser(msg, true)
-				if attrUser != "" {
-					outMessage = strings.ReplaceAll(outMessage, "^a", attrUser)
-				} else {
-					outMessage = strings.ReplaceAll(outMessage, "^a", "@"+userName)
-				}
-				outMessage = strings.ReplaceAll(outMessage, "^u", userName)
+	if foundCMDIndex == -1 {
+		user := getUserData(settings.General.Twitch.Channel).Socials
+		for i := 0; i < len(user); i++ {
+			if strings.EqualFold(user[i].SocNet, cmd) {
+				outMessage = user[i].Link
 			}
+		}
+	}
+
+	//this should be a func
+	if foundCMDIndex > -1 {
+		fmt.Printf("usrCMD: %s\n", usercommands[foundCMDIndex].UserCmdName)
+		rand.Seed(time.Now().UnixNano())
+
+		switch usercommands[foundCMDIndex].UserCmdType {
+		case "punchline":
+			outMessage = usercommands[foundCMDIndex].Messages[rand.Intn(len(usercommands[foundCMDIndex].Messages))]
+		case "tree":
+
+		case "counter":
+
+		case "varpunchline":
+			outMessage = usercommands[foundCMDIndex].Messages[rand.Intn(len(usercommands[foundCMDIndex].Messages))]
+
+			attrUser := getAttributedUser(msg, false)
+			if attrUser != "" {
+				outMessage = strings.ReplaceAll(outMessage, "^a", attrUser)
+			} else {
+				outMessage = strings.ReplaceAll(outMessage, "^a", userName)
+			}
+			outMessage = strings.ReplaceAll(outMessage, "^u", userName)
+		}
+	}
+
+	return outMessage
+}
 		}
 	}
 
