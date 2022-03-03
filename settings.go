@@ -58,10 +58,20 @@ func getCMDOptions(cmd string) CommandOption {
 }
 
 func setCMDUsed(cmd string) {
-	for i := 0; i <= len(settings.Commands)-1; i++ {
-		if (cmd == settings.Commands[i].CommandName) || (cmd == settings.Commands[i].CommandOptions.Alias) {
-			settings.Commands[i].CommandOptions.Lastuse = int(time.Now().Unix())
-			settings.Commands[i].CommandOptions.Counter++
+	if isUsrCmd(cmd) {
+		for i := 0; i <= len(usercommands)-1; i++ {
+			if (cmd == usercommands[i].UserCmdName) || isUsrCmdAlias(i, cmd) {
+				fmt.Println("usrcmd update")
+				usercommands[i].UserCmdOptions.Lastuse = int(time.Now().Unix())
+				usercommands[i].UserCmdOptions.Counter++
+			}
+		}
+	} else {
+		for i := 0; i <= len(settings.Commands)-1; i++ {
+			if (cmd == settings.Commands[i].CommandName) || (cmd == settings.Commands[i].CommandOptions.Alias) {
+				settings.Commands[i].CommandOptions.Lastuse = int(time.Now().Unix())
+				settings.Commands[i].CommandOptions.Counter++
+			}
 		}
 	}
 }
