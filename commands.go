@@ -20,13 +20,13 @@ func botSay(bb *BasicBot, msg string) {
 }
 
 func cmdHi(bb *BasicBot, userName, cmd, msg string) {
+	var msgOut string = ""
 	if isAttr(msg) {
-		msgOut := fmt.Sprintf("earentHey %s, @%s says Hi!", getAttributedUser(msg, true), userName)
-		botSay(bb, msgOut)
+		msgOut = fmt.Sprintf("earentHey %s, @%s says Hi!", getAttributedUser(msg, true), userName)
 	} else {
-		msgOut := fmt.Sprintf("earentHey @%s", userName)
-		botSay(bb, msgOut)
+		msgOut = fmt.Sprintf("earentHey @%s", userName)
 	}
+	botSay(bb, msgOut)
 }
 
 func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
@@ -276,11 +276,6 @@ func cmdTime(bb *BasicBot, cmd, msg string) {
 func cmdVersion(bb *BasicBot) {
 	botSay(bb, etbver)
 }
-
-// func cmdMic(bb *BasicBot) {
-// 	msgOut := "earentFfs Check your mic moron @earentir"
-// 	botSay(bb, msgOut)
-// }
 
 func cmdSocial(bb *BasicBot, cmd string) {
 	botSay(bb, fmt.Sprintf("%s", getUserSocials(settings.General.Twitch.Channel)))

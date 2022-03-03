@@ -57,8 +57,6 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						cmdProject(bb, cmd, userName, msg)
 					case "tmdb":
 						cmdTMDB(bb, cmd, userName, msg)
-					case "level":
-						cmdLevel(bb, cmd, userName, msg)
 					case "crypto":
 						fallthrough
 					case "cr":
@@ -67,6 +65,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						cmdQuote(bb, cmd, userName, msg)
 
 						//Not allowed to be renamed - System Commands
+					case "level":
+						cmdLevel(bb, cmd, userName, msg)
 					case "setting":
 						fallthrough
 					case "set":

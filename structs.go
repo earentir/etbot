@@ -118,7 +118,6 @@ type Settings struct {
 }
 
 type UserCommands []struct {
-	// UserCommands []UserCommand `json:"usercommands"`
 	UserCmdName    string        `json:"name"`
 	UserCmdType    string        `json:"type"`
 	Messages       []string      `json:"messages"`
