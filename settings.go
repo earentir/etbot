@@ -40,9 +40,17 @@ func CMDCanRun(userName, cmd string) bool {
 func getCMDOptions(cmd string) CommandOption {
 	var commandOption CommandOption
 
-	for i := 0; i <= len(settings.Commands)-1; i++ {
-		if (cmd == settings.Commands[i].CommandName) || (cmd == settings.Commands[i].CommandOptions.Alias) {
-			return settings.Commands[i].CommandOptions
+	if isUsrCmd(cmd) {
+		for i := 0; i <= len(usercommands)-1; i++ {
+			if (cmd == usercommands[i].UserCmdName) || isUsrCmdAlias(i, cmd) {
+				commandOption = usercommands[i].UserCmdOptions
+			}
+		}
+	} else {
+		for i := 0; i <= len(settings.Commands)-1; i++ {
+			if (cmd == settings.Commands[i].CommandName) || (cmd == settings.Commands[i].CommandOptions.Alias) {
+				commandOption = settings.Commands[i].CommandOptions
+			}
 		}
 	}
 

@@ -701,3 +701,74 @@ func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 
 	}
 }
+
+func isUsrCmdAlias(index int, cmd string) bool {
+	var found bool = false
+	for i := 0; i < len(usercommands[index].Alias); i++ {
+		if usercommands[index].Alias[i] == cmd {
+			found = true
+		}
+	}
+
+	return found
+}
+
+func isUsrCmd(cmd string) bool {
+	var found bool = false
+	if _, err := os.Stat("usr-cmd.json"); err == nil {
+		LoadJSONFileTOStruct("usr-cmd.json", &usercommands)
+	}
+
+	for i := 0; i < len(usercommands); i++ {
+		if usercommands[i].UserCmdName == cmd || isUsrCmdAlias(i, cmd) {
+			found = true
+		}
+	}
+	return found
+}
+
+func usrCmdList() []string {
+	var list []string
+	if _, err := os.Stat("usr-cmd.json"); err == nil {
+		LoadJSONFileTOStruct("usr-cmd.json", &usercommands)
+	}
+
+	for i := 0; i < len(usercommands); i++ {
+		list = append(list, usercommands[i].UserCmdName)
+	}
+	return list
+}
+
+func usrCmdSay(bb *BasicBot, userName, cmd, msg string) {
+	botSay(bb, usrCmd(userName, cmd, msg))
+}
+
+func usrCmd(userName, cmd, msg string) string {
+	var cmdType string
+	var outMessage string = ""
+
+	if _, err := os.Stat("usr-cmd.json"); err == nil {
+		LoadJSONFileTOStruct("usr-cmd.json", &usercommands)
+	}
+
+	for i := 0; i < len(usercommands); i++ {
+		if usercommands[i].UserCmdName == cmd || isUsrCmdAlias(i, cmd) {
+			fmt.Printf("usrCMD: %s\n", usercommands[i].UserCmdName)
+			cmdType = usercommands[i].UserCmdType
+			rand.Seed(time.Now().UnixNano())
+
+			switch cmdType {
+			case "punchline":
+				outMessage = usercommands[i].Messages[rand.Intn(len(usercommands[i].Messages))]
+			case "tree":
+
+			case "counter":
+
+			case "varpunchline":
+				outMessage = usercommands[i].Messages[rand.Intn(len(usercommands[i].Messages))]
+			}
+		}
+	}
+
+	return outMessage
+}

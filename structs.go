@@ -117,6 +117,15 @@ type Settings struct {
 	Quotes     []QuoteList     `json:"quotes"`
 }
 
+type UserCommands []struct {
+	// UserCommands []UserCommand `json:"usercommands"`
+	UserCmdName    string        `json:"name"`
+	UserCmdType    string        `json:"type"`
+	Messages       []string      `json:"messages"`
+	Alias          []string      `json:"alias"`
+	UserCmdOptions CommandOption `json:"options"`
+}
+
 type QuoteList struct {
 	QuotedMessage string `json:"quotedmessage"`
 	QuoteDate     int64  `json:"quotedate"`

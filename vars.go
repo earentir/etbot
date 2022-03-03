@@ -26,4 +26,7 @@ var (
 
 	// Store In Memory accessible settings from et-settings.json
 	settings Settings
+
+	//Store User Commands in memory
+	usercommands UserCommands
 )
