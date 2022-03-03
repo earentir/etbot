@@ -19,7 +19,6 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					usrCmdSay(bb, userName, cmd, msg)
 				} else {
 					switch cmd {
-					//region joke commands
 					case "hi":
 						cmdHi(bb, userName, cmd, msg)
 					case "bofh":
@@ -28,11 +27,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						fallthrough
 					case "yoke":
 						cmdJokeAPI(bb, cmd, msg)
-					//endregion
 					case "lurk":
 						cmdLurk(bb, userName, cmd, msg)
-					case "hype":
-						cmdHype(bb, msg)
 					case "ex":
 						fallthrough
 					case "exchange":
@@ -49,29 +45,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						cmdILOVE(bb, cmd, userName, msg)
 					case "zoe":
 						cmdZoe(bb, cmd, userName, msg)
-						//Not Final
 					case "socials":
-						fallthrough
-					case "github":
-						fallthrough
-					case "youtube":
-						fallthrough
-					case "itchio":
-						fallthrough
-					case "instagram":
-						fallthrough
-					case "artstation":
-						fallthrough
-					case "aboutme":
-						fallthrough
-					case "udemy":
-						fallthrough
-					case "discord":
 						cmdSocial(bb, cmd)
-					case "sudo":
-						cmdVulgar(bb)
-					case "pro": //check if they stream and say pro streamer otherwise pro viewer
-						cmdSoon(bb)
 					case "time":
 						cmdTime(bb, cmd, msg)
 					case "updsoc":

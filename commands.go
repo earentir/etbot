@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"math/rand"
-	"os"
 	"os/exec"
 	"regexp"
 	"strconv"
@@ -22,21 +21,12 @@ func botSay(bb *BasicBot, msg string) {
 
 func cmdHi(bb *BasicBot, userName, cmd, msg string) {
 	if isAttr(msg) {
-		//^u ^a
 		msgOut := fmt.Sprintf("earentHey %s, @%s says Hi!", getAttributedUser(msg, true), userName)
 		botSay(bb, msgOut)
 	} else {
 		msgOut := fmt.Sprintf("earentHey @%s", userName)
 		botSay(bb, msgOut)
 	}
-}
-
-func cmdSoon(bb *BasicBot) {
-	botSay(bb, "TBD")
-}
-
-func cmdVulgar(bb *BasicBot) {
-	botSay(bb, "Fuck Off")
 }
 
 func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
@@ -93,14 +83,6 @@ func cmdUnlurk(bb *BasicBot, userName string) {
 			}
 			removeLurker(userName)
 		}
-	}
-}
-
-func cmdHype(bb *BasicBot, msg string) {
-	if isAttr(msg) {
-		botSay(bb, usrCmd("", "sub_insults", msg))
-	} else {
-		botSay(bb, "Please @ a user")
 	}
 }
 
