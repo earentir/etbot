@@ -22,6 +22,7 @@ func botSay(bb *BasicBot, msg string) {
 
 func cmdHi(bb *BasicBot, userName, cmd, msg string) {
 	if isAttr(msg) {
+		//^u ^a
 		msgOut := fmt.Sprintf("earentHey %s, @%s says Hi!", getAttributedUser(msg, true), userName)
 		botSay(bb, msgOut)
 	} else {
@@ -56,16 +57,6 @@ func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
 		botSay(bb, jkstr+" "+getAttributedUser(msg, true))
 	} else {
 		botSay(bb, jkstr)
-	}
-}
-
-func cmdBan(bb *BasicBot, userName, cmd, msg string) {
-	if isAttr(msg) {
-		msgOut := fmt.Sprintf("%s is %sned.", getAttributedUser(msg, true), cmd)
-		botSay(bb, msgOut)
-	} else {
-		msgOut := fmt.Sprintf("%s is %sned.", userName, cmd)
-		botSay(bb, msgOut)
 	}
 }
 
@@ -107,8 +98,7 @@ func cmdUnlurk(bb *BasicBot, userName string) {
 
 func cmdHype(bb *BasicBot, msg string) {
 	if isAttr(msg) {
-		msgOut := fmt.Sprintf(usrCmd("", "sub_insults", msg), getAttributedUser(msg, true))
-		botSay(bb, msgOut)
+		botSay(bb, usrCmd("", "sub_insults", msg))
 	} else {
 		botSay(bb, "Please @ a user")
 	}
@@ -305,10 +295,10 @@ func cmdVersion(bb *BasicBot) {
 	botSay(bb, etbver)
 }
 
-func cmdMic(bb *BasicBot) {
-	msgOut := "earentFfs Check your mic moron @earentir"
-	botSay(bb, msgOut)
-}
+// func cmdMic(bb *BasicBot) {
+// 	msgOut := "earentFfs Check your mic moron @earentir"
+// 	botSay(bb, msgOut)
+// }
 
 func cmdSocial(bb *BasicBot, cmd string) {
 	for _, j := range settings.Users {
@@ -621,13 +611,11 @@ func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 		case "search":
 			for i := 0; i < len(settings.Quotes); i++ {
 				if strings.EqualFold(settings.Quotes[i].AtributedUser, attrUser) {
-					// fmt.Println(settings.Quotes[i])
 					time := time.Unix(settings.Quotes[i].QuoteDate, 0)
 					botSay(bb, fmt.Sprintf("%s Said \"%s\" on %v", settings.Quotes[i].AtributedUser, settings.Quotes[i].QuotedMessage, time.UTC()))
 
 				} else {
 					if strings.Contains(settings.Quotes[i].QuotedMessage, cleanmsg) && cleanmsg != "" {
-						// fmt.Println(settings.Quotes[i].QuotedMessage, cleanmsg)
 						time := time.Unix(settings.Quotes[i].QuoteDate, 0)
 						botSay(bb, fmt.Sprintf("%s Said \"%s\" on %v", settings.Quotes[i].AtributedUser, settings.Quotes[i].QuotedMessage, time.UTC()))
 					}
@@ -637,21 +625,6 @@ func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 
 	}
 }
-
-// func cmdJoke(bb *BasicBot, cmd, msg string) {
-// 	var msgOut string
-// 	atrUser := getAttributedUser(msg, true)
-
-// 	if isAttr(msg) {
-// 		msgOut = jokesJSON(cmd) + " " + atrUser
-// 	} else {
-// 		msgOut = jokesJSON(cmd)
-// 	}
-
-// 	botSay(bb, msgOut)
-// }
-
-// func usrCmd(bb *BasicBot, userName, cmd, msg string) bool {
 
 func isUsrCmdAlias(index int, cmd string) bool {
 	var found bool = false
@@ -717,6 +690,14 @@ func usrCmd(userName, cmd, msg string) string {
 
 			case "varpunchline":
 				outMessage = usercommands[i].Messages[rand.Intn(len(usercommands[i].Messages))]
+
+				attrUser := getAttributedUser(msg, true)
+				if attrUser != "" {
+					outMessage = strings.ReplaceAll(outMessage, "^a", attrUser)
+				} else {
+					outMessage = strings.ReplaceAll(outMessage, "^a", "@"+userName)
+				}
+				outMessage = strings.ReplaceAll(outMessage, "^u", userName)
 			}
 		}
 	}

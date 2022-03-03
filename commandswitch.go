@@ -28,13 +28,7 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						fallthrough
 					case "yoke":
 						cmdJokeAPI(bb, cmd, msg)
-					case "ban":
-						cmdBan(bb, userName, cmd, msg)
-					case "unban":
-						cmdBan(bb, userName, cmd, msg)
-					case "mic":
-						cmdMic(bb)
-						//endregion
+					//endregion
 					case "lurk":
 						cmdLurk(bb, userName, cmd, msg)
 					case "hype":
