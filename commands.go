@@ -331,8 +331,8 @@ func cmdILOVE(bb *BasicBot, cmd, userName, msg string) {
 	if isCMD(cmd, msg) {
 		botSay(bb, "Add what you love and it will be included in your SO, ex. !love coffee")
 	} else {
-		for i := 0; i < len(settings.Users)-1; i++ {
-			if settings.Users[i].Name == userName || settings.Users[i].Nick == userName {
+		for i := 0; i < len(settings.Users); i++ {
+			if strings.EqualFold(settings.Users[i].Name, userName) || strings.EqualFold(settings.Users[i].Nick, userName) {
 				settings.Users[i].Love = msg[len(cmd)+2:]
 				botSay(bb, fmt.Sprintf("You love %s, thank you for letting me know.", settings.Users[i].Love))
 			}
