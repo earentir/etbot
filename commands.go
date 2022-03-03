@@ -3,6 +3,8 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"math/rand"
+	"os"
 	"os/exec"
 	"regexp"
 	"strconv"
@@ -57,19 +59,6 @@ func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
 	}
 }
 
-func cmdJoke(bb *BasicBot, cmd, msg string) {
-	var msgOut string
-	atrUser := getAttributedUser(msg, true)
-
-	if isAttr(msg) {
-		msgOut = jokesJSON(cmd) + " " + atrUser
-	} else {
-		msgOut = jokesJSON(cmd)
-	}
-
-	botSay(bb, msgOut)
-}
-
 func cmdBan(bb *BasicBot, userName, cmd, msg string) {
 	if isAttr(msg) {
 		msgOut := fmt.Sprintf("%s is %sned.", getAttributedUser(msg, true), cmd)
@@ -118,7 +107,7 @@ func cmdUnlurk(bb *BasicBot, userName string) {
 
 func cmdHype(bb *BasicBot, msg string) {
 	if isAttr(msg) {
-		msgOut := fmt.Sprintf(jokesJSON("sub_insults"), getAttributedUser(msg, true))
+		msgOut := fmt.Sprintf(usrCmd("", "sub_insults", msg), getAttributedUser(msg, true))
 		botSay(bb, msgOut)
 	} else {
 		botSay(bb, "Please @ a user")
@@ -648,6 +637,21 @@ func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 
 	}
 }
+
+// func cmdJoke(bb *BasicBot, cmd, msg string) {
+// 	var msgOut string
+// 	atrUser := getAttributedUser(msg, true)
+
+// 	if isAttr(msg) {
+// 		msgOut = jokesJSON(cmd) + " " + atrUser
+// 	} else {
+// 		msgOut = jokesJSON(cmd)
+// 	}
+
+// 	botSay(bb, msgOut)
+// }
+
+// func usrCmd(bb *BasicBot, userName, cmd, msg string) bool {
 
 func isUsrCmdAlias(index int, cmd string) bool {
 	var found bool = false

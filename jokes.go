@@ -3,10 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"math/rand"
-	"os"
-	"time"
 )
 
 type jokes struct {
@@ -37,36 +33,36 @@ func JokesAPI(msg string) []string {
 	return retuarr
 }
 
-func jokesJSON(jkcmd string) string {
-	var outMessage string = ""
-	var jsonMap map[string]map[string][]string
+// func jokesJSON(jkcmd string) string {
+// 	var outMessage string = ""
+// 	var jsonMap map[string]map[string][]string
 
-	jsonFileDesc, err := os.Open("jokes.json")
-	if err != nil {
-		fmt.Println(err)
-	}
+// 	jsonFileDesc, err := os.Open("jokes.json")
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
 
-	jsonData, err := ioutil.ReadAll(jsonFileDesc)
-	if err != nil {
-		fmt.Println(err)
-	}
-	json.Unmarshal(jsonData, &jsonMap)
+// 	jsonData, err := ioutil.ReadAll(jsonFileDesc)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	json.Unmarshal(jsonData, &jsonMap)
 
-	for key0 := range jsonMap {
-		if key0 == jkcmd {
-			for key1 := range jsonMap[key0] {
-				rand.Seed(time.Now().UnixNano())
-				if len(jsonMap[key0]) > 1 {
-					// fmt.Println(key1)
-					//if we get here we need to make logic for this to work
+// 	for key0 := range jsonMap {
+// 		if key0 == jkcmd {
+// 			for key1 := range jsonMap[key0] {
+// 				rand.Seed(time.Now().UnixNano())
+// 				if len(jsonMap[key0]) > 1 {
+// 					// fmt.Println(key1)
+// 					//if we get here we need to make logic for this to work
 
-				} else {
-					rand.Seed(time.Now().UnixNano())
-					outMessage = jsonMap[key0][key1][rand.Intn(len(jsonMap[key0][key1]))]
-				}
-			}
-		}
-	}
+// 				} else {
+// 					rand.Seed(time.Now().UnixNano())
+// 					outMessage = jsonMap[key0][key1][rand.Intn(len(jsonMap[key0][key1]))]
+// 				}
+// 			}
+// 		}
+// 	}
 
-	return outMessage
-}
+// 	return outMessage
+// }

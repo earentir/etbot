@@ -47,6 +47,11 @@ func main() {
 			if settings.Servers.BotServers.Chat {
 				etb.Start()
 			}
+		} else {
+			//make creds file
 		}
+
+	} else {
+		//make settings file
 	}
 }
