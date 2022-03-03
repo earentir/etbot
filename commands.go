@@ -283,11 +283,7 @@ func cmdVersion(bb *BasicBot) {
 // }
 
 func cmdSocial(bb *BasicBot, cmd string) {
-	for _, j := range settings.Users {
-		if j.Type == "root" {
-			fmt.Printf("%#v", j.Socials)
-		}
-	}
+	botSay(bb, fmt.Sprintf("%s", getUserSocials(settings.General.Twitch.Channel)))
 }
 
 func cmdProject(bb *BasicBot, cmd, userName, msg string) {
@@ -695,6 +691,13 @@ func usrCmd(userName, cmd, msg string) string {
 
 	return outMessage
 }
+
+func getUserSocial(socnet string) string {
+	user := getUserData(settings.General.Twitch.Channel)
+	var outMessage string = ""
+	for i := 0; i < len(user.Socials); i++ {
+		if strings.EqualFold(socnet, user.Socials[i].SocNet) {
+			outMessage = user.Socials[i].Link
 		}
 	}
 
