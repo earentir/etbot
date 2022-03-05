@@ -156,6 +156,7 @@ type Command struct {
 	CommandName    string        `json:"name"`
 	CommandOptions CommandOption `json:"options"`
 }
+
 type CommandOption struct {
 	Msg       string `json:"msg,omitempty"`
 	Atmsg     string `json:"atmsg,omitempty"`
@@ -258,6 +259,7 @@ type TMDBProductionCompanies struct {
 	LogoPath      string `json:"logo_path"`
 	OriginCountry string `json:"origin_country"`
 }
+
 type TMDBTV struct {
 	CreatedBy           interface{}               `json:"CreatedBy"`
 	Genres              []TMDBGenres              `json:"Genres"`
