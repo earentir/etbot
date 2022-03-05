@@ -698,3 +698,11 @@ func getUserSocial(socnet string) string {
 
 	return outMessage
 }
+
+func cmdYear(bb *BasicBot, cmd, userName, msg string) {
+	currentDay := time.Time.YearDay(time.Now())
+	totalDays := time.Time.YearDay(time.Date(time.Time.Year(time.Now()), 12, 31, 00, 00, 00, 0, time.UTC))
+	currentPercent := (float64(currentDay) / float64(totalDays)) * 100
+
+	botSay(bb, fmt.Sprintf("It is day %v of %v (%v days), We have used %2.2f%% of the year till now.\n", currentDay, time.Time.Year(time.Now()), totalDays, currentPercent))
+}
