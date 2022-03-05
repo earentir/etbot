@@ -56,7 +56,7 @@ func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
 	)
 
 	if isCMD(cmd, msg) {
-		msgOut := fmt.Sprintf("Thank you for lurking %s, you smart hooman, go have as much fun as possible on your endeavours", userName)
+		msgOut := fmt.Sprintf(getCMDOptions("lurk").Msg, userName)
 		addLurker(userName, cmd, msg)
 		botSay(bb, msgOut)
 	} else {
@@ -67,7 +67,7 @@ func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
 			botSay(bb, fmt.Sprintf("Current Lurkers %s", lurklist))
 		} else {
 			addLurker(userName, cmd, msg)
-			msgOut := fmt.Sprintf("Thank you for lurking %s, you smart hooman, go have fun with %s", userName, getCleanMessage(cmd, msg))
+			msgOut := fmt.Sprintf(getCMDOptions("lurk").Atmsg, userName, getCleanMessage(cmd, msg))
 			botSay(bb, msgOut)
 		}
 	}
@@ -576,7 +576,6 @@ func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 		msgOut := "!quote add @user message | !quote search @user | !quote search string"
 		botSay(bb, msgOut)
 	} else {
-
 		switch fields[1] {
 		case "add":
 			if len(fields) > 2 {
@@ -588,7 +587,6 @@ func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 				if strings.EqualFold(settings.Quotes[i].AtributedUser, attrUser) {
 					time := time.Unix(settings.Quotes[i].QuoteDate, 0)
 					botSay(bb, fmt.Sprintf("%s Said \"%s\" on %v", settings.Quotes[i].AtributedUser, settings.Quotes[i].QuotedMessage, time.UTC()))
-
 				} else {
 					if strings.Contains(settings.Quotes[i].QuotedMessage, cleanmsg) && cleanmsg != "" {
 						time := time.Unix(settings.Quotes[i].QuoteDate, 0)
@@ -597,7 +595,6 @@ func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 				}
 			}
 		}
-
 	}
 }
 
