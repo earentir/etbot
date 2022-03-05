@@ -23,8 +23,6 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						cmdHi(bb, userName, cmd, msg)
 					case "bofh":
 						cmdJokeAPI(bb, cmd, msg)
-					case "joke":
-						fallthrough
 					case "yoke":
 						cmdJokeAPI(bb, cmd, msg)
 					case "lurk":
