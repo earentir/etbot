@@ -371,6 +371,8 @@ func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 						settings.Pets[0].Pet++
 						botSay(bb, fmt.Sprintf("%s needs to be peted for %v minutes", settings.Pets[0].Name, settings.Pets[0].Pet))
 					}
+				case "treat":
+					fallthrough
 				case "feed":
 					if len(cmdFields) == 3 {
 						if userName == settings.General.Twitch.Channel {
