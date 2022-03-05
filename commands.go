@@ -672,7 +672,7 @@ func usrCmd(userName, cmd, msg string) string {
 		case "tree":
 
 		case "counter":
-
+			outMessage = fmt.Sprintf(usercommands[foundCMDIndex].Messages[0], cmd, usercommands[foundCMDIndex].UserCmdOptions.Counter)
 		case "varpunchline":
 			outMessage = usercommands[foundCMDIndex].Messages[rand.Intn(len(usercommands[foundCMDIndex].Messages))]
 
