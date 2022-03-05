@@ -173,7 +173,7 @@ func cmdSO(bb *BasicBot, userName, cmd, msg string) {
 				twitchChannelData = getChannelInfo(tu.ID)
 			}
 
-			var solinks string = strings.Join(getUserSocials(strings.ToLower(atrUser)), " ")
+			var solinks string = getUserSocials(strings.ToLower(atrUser))
 			if solinks == "" {
 				solinks = "https://twitch.tv/" + strings.ToLower(atrUser)
 			}
@@ -183,14 +183,14 @@ func cmdSO(bb *BasicBot, userName, cmd, msg string) {
 					lovestr = fmt.Sprintf(" and they love %s", getUserData(atrUser).Love)
 				}
 
-				msgOut = fmt.Sprintf("Please check out & follow %s they are amazing. You can find them here: %s%s", getAttributedUser(msg, true), solinks, lovestr)
+				msgOut = fmt.Sprintf(getCMDOptions("so").Atmsg, getAttributedUser(msg, true), solinks, lovestr)
 			} else {
 
 				if getUserData(atrUser).Love != "" {
 					lovestr = fmt.Sprintf(" and they love %s", getUserData(atrUser).Love)
 				}
 
-				msgOut = fmt.Sprintf("Please check out & follow %s they are amazing. They streamed in %s about \"%s\",  You can find them here: %s%s",
+				msgOut = fmt.Sprintf(getCMDOptions("so").Msg,
 					getAttributedUser(msg, true),
 					twitchChannelData[0].GameName,
 					twitchChannelData[0].Title,

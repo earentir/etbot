@@ -87,14 +87,14 @@ func setCMDUsed(cmd string) {
 	}
 }
 
-func getUserSocials(userName string) []string {
+func getUserSocials(userName string) string {
 	setusers := settings.Users
-	var found []string
+	var found string
 
 	for _, usr := range setusers {
 		if usr.Name == userName {
 			for _, k := range usr.Socials {
-				found = append(found, k.Link)
+				found = found + k.Link + " "
 			}
 		}
 	}
