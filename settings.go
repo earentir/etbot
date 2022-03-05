@@ -9,12 +9,17 @@ import (
 
 func getCMDS(userName string) string {
 	cmds := settings.Commands
+	usrcmds := usercommands
 	var allcommands []string
 
 	for _, cm := range cmds {
 		if CMDCanRun(userName, cm.CommandName) {
 			allcommands = append(allcommands, cm.CommandName)
 		}
+	}
+
+	for _, cm := range usrcmds {
+		allcommands = append(allcommands, cm.UserCmdName)
 	}
 
 	sort.Strings(allcommands)
