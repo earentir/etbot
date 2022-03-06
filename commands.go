@@ -52,20 +52,26 @@ func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
 
 func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
 	var (
-		lurklist []string
+		lurkers  []string
+		lurklist LurkList
 	)
+
+	LoadJSONFileTOStruct("settings/lurkers.json", &lurklist)
 
 	if isCMD(cmd, msg) {
 		msgOut := fmt.Sprintf(getCMDOptions("lurk").Msg, userName)
 		addLurker(userName, cmd, msg)
 		botSay(bb, msgOut)
 	} else {
-		if strings.Fields(msg)[1] == "list" {
-			for i := 0; i < len(settings.Lurklists); i++ {
-				lurklist = append(lurklist, settings.Lurklists[i].Lurker)
+		switch strings.Fields(msg)[1] {
+		case "list":
+			for i := 0; i < len(lurklist.Lurkers); i++ {
+				lurkers = append(lurkers, lurklist.Lurkers[i].Name)
 			}
-			botSay(bb, fmt.Sprintf("Current Lurkers %s", lurklist))
-		} else {
+			botSay(bb, fmt.Sprintf("Current Lurkers %s", lurkers))
+		case "help":
+			botSay(bb, "!lurk | !lurk [optional reasons | !lurk list]")
+		default:
 			addLurker(userName, cmd, msg)
 			msgOut := fmt.Sprintf(getCMDOptions("lurk").Atmsg, userName, getCleanMessage(cmd, msg))
 			botSay(bb, msgOut)
@@ -74,12 +80,18 @@ func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
 }
 
 func cmdUnlurk(bb *BasicBot, userName string) {
-	for i := 0; i < len(settings.Lurklists); i++ {
-		if strings.EqualFold(userName, settings.Lurklists[i].Lurker) {
-			if settings.Lurklists[i].LurkMessage == "" {
+	var (
+		lurklist LurkList
+	)
+
+	LoadJSONFileTOStruct("settings/lurkers.json", &lurklist)
+
+	for i := 0; i < len(lurklist.Lurkers); i++ {
+		if strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
+			if lurklist.Lurkers[i].Message == "" {
 				botSay(bb, fmt.Sprintf("Welcome back @%s", userName))
 			} else {
-				botSay(bb, fmt.Sprintf("Welcome back @%s, how was your %s", userName, settings.Lurklists[i].LurkMessage))
+				botSay(bb, fmt.Sprintf("Welcome back @%s, how was your %s", userName, lurklist.Lurkers[i].Message))
 			}
 			removeLurker(userName)
 		}

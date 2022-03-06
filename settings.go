@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"sort"
 	"strings"
 	"time"
@@ -176,33 +178,45 @@ func getUserData(userName string) User {
 
 func addLurker(userName, cmd, msg string) {
 	var (
-		lurker LurkerList
+		lurklist LurkList
+
+		lurker Lurker
 		found  bool = false
 	)
-	for i := 0; i < len(settings.Lurklists); i++ {
-		if strings.EqualFold(userName, settings.Lurklists[i].Lurker) {
+
+	LoadJSONFileTOStruct("settings/lurkers.json", &lurklist)
+
+	for i := 0; i < len(lurklist.Lurkers); i++ {
+		if strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
 			found = true
-			settings.Lurklists[i].LurkedOn = int(time.Now().Unix())
-			settings.Lurklists[i].LurkMessage = msg[len(cmd)+2:]
+			lurklist.Lurkers[i].Date = int(time.Now().Unix())
+			lurklist.Lurkers[i].Message = msg[len(cmd)+1:]
 		}
 	}
 
 	if !found {
-		lurker.Lurker = userName
-		lurker.LurkedOn = int(time.Now().Unix())
-		if msg == "" {
-			lurker.LurkMessage = msg[len(cmd)+2:]
+		lurker.Name = userName
+		lurker.Date = int(time.Now().Unix())
+		if msg != "" {
+			lurker.Message = msg[len(cmd)+1:]
 		} else {
-			lurker.LurkMessage = ""
+			lurker.Message = ""
 		}
-		settings.Lurklists = append(settings.Lurklists, lurker)
+		lurklist.Lurkers = append(lurklist.Lurkers, lurker)
 	}
+
+	lurkfile, _ := json.MarshalIndent(lurklist, "", "\t")
+	_ = ioutil.WriteFile("settings/lurkers.json", lurkfile, 0644)
 }
 
 func isUserLurking(userName string) bool {
 	var arethey bool = false
-	for i := 0; i < len(settings.Lurklists); i++ {
-		if strings.EqualFold(userName, settings.Lurklists[i].Lurker) {
+	var lurklist LurkList
+
+	LoadJSONFileTOStruct("settings/lurkers.json", &lurklist)
+
+	for i := 0; i < len(lurklist.Lurkers); i++ {
+		if strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
 			arethey = true
 		}
 	}
@@ -210,17 +224,23 @@ func isUserLurking(userName string) bool {
 }
 
 func removeLurker(userName string) {
-	var newLurkList []LurkerList
+	var newLurkList []Lurker
+	var lurklist LurkList
 
-	for i := len(settings.Lurklists) - 1; i >= 0; i-- {
-		if !strings.EqualFold(userName, settings.Lurklists[i].Lurker) {
+	LoadJSONFileTOStruct("settings/lurkers.json", &lurklist)
+
+	for i := len(lurklist.Lurkers) - 1; i >= 0; i-- {
+		if !strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
 			{
-				newLurkList = append(newLurkList, settings.Lurklists[i])
+				newLurkList = append(newLurkList, lurklist.Lurkers[i])
 			}
 		}
 	}
 
-	settings.Lurklists = newLurkList
+	lurklist.Lurkers = newLurkList
+
+	lurkfile, _ := json.MarshalIndent(lurklist, "", "\t")
+	_ = ioutil.WriteFile("settings/lurkers.json", lurkfile, 0644)
 }
 
 func addQuote(userName, attrUser, cleanmsg string) string {

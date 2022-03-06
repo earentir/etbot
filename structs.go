@@ -111,18 +111,18 @@ type Settings struct {
 	} `json:"currency"`
 	Users      []User          `json:"users"`
 	Commands   []Command       `json:"commands"`
-	Lurklists  []LurkerList    `json:"lurklist"`
 	UserLevels []UserLevelList `json:"userlevels"`
 	Pets       []Pet           `json:"pets"`
-	Quotes     []QuoteList     `json:"quotes"`
 }
 
-type UserCommands []struct {
-	UserCmdName    string        `json:"name"`
-	UserCmdType    string        `json:"type"`
-	Messages       []string      `json:"messages"`
-	Alias          []string      `json:"alias"`
-	UserCmdOptions CommandOption `json:"options"`
+type LurkList struct {
+	Lurkers []Lurker `json:"lurklist"`
+}
+
+type Lurker struct {
+	Name    string `json:"name"`
+	Date    int    `json:"date,omitempty"`
+	Message string `json:"message"`
 }
 
 type QuoteList struct {
@@ -188,11 +188,6 @@ type UserLevelList struct {
 	Level    int    `json:"level"`
 	Name     string `json:"name"`
 	Cooldown int    `json:"cooldown"`
-}
-type LurkerList struct {
-	Lurker      string `json:"lurker"`
-	LurkedOn    int    `json:"lurkedon,omitempty"`
-	LurkMessage string `json:"lurkmessage"`
 }
 
 type TMDBSearch struct {
