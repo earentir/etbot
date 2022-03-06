@@ -629,11 +629,27 @@ func getCommand(msg string) string {
 	return cmd
 }
 
+func cleanMessage(msg string) string {
+	var cleanmsg string = ""
+	var cmd string = getCommand(msg)
+	var attrUser string = getAttributedUser(msg, false)
+	var fields []string = strings.Fields(msg)
+
 	if attrUser != "" {
 		cleanmsg = msg[len(cmd)+1+1+len(fields[1])+1+len(attrUser)+1:]
 	} else {
-		cleanmsg = msg[len(cmd)+1+1+len(fields[1])+1:]
+
+		if len(fields) > 1 {
+			if len(msg) >= len(cmd)+1+1+len(fields[1])+1 {
+				cleanmsg = msg[len(cmd)+1+1+len(fields[1])+1:]
+			} else {
+				cleanmsg = msg[len(cmd)+1+1+len(fields[1]):]
+			}
+		}
 	}
+
+	return cleanmsg
+}
 
 func cmdJoke(bb *BasicBot, userName, cmd, msg string) {
 	var (
