@@ -229,21 +229,33 @@ func addQuote(userName, attrUser, cleanmsg string) string {
 		found     bool = false
 	)
 
-	for i := 0; i < len(settings.Quotes); i++ {
-		if settings.Quotes[i].QuotedMessage == cleanmsg {
+func addJoke(userName, attrUser, cleanmsg string) string {
+	var (
+		jokelist JokeList
+		jitem    JokeItem
+		found    bool = false
+	)
+
+	LoadJSONFileTOStruct("settings/jokes.json", &jokelist)
+
+	for i := 0; i < len(jokelist.JokeItems); i++ {
+		if jokelist.JokeItems[i].JokeMessage == cleanmsg {
 			found = true
 		}
 	}
 
 	if !found {
-		quotelist.Quoter = userName
-		quotelist.QuotedMessage = cleanmsg
-		quotelist.AtributedUser = attrUser
-		quotelist.QuoteDate = time.Now().Unix()
-		settings.Quotes = append(settings.Quotes, quotelist)
+		jitem.Jokster = userName
+		jitem.JokeMessage = cleanmsg
+		jitem.AtributedUser = attrUser
+		jitem.JokeDate = time.Now().Unix()
+		jokelist.JokeItems = append(jokelist.JokeItems, jitem)
 	}
 
-	return fmt.Sprintf("Quote from %s. \"%s\" added ", quotelist.Quoter, cleanmsg)
+	jokefile, _ := json.MarshalIndent(jokelist, "", "\t")
+	_ = ioutil.WriteFile("settings/jokes.json", jokefile, 0644)
+
+	return fmt.Sprintf("Joke from %s. \"%s\" added ", userName, cleanmsg)
 }
 
 //add check for duplicates

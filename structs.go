@@ -132,6 +132,17 @@ type QuoteList struct {
 	Quoter        string `json:"quoter"`
 }
 
+type JokeList struct {
+	JokeItems []JokeItem `json:"jokes"`
+}
+
+type JokeItem struct {
+	JokeMessage   string `json:"jokemessage"`
+	JokeDate      int64  `json:"jokedate"`
+	AtributedUser string `json:"attibuteduser"`
+	Jokster       string `json:"jokster"`
+}
+
 type Pet struct {
 	Name      string `json:"name,omitempty"`
 	Pet       int    `json:"pet,omitempty"`
