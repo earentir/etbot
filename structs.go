@@ -167,6 +167,14 @@ type Social struct {
 	Link   string `json:"link"`
 }
 
+type UserCommands []struct {
+	UserCmdName    string        `json:"name"`
+	UserCmdType    string        `json:"type"`
+	Messages       []string      `json:"messages"`
+	Alias          []string      `json:"alias"`
+	UserCmdOptions CommandOption `json:"options"`
+}
+
 type Command struct {
 	CommandName    string        `json:"name"`
 	CommandOptions CommandOption `json:"options"`
