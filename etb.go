@@ -56,10 +56,10 @@ func main() {
 				etb.Start()
 			}
 		} else {
-			//make creds file
+			saveSettings()
 		}
 
 	} else {
-		//make settings file
+		saveSettings()
 	}
 }

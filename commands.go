@@ -290,7 +290,7 @@ func cmdVersion(bb *BasicBot) {
 }
 
 func cmdSocial(bb *BasicBot, cmd string) {
-	botSay(bb, fmt.Sprintf("%s", getUserSocials(settings.General.Twitch.Channel)))
+	botSay(bb, getUserSocials(settings.General.Twitch.Channel))
 }
 
 func cmdProject(bb *BasicBot, cmd, userName, msg string) {
