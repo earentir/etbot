@@ -110,7 +110,6 @@ type Settings struct {
 		CryptoDefault   string `json:"cryptodefault,omitempty"`
 	} `json:"currency"`
 	Users      []User          `json:"users"`
-	Commands   []Command       `json:"commands"`
 	UserLevels []UserLevelList `json:"userlevels"`
 	Pets       []Pet           `json:"pets"`
 }
@@ -175,9 +174,15 @@ type UserCommands []struct {
 	UserCmdOptions CommandOption `json:"options"`
 }
 
+type CommandList struct {
+	Commands []Command `json:"commands"`
+}
+
 type Command struct {
-	CommandName    string        `json:"name"`
-	CommandOptions CommandOption `json:"options"`
+	Name         string        `json:"name"`
+	InternalName string        `json:"internalname"`
+	Alias        []string      `json:"alias"`
+	Options      CommandOption `json:"options"`
 }
 
 type CommandOption struct {

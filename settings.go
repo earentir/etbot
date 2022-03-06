@@ -10,17 +10,15 @@ import (
 )
 
 func getCMDS(userName string) string {
-	cmds := settings.Commands
-	usrcmds := usercommands
 	var allcommands []string
 
-	for _, cm := range cmds {
-		if CMDCanRun(userName, cm.CommandName) {
-			allcommands = append(allcommands, cm.CommandName)
+	for _, cm := range systemcommands.Commands {
+		if CMDCanRun(userName, cm.Name) {
+			allcommands = append(allcommands, cm.Name)
 		}
 	}
 
-	for _, cm := range usrcmds {
+	for _, cm := range usercommands {
 		allcommands = append(allcommands, cm.UserCmdName)
 	}
 
@@ -56,9 +54,9 @@ func getCMDOptions(cmd string) CommandOption {
 			}
 		}
 	} else {
-		for i := 0; i <= len(settings.Commands)-1; i++ {
-			if (cmd == settings.Commands[i].CommandName) || (cmd == settings.Commands[i].CommandOptions.Alias) {
-				commandOption = settings.Commands[i].CommandOptions
+		for i := 0; i <= len(systemcommands.Commands)-1; i++ {
+			if (cmd == systemcommands.Commands[i].Name) || (cmd == systemcommands.Commands[i].Options.Alias) {
+				commandOption = systemcommands.Commands[i].Options
 				cmdFound = true
 			}
 		}
@@ -85,10 +83,10 @@ func setCMDUsed(cmd string) {
 			}
 		}
 	} else {
-		for i := 0; i <= len(settings.Commands)-1; i++ {
-			if (cmd == settings.Commands[i].CommandName) || (cmd == settings.Commands[i].CommandOptions.Alias) {
-				settings.Commands[i].CommandOptions.Lastuse = int(time.Now().Unix())
-				settings.Commands[i].CommandOptions.Counter++
+		for i := 0; i <= len(systemcommands.Commands)-1; i++ {
+			if (cmd == systemcommands.Commands[i].Name) || (cmd == systemcommands.Commands[i].Options.Alias) {
+				systemcommands.Commands[i].Options.Lastuse = int(time.Now().Unix())
+				systemcommands.Commands[i].Options.Counter++
 			}
 		}
 	}

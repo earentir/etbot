@@ -32,6 +32,10 @@ func main() {
 			MsgRate:     time.Duration(settings.General.Twitch.MSGRate),
 		}
 
+		if _, err := os.Stat("settings/systemcommands.json"); err == nil {
+			LoadJSONFileTOStruct("settings/systemcommands.json", &systemcommands)
+		}
+
 		if _, err := os.Stat("settings/usr-cmd.json"); err == nil {
 			LoadJSONFileTOStruct("settings/usr-cmd.json", &usercommands)
 		}

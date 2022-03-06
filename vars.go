@@ -30,5 +30,6 @@ var (
 	settings Settings
 
 	//Store User Commands in memory
-	usercommands UserCommands
+	usercommands   UserCommands
+	systemcommands CommandList
 )
