@@ -207,20 +207,6 @@ func addLurker(userName, cmd, msg string) {
 	_ = ioutil.WriteFile("settings/lurkers.json", lurkfile, 0644)
 }
 
-func isUserLurking(userName string) bool {
-	var arethey bool = false
-	var lurklist LurkList
-
-	LoadJSONFileTOStruct("settings/lurkers.json", &lurklist)
-
-	for i := 0; i < len(lurklist.Lurkers); i++ {
-		if strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
-			arethey = true
-		}
-	}
-	return arethey
-}
-
 func removeLurker(userName string) {
 	var newLurkList []Lurker
 	var lurklist LurkList

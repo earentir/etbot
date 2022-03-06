@@ -722,15 +722,6 @@ func isUsrCmd(cmd string) bool {
 	return found
 }
 
-func usrCmdList() []string {
-	var list []string
-
-	for i := 0; i < len(usercommands); i++ {
-		list = append(list, usercommands[i].UserCmdName)
-	}
-	return list
-}
-
 func usrCmdSay(bb *BasicBot, userName, cmd, msg string) {
 	botSay(bb, usrCmd(userName, cmd, msg))
 }
