@@ -114,6 +114,23 @@ type Settings struct {
 	Pets       []Pet           `json:"pets"`
 }
 
+type UserList struct {
+	Users []User `json:"users"`
+}
+
+type User struct {
+	Name    string   `json:"name"`
+	Nick    string   `json:"nick,omitempty"`
+	Type    string   `json:"type"`
+	Love    string   `json:"love"`
+	Socials []Social `json:"socials"`
+}
+
+type Social struct {
+	SocNet string `json:"socnet"`
+	Link   string `json:"link"`
+}
+
 type LurkList struct {
 	Lurkers []Lurker `json:"lurklist"`
 }
@@ -151,19 +168,6 @@ type Pet struct {
 	Pet       int    `json:"pet,omitempty"`
 	Feed      int    `json:"feed,omitempty"`
 	FeedLimit int    `json:"feedlimit,omitempty"`
-}
-
-type User struct {
-	Name    string   `json:"name"`
-	Nick    string   `json:"nick,omitempty"`
-	Type    string   `json:"type"`
-	Love    string   `json:"love"`
-	Socials []Social `json:"socials"`
-}
-
-type Social struct {
-	SocNet string `json:"socnet"`
-	Link   string `json:"link"`
 }
 
 type UserCommands []struct {
