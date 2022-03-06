@@ -126,6 +126,10 @@ type UserCommands []struct {
 }
 
 type QuoteList struct {
+	QuoteItems []QuoteItem `json:"quotes"`
+}
+
+type QuoteItem struct {
 	QuotedMessage string `json:"quotedmessage"`
 	QuoteDate     int64  `json:"quotedate"`
 	AtributedUser string `json:"attibuteduser"`

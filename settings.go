@@ -226,8 +226,31 @@ func removeLurker(userName string) {
 func addQuote(userName, attrUser, cleanmsg string) string {
 	var (
 		quotelist QuoteList
+		qitem     QuoteItem
 		found     bool = false
 	)
+
+	LoadJSONFileTOStruct("settings/quotes.json", &quotelist)
+
+	for i := 0; i < len(quotelist.QuoteItems); i++ {
+		if quotelist.QuoteItems[i].QuotedMessage == cleanmsg {
+			found = true
+		}
+	}
+
+	if !found {
+		qitem.Quoter = userName
+		qitem.QuotedMessage = cleanmsg
+		qitem.AtributedUser = attrUser
+		qitem.QuoteDate = time.Now().Unix()
+		quotelist.QuoteItems = append(quotelist.QuoteItems, qitem)
+	}
+
+	quotefile, _ := json.MarshalIndent(quotelist, "", "\t")
+	_ = ioutil.WriteFile("settings/quotes.json", quotefile, 0644)
+
+	return fmt.Sprintf("Quote from %s. \"%s\" added ", userName, cleanmsg)
+}
 
 func addJoke(userName, attrUser, cleanmsg string) string {
 	var (
