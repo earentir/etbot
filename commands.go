@@ -562,9 +562,17 @@ func cmdSetting(bb *BasicBot, cmd, userName, msg string) {
 }
 
 func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
-	var cleanmsg string
-	attrUser := getAttributedUser(msg, false)
-	fields := strings.Fields(msg)
+func getCommand(msg string) string {
+	cmdmatch := CommandRegex.FindStringSubmatch(msg)
+	var cmd string = ""
+
+	if len(cmdmatch[0]) > 1 {
+		cmd = cmdmatch[0][1:]
+	} else {
+		cmd = cmdmatch[0]
+	}
+	return cmd
+}
 
 	if attrUser != "" {
 		cleanmsg = msg[len(cmd)+1+1+len(fields[1])+1+len(attrUser)+1:]

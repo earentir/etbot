@@ -21,6 +21,8 @@ var (
 	// command.
 	CmdRegex *regexp.Regexp = regexp.MustCompile(`^!(\w+)\s?(\w+)?`)
 
+	CommandRegex *regexp.Regexp = regexp.MustCompile(`![a-z][^\s]+`)
+
 	// Store credentials from etb-auth.json
 	creds Credentials
 
