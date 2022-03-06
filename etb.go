@@ -19,9 +19,9 @@ func main() {
 		twitchbot.Command("start", "Start Bot", cliTBStart)
 	})
 
-	if _, err := os.Stat("etb-settings.json"); err == nil {
+	if _, err := os.Stat("settings/etb-settings.json"); err == nil {
 
-		LoadJSONFileTOStruct("etb-settings.json", &settings)
+		LoadJSONFileTOStruct("settings/etb-settings.json", &settings)
 
 		etb := BasicBot{
 			Channel:     settings.General.Twitch.Channel,
@@ -32,8 +32,8 @@ func main() {
 			MsgRate:     time.Duration(settings.General.Twitch.MSGRate),
 		}
 
-		if _, err := os.Stat("usr-cmd.json"); err == nil {
-			LoadJSONFileTOStruct("usr-cmd.json", &usercommands)
+		if _, err := os.Stat("settings/usr-cmd.json"); err == nil {
+			LoadJSONFileTOStruct("settings/usr-cmd.json", &usercommands)
 		}
 
 		if _, err := os.Stat(etb.PrivatePath); err == nil {
