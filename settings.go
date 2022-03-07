@@ -37,8 +37,7 @@ func CMDCanRun(userName, cmd string) bool {
 		setCMDUsed(cmd)
 	}
 
-	fmt.Printf("Usr: %s | CMD: %s | Perm: %v\n", userName, cmd, itcan)
-
+	fmt.Printf("usr: %s [%v] | cmd: %s [%v]\nen: %v | time: %v | usrCMD: %v\nperm: %v\n", userName, levelNameTolvl(getUserData(userName).Type), cmd, ourcmdopts.UserLevel, ourcmdopts.Enabled, IsItOnTimeout(cmd, userName), isUsrCmd(cmd), itcan)
 	return itcan
 }
 
@@ -122,12 +121,14 @@ func UserLevel(userName string) UserLevelList {
 		found           int = -1
 	)
 
-	for i := 0; i < len(userlist.Users); i++ {
-		if userName == userlist.Users[i].Name {
-			found = i
-			for _, lvl := range settings.UserLevels {
-				if userlist.Users[i].Type == lvl.Name {
-					userLevelReturn = lvl
+	if len(userlist.Users) > 0 {
+		for i := 0; i < len(userlist.Users); i++ {
+			if userName == userlist.Users[i].Name {
+				found = i
+				for _, lvl := range settings.UserLevels {
+					if userlist.Users[i].Type == lvl.Name {
+						userLevelReturn = lvl
+					}
 				}
 			}
 		}

@@ -353,8 +353,9 @@ func cmdILOVE(bb *BasicBot, cmd, userName, msg string) {
 }
 
 func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
+	fmt.Println("> zo")
 	if isCMD(cmd, msg) {
-		botSay(bb, fmt.Sprintf("%s | Treat: %v(%v)  Petting Minutes: %v", "!zoe pet or !zoe feed or !zoe name", settings.Pets[0].Feed, settings.Pets[0].FeedLimit, settings.Pets[0].Pet))
+		botSay(bb, fmt.Sprintf("!zoe pet or !zoe feed or !zoe name | Treat: %v(%v)  Petting Minutes: %v", settings.Pets[0].Feed, settings.Pets[0].FeedLimit, settings.Pets[0].Pet))
 	} else {
 		cmdFields := strings.Fields(msg)
 		if len(cmdFields) > 1 {
@@ -747,7 +748,6 @@ func usrCmd(userName, cmd, msg string) string {
 
 	//this should be a func
 	if foundCMDIndex > -1 {
-		fmt.Printf("usrCMD: %s\n", usercommands[foundCMDIndex].UserCmdName)
 		rand.Seed(time.Now().UnixNano())
 
 		switch usercommands[foundCMDIndex].UserCmdType {
