@@ -109,7 +109,7 @@ type Settings struct {
 		CurrencyTo      string `json:"to,omitempty"`
 		CryptoDefault   string `json:"cryptodefault,omitempty"`
 	} `json:"currency"`
-	Users      []User          `json:"users"`
+	// Users      []User          `json:"users"`
 	UserLevels []UserLevelList `json:"userlevels"`
 	Pets       []Pet           `json:"pets"`
 }

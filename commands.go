@@ -311,12 +311,12 @@ func cmdUPDSoc(bb *BasicBot, cmd, userName, msg string) {
 		} else {
 			fields := strings.Fields(msg[len(cmd)+2:])
 			if len(fields) == 3 {
-				for i := 0; i < len(settings.Users); i++ {
-					if settings.Users[i].Name == strings.ToLower(fields[0][1:]) {
+				for i := 0; i < len(userlist.Users); i++ {
+					if userlist.Users[i].Name == strings.ToLower(fields[0][1:]) {
 						var socexists = false
-						for j := 0; j < len(settings.Users[i].Socials); j++ {
-							if settings.Users[i].Socials[j].SocNet == fields[1] {
-								settings.Users[i].Socials[j].Link = fields[2]
+						for j := 0; j < len(userlist.Users[i].Socials); j++ {
+							if userlist.Users[i].Socials[j].SocNet == fields[1] {
+								userlist.Users[i].Socials[j].Link = fields[2]
 								botSay(bb, fmt.Sprintf("%s's %s profile is now %s", fields[0][1:], fields[1], fields[2]))
 								socexists = true
 							}
@@ -325,7 +325,7 @@ func cmdUPDSoc(bb *BasicBot, cmd, userName, msg string) {
 						if !socexists {
 							socs.SocNet = fields[1]
 							socs.Link = fields[2]
-							settings.Users[i].Socials = append(settings.Users[i].Socials, socs)
+							userlist.Users[i].Socials = append(userlist.Users[i].Socials, socs)
 							botSay(bb, fmt.Sprintf("%s's %s profile is now %s", fields[0][1:], fields[1], fields[2]))
 						}
 					}
@@ -343,10 +343,10 @@ func cmdILOVE(bb *BasicBot, cmd, userName, msg string) {
 	if isCMD(cmd, msg) {
 		botSay(bb, "Add what you love and it will be included in your SO, ex. !love coffee")
 	} else {
-		for i := 0; i < len(settings.Users); i++ {
-			if strings.EqualFold(settings.Users[i].Name, userName) || strings.EqualFold(settings.Users[i].Nick, userName) {
-				settings.Users[i].Love = msg[len(cmd)+2:]
-				botSay(bb, fmt.Sprintf("You love %s, thank you for letting me know.", settings.Users[i].Love))
+		for i := 0; i < len(userlist.Users); i++ {
+			if strings.EqualFold(userlist.Users[i].Name, userName) || strings.EqualFold(userlist.Users[i].Nick, userName) {
+				userlist.Users[i].Love = msg[len(cmd)+2:]
+				botSay(bb, fmt.Sprintf("You love %s, thank you for letting me know.", userlist.Users[i].Love))
 			}
 		}
 	}

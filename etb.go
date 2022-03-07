@@ -36,6 +36,10 @@ func main() {
 			LoadJSONFileTOStruct("settings/systemcommands.json", &systemcommands)
 		}
 
+		if _, err := os.Stat("settings/etb-users.json"); err == nil {
+			LoadJSONFileTOStruct("settings/etb-users.json", &userlist)
+		}
+
 		if _, err := os.Stat("settings/usr-cmd.json"); err == nil {
 			LoadJSONFileTOStruct("settings/usr-cmd.json", &usercommands)
 		}

@@ -93,10 +93,9 @@ func setCMDUsed(cmd string) {
 }
 
 func getUserSocials(userName string) string {
-	setusers := settings.Users
 	var found string
 
-	for _, usr := range setusers {
+	for _, usr := range userlist.Users {
 		if usr.Name == userName {
 			for _, k := range usr.Socials {
 				found = found + k.Link + " "
@@ -109,8 +108,7 @@ func getUserSocials(userName string) string {
 func SearchUser(userName string) bool {
 	var found bool = false
 
-	setusers := settings.Users
-	for _, usr := range setusers {
+	for _, usr := range userlist.Users {
 		if userName == usr.Name {
 			found = true
 		}
@@ -124,11 +122,11 @@ func UserLevel(userName string) UserLevelList {
 		found           int = -1
 	)
 
-	for i := 0; i < len(settings.Users); i++ {
-		if userName == settings.Users[i].Name {
+	for i := 0; i < len(userlist.Users); i++ {
+		if userName == userlist.Users[i].Name {
 			found = i
 			for _, lvl := range settings.UserLevels {
-				if settings.Users[i].Type == lvl.Name {
+				if userlist.Users[i].Type == lvl.Name {
 					userLevelReturn = lvl
 				}
 			}
@@ -166,9 +164,9 @@ func lvlToLevelName(lvl int) string {
 
 func getUserData(userName string) User {
 	var outUser User
-	for i := 0; i < len(settings.Users); i++ {
-		if strings.EqualFold(settings.Users[i].Name, userName) {
-			outUser = settings.Users[i]
+	for i := 0; i < len(userlist.Users); i++ {
+		if strings.EqualFold(userlist.Users[i].Name, userName) {
+			outUser = userlist.Users[i]
 		}
 	}
 	return outUser
@@ -293,8 +291,8 @@ func addUser(userToAdd, UserType string) string {
 		msgOut  string = ""
 	)
 
-	for i := 0; i < len(settings.Users); i++ {
-		if userToAdd == settings.Users[i].Name {
+	for i := 0; i < len(userlist.Users); i++ {
+		if userToAdd == userlist.Users[i].Name {
 			found = true
 		}
 	}
@@ -303,7 +301,7 @@ func addUser(userToAdd, UserType string) string {
 		newUser.Name = userToAdd
 		newUser.Type = UserType
 
-		settings.Users = append(settings.Users, newUser)
+		userlist.Users = append(userlist.Users, newUser)
 		msgOut = fmt.Sprintf("User %s was added as a %s", userToAdd, UserType)
 	} else {
 		msgOut = fmt.Sprintf("User %s already exists", userToAdd)
@@ -320,9 +318,9 @@ func delUser(userToDelete string) string {
 		found       bool   = false
 	)
 
-	for i := len(settings.Users) - 1; i >= 0; i-- {
-		if !strings.EqualFold(userToDelete, settings.Users[i].Name) {
-			newUserList = append(newUserList, settings.Users[i])
+	for i := len(userlist.Users) - 1; i >= 0; i-- {
+		if !strings.EqualFold(userToDelete, userlist.Users[i].Name) {
+			newUserList = append(newUserList, userlist.Users[i])
 		} else {
 			found = true
 		}
@@ -334,6 +332,6 @@ func delUser(userToDelete string) string {
 		msgOut = fmt.Sprintf("User %s not found, nothing deleted", userToDelete)
 	}
 
-	settings.Users = newUserList
+	userlist.Users = newUserList
 	return msgOut
 }

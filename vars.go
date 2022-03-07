@@ -32,4 +32,5 @@ var (
 	//Store User Commands in memory
 	usercommands   UserCommands
 	systemcommands CommandList
+	userlist       UserList
 )
