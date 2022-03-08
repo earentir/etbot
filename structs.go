@@ -111,7 +111,18 @@ type Settings struct {
 	} `json:"currency"`
 	// Users      []User          `json:"users"`
 	UserLevels []UserLevelList `json:"userlevels"`
-	Pets       []Pet           `json:"pets"`
+	// Pets       []Pet           `json:"pets"`
+}
+
+type PetList struct {
+	Pets []Pet
+}
+
+type Pet struct {
+	Name      string `json:"name,omitempty"`
+	Pet       int    `json:"pet,omitempty"`
+	Feed      int    `json:"feed,omitempty"`
+	FeedLimit int    `json:"feedlimit,omitempty"`
 }
 
 type UserList struct {
@@ -161,13 +172,6 @@ type JokeItem struct {
 	JokeDate      int64  `json:"jokedate"`
 	AtributedUser string `json:"attibuteduser"`
 	Jokster       string `json:"jokster"`
-}
-
-type Pet struct {
-	Name      string `json:"name,omitempty"`
-	Pet       int    `json:"pet,omitempty"`
-	Feed      int    `json:"feed,omitempty"`
-	FeedLimit int    `json:"feedlimit,omitempty"`
 }
 
 type UserCommands []struct {

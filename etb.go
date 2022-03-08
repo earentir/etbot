@@ -44,6 +44,10 @@ func main() {
 			LoadJSONFileTOStruct("settings/usr-cmd.json", &usercommands)
 		}
 
+		if _, err := os.Stat("settings/pets.json"); err == nil {
+			LoadJSONFileTOStruct("settings/pets.json", &petlist)
+		}
+
 		if _, err := os.Stat(etb.PrivatePath); err == nil {
 			LoadJSONFileTOStruct(etb.PrivatePath, &creds)
 

@@ -33,4 +33,5 @@ var (
 	usercommands   UserCommands
 	systemcommands CommandList
 	userlist       UserList
+	petlist        PetList
 )
