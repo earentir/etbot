@@ -89,6 +89,7 @@ type Settings struct {
 	} `json:"general"`
 	Servers struct {
 		WebServers struct {
+			Enabled bool `json:"enabled"`
 			Spotify struct {
 				Currentlyplaying bool `json:"currentlyplaying,omitempty"`
 			} `json:"spotify"`

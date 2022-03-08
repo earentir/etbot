@@ -60,6 +60,10 @@ func main() {
 				os.Exit(1)
 			}()
 
+			if settings.Servers.WebServers.Enabled {
+				go startWebServer()
+			}
+
 			if settings.Servers.BotServers.Chat {
 				etb.Start()
 			}
