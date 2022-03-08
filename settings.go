@@ -74,18 +74,20 @@ func getCMDOptions(cmd string) CommandOption {
 }
 
 func setCMDUsed(cmd string) {
-	if isUsrCmd(cmd) {
-		for i := 0; i <= len(usercommands)-1; i++ {
-			if (cmd == usercommands[i].UserCmdName) || isUsrCmdAlias(i, cmd) {
-				usercommands[i].UserCmdOptions.Lastuse = int(time.Now().Unix())
-				usercommands[i].UserCmdOptions.Counter++
+	if cmd != "commands" {
+		if isUsrCmd(cmd) {
+			for i := 0; i <= len(usercommands)-1; i++ {
+				if (cmd == usercommands[i].UserCmdName) || isUsrCmdAlias(i, cmd) {
+					usercommands[i].UserCmdOptions.Lastuse = int(time.Now().Unix())
+					usercommands[i].UserCmdOptions.Counter++
+				}
 			}
-		}
-	} else {
-		for i := 0; i <= len(systemcommands.Commands)-1; i++ {
-			if (cmd == systemcommands.Commands[i].Name) || (cmd == systemcommands.Commands[i].Options.Alias) {
-				systemcommands.Commands[i].Options.Lastuse = int(time.Now().Unix())
-				systemcommands.Commands[i].Options.Counter++
+		} else {
+			for i := 0; i <= len(systemcommands.Commands)-1; i++ {
+				if (cmd == systemcommands.Commands[i].Name) || (cmd == systemcommands.Commands[i].Options.Alias) {
+					systemcommands.Commands[i].Options.Lastuse = int(time.Now().Unix())
+					systemcommands.Commands[i].Options.Counter++
+				}
 			}
 		}
 	}
