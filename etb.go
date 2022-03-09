@@ -34,8 +34,6 @@ func main() {
 
 		if _, err := os.Stat("settings/systemcommands.json"); err == nil {
 			LoadJSONFileTOStruct("settings/systemcommands.json", &systemcommands)
-		} else {
-
 		}
 
 		if _, err := os.Stat("settings/etb-users.json"); err == nil {
@@ -65,6 +63,8 @@ func main() {
 			if settings.Servers.WebServers.Enabled {
 				go startWebServer()
 			}
+
+			getDaysOff("DE", "")
 
 			if settings.Servers.BotServers.Chat {
 				etb.Start()
