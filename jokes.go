@@ -5,14 +5,6 @@ import (
 	"fmt"
 )
 
-type jokes struct {
-	JOKE struct {
-		BOFHline string `json:"bofhline,omitempty"`
-		Q        string `json:"q,omitempty"`
-		A        string `json:"a,omitempty"`
-	} `json:"joke"`
-}
-
 func JokesAPI(msg string) []string {
 	jokejson := jokes{}
 	var retuarr []string
