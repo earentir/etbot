@@ -46,6 +46,7 @@ type Credentials struct {
 	OpenWeatherAPIKey  string `json:"openweathermapapi,omitempty"`
 	CurrencyAPIKey     string `json:"currconvapi,omitempty"`
 	TMDBToken          string `json:"tmdb_token,omitempty"`
+	Calendarific       string `json:"calendarific_token,omitempty"`
 }
 
 type TwitchUserData []struct {
@@ -341,4 +342,92 @@ type BinanceData struct {
 	Symbol             string `json:"symbol"`
 	Volume             string `json:"volume"`
 	WeightedAvgPrice   string `json:"weightedAvgPrice"`
+}
+
+type openweathermap struct {
+	Coord struct {
+		Lon float64 `json:"lon"`
+		Lat float64 `json:"lat"`
+	} `json:"coord"`
+	Weather []struct {
+		ID          int    `json:"id"`
+		Main        string `json:"main"`
+		Description string `json:"description"`
+		Icon        string `json:"icon"`
+	} `json:"weather"`
+	Base string `json:"base"`
+	Main struct {
+		Temp      float64 `json:"temp"`
+		FeelsLike float64 `json:"feels_like"`
+		TempMin   float64 `json:"temp_min"`
+		TempMax   float64 `json:"temp_max"`
+		Pressure  int     `json:"pressure"`
+		Humidity  int     `json:"humidity"`
+	} `json:"main"`
+	Visibility int `json:"visibility"`
+	Wind       struct {
+		Speed float64 `json:"speed"`
+		Deg   int     `json:"deg"`
+	} `json:"wind"`
+	Clouds struct {
+		All int `json:"all"`
+	} `json:"clouds"`
+	Dt  int `json:"dt"`
+	Sys struct {
+		Type    int     `json:"type"`
+		ID      int     `json:"id"`
+		Message float64 `json:"message"`
+		Country string  `json:"country"`
+		Sunrise int     `json:"sunrise"`
+		Sunset  int     `json:"sunset"`
+	} `json:"sys"`
+	Timezone int    `json:"timezone"`
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	Cod      int    `json:"cod"`
+}
+
+type jokes struct {
+	JOKE struct {
+		BOFHline string `json:"bofhline,omitempty"`
+		Q        string `json:"q,omitempty"`
+		A        string `json:"a,omitempty"`
+	} `json:"joke"`
+}
+
+type DaysOfF struct {
+	Meta struct {
+		Code int `json:"code"`
+	} `json:"meta"`
+	Response struct {
+		Holidays []struct {
+			Country struct {
+				ID   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"country"`
+			Date struct {
+				Datetime struct {
+					Day    int `json:"day"`
+					Hour   int `json:"hour"`
+					Minute int `json:"minute"`
+					Month  int `json:"month"`
+					Second int `json:"second"`
+					Year   int `json:"year"`
+				} `json:"datetime"`
+				Iso      string `json:"iso"`
+				Timezone struct {
+					Offset          string `json:"offset"`
+					Zoneabb         string `json:"zoneabb"`
+					Zonedst         int    `json:"zonedst"`
+					Zoneoffset      int    `json:"zoneoffset"`
+					Zonetotaloffset int    `json:"zonetotaloffset"`
+				} `json:"timezone"`
+			} `json:"date"`
+			Description string   `json:"description"`
+			Locations   string   `json:"locations"`
+			Name        string   `json:"name"`
+			States      string   `json:"states"`
+			Type        []string `json:"type"`
+		} `json:"holidays"`
+	} `json:"response"`
 }
