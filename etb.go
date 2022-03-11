@@ -64,8 +64,6 @@ func main() {
 				go startWebServer()
 			}
 
-			getDaysOff("DE", "")
-
 			if settings.Servers.BotServers.Chat {
 				etb.Start()
 			}
