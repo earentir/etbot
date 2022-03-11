@@ -655,10 +655,12 @@ func getCommand(msg string) string {
 }
 
 func cleanMessage(msg string) string {
-	var cleanmsg string = ""
-	var cmd string = getCommand(msg)
-	var attrUser string = getAttributedUser(msg, false)
-	var fields []string = strings.Fields(msg)
+	var (
+		cleanmsg string   = ""
+		cmd      string   = getCommand(msg)
+		attrUser string   = getAttributedUser(msg, false)
+		fields   []string = strings.Fields(msg)
+	)
 
 	if attrUser != "" {
 		cleanmsg = msg[len(cmd)+1+1+len(fields[1])+1+len(attrUser)+1:]
