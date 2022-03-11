@@ -345,3 +345,15 @@ func delUser(userToDelete string) string {
 
 	return msgOut
 }
+
+func getUserSocial(socnet string) string {
+	user := getUserData(settings.General.Twitch.Channel)
+	var outMessage string = ""
+	for i := 0; i < len(user.Socials); i++ {
+		if strings.EqualFold(socnet, user.Socials[i].SocNet) {
+			outMessage = user.Socials[i].Link
+		}
+	}
+
+	return outMessage
+}

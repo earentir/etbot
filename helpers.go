@@ -193,3 +193,82 @@ func tzNow(locationToLookup string) string {
 
 	return outMsg
 }
+
+func progressbar(percent float64) string {
+	var equals int = int(percent / 10)
+	var msgOUt string = ""
+
+	for i := 0; i < 10; i++ {
+		if i <= equals {
+			msgOUt = msgOUt + "="
+		} else {
+			msgOUt = msgOUt + "-"
+		}
+	}
+
+	return msgOUt
+}
+
+func isUsrCmd(cmd string) bool {
+	var found bool = false
+	for i := 0; i < len(usercommands); i++ {
+		if usercommands[i].UserCmdName == cmd || isUsrCmdAlias(i, cmd) {
+			found = true
+		}
+	}
+
+	if !found {
+		if getUserSocial(cmd) != "" {
+			found = true
+		}
+	}
+
+	return found
+}
+
+func isUsrCmdAlias(index int, cmd string) bool {
+	var found bool = false
+	for i := 0; i < len(usercommands[index].Alias); i++ {
+		if usercommands[index].Alias[i] == cmd {
+			found = true
+		}
+	}
+
+	return found
+}
+
+func cleanMessage(msg string) string {
+	var (
+		cleanmsg string   = ""
+		cmd      string   = getCommand(msg)
+		attrUser string   = getAttributedUser(msg, false)
+		fields   []string = strings.Fields(msg)
+	)
+
+	if attrUser != "" {
+		cleanmsg = msg[len(cmd)+1+1+len(fields[1])+1+len(attrUser)+1:]
+	} else {
+		if len(fields) > 1 {
+			if len(msg) >= len(cmd)+1+1+len(fields[1])+1 {
+				cleanmsg = msg[len(cmd)+1+1+len(fields[1])+1:]
+			} else {
+				cleanmsg = msg[len(cmd)+1+1+len(fields[1]):]
+			}
+		}
+	}
+
+	return cleanmsg
+}
+
+func getCommand(msg string) string {
+	cmdmatch := CommandRegex.FindStringSubmatch(msg)
+	var cmd string = ""
+
+	if len(cmdmatch[0]) > 1 {
+		cmd = cmdmatch[0][1:]
+	} else {
+		cmd = cmdmatch[0]
+	}
+	return cmd
+}
+
