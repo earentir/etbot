@@ -345,6 +345,9 @@ func cmdUPDSoc(bb *BasicBot, cmd, userName, msg string) {
 							userlist.Users[i].Socials = append(userlist.Users[i].Socials, socs)
 							botSay(bb, fmt.Sprintf("%s's %s profile is now %s", fields[0][1:], fields[1], fields[2]))
 						}
+
+						userfile, _ := json.MarshalIndent(userlist, "", "\t")
+						_ = ioutil.WriteFile("settings/etb-users.json", userfile, 0644)
 					}
 				}
 			} else {

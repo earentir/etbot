@@ -287,7 +287,7 @@ func addJoke(userName, attrUser, cleanmsg string) string {
 }
 
 //add check for duplicates
-func addUser(userToAdd, UserType string) string {
+func addUser(userToAdd, userType string) string {
 	var (
 		found   bool = false
 		newUser User
@@ -301,14 +301,17 @@ func addUser(userToAdd, UserType string) string {
 	}
 
 	if !found {
-		newUser.Name = userToAdd
-		newUser.Type = UserType
+		newUser.Name = strings.ToLower(userToAdd)
+		newUser.Type = strings.ToLower(userType)
 
 		userlist.Users = append(userlist.Users, newUser)
-		msgOut = fmt.Sprintf("User %s was added as a %s", userToAdd, UserType)
+		msgOut = fmt.Sprintf("User %s was added as a %s", userToAdd, userType)
 	} else {
 		msgOut = fmt.Sprintf("User %s already exists", userToAdd)
 	}
+
+	userfile, _ := json.MarshalIndent(userlist, "", "\t")
+	_ = ioutil.WriteFile("settings/etb-users.json", userfile, 0644)
 
 	return msgOut
 }
@@ -336,5 +339,9 @@ func delUser(userToDelete string) string {
 	}
 
 	userlist.Users = newUserList
+
+	userfile, _ := json.MarshalIndent(userlist, "", "\t")
+	_ = ioutil.WriteFile("settings/etb-users.json", userfile, 0644)
+
 	return msgOut
 }
