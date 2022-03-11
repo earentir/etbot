@@ -15,7 +15,6 @@ import (
 
 func botSay(bb *BasicBot, msg string) {
 	if settings.Servers.BotServers.AllowedToSay {
-
 		if len(msg) > 500 {
 			quo := len(msg) / 500
 			rem := len(msg) % 500
@@ -47,8 +46,10 @@ func cmdHi(bb *BasicBot, userName, cmd, msg string) {
 }
 
 func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
-	var jokes []string
-	var jkstr string
+	var (
+		jokes []string
+		jkstr string
+	)
 
 	if cmd == "yoke" {
 		cmd = "joke"
@@ -116,8 +117,7 @@ func cmdUnlurk(bb *BasicBot, userName string) {
 }
 
 func cmdExchange(bb *BasicBot, msg string) {
-	fields := strings.Fields(strings.ToUpper(msg))
-
+	var fields []string = strings.Fields(strings.ToUpper(msg))
 	var petFound bool = false
 
 	for _, j := range fields {
@@ -129,15 +129,15 @@ func cmdExchange(bb *BasicBot, msg string) {
 	if !petFound {
 		switch len(fields) {
 		case 1:
-			botSay(bb, CurrencyConversion(settings.Curency.DefaultCurrency, settings.Curency.CurrencyTo, 1))
+			botSay(bb, CurrencyConversion(settings.API.Curency.DefaultCurrency, settings.API.Curency.CurrencyTo, 1))
 
 		case 2:
 			amount, err := strconv.ParseFloat(fields[1], 64)
 			if err != nil {
-				msgOut := CurrencyConversion(settings.Curency.DefaultCurrency, fields[0], 1)
+				msgOut := CurrencyConversion(settings.API.Curency.DefaultCurrency, fields[0], 1)
 				botSay(bb, msgOut)
 			} else {
-				msgOut := CurrencyConversion(settings.Curency.DefaultCurrency, settings.Curency.CurrencyTo, amount)
+				msgOut := CurrencyConversion(settings.API.Curency.DefaultCurrency, settings.API.Curency.CurrencyTo, amount)
 				botSay(bb, msgOut)
 			}
 
@@ -147,7 +147,7 @@ func cmdExchange(bb *BasicBot, msg string) {
 				msgOut := CurrencyConversion(fields[1], fields[2], 1)
 				botSay(bb, msgOut)
 			} else {
-				msgOut := CurrencyConversion(settings.Curency.DefaultCurrency, fields[2], amount)
+				msgOut := CurrencyConversion(settings.API.Curency.DefaultCurrency, fields[2], amount)
 				botSay(bb, msgOut)
 			}
 
@@ -163,7 +163,7 @@ func cmdExchange(bb *BasicBot, msg string) {
 
 func cmdWeather(bb *BasicBot, cmd, msg string) {
 	if isCMD(cmd, msg) {
-		botSay(bb, getWeather(settings.Weather.DefaultCity))
+		botSay(bb, getWeather(settings.API.Weather.DefaultCity))
 	} else {
 		if isAttr(msg) {
 			msgOut := getWeather(getCleanMessage(cmd, msg)) + " " + getAttributedUser(msg, true)
@@ -506,7 +506,7 @@ func cmdCryptoExchange(bb *BasicBot, cmd, userName, msg string) {
 		var marketData BinanceData
 		switch len(fields) {
 		case 2:
-			from := settings.Curency.CryptoDefault
+			from := settings.API.Curency.CryptoDefault
 			to := fields[1]
 			marketData = getCCJSON(from, to)
 			lastprice, _ := strconv.ParseFloat(marketData.LastPrice, 64)
@@ -817,13 +817,13 @@ func cmdDaysOff(bb *BasicBot, cmd, userName, msg string) {
 		daysoffStr string = ""
 		outMessage string = ""
 		country    string = ""
-		daysahead  int    = settings.Calendar.DaysAhead
+		daysahead  int    = settings.API.Calendar.DaysAhead
 	)
 	fields := strings.Fields(msg)
 
 	if isCMD(cmd, msg) {
-		country = settings.Calendar.Country
-		daysahead = settings.Calendar.DaysAhead
+		country = settings.API.Calendar.Country
+		daysahead = settings.API.Calendar.DaysAhead
 	} else {
 		if len(fields[1]) != 2 {
 			botSay(bb, "Please use ISO 3166 country format, ex. !daysoff GR")
@@ -831,7 +831,7 @@ func cmdDaysOff(bb *BasicBot, cmd, userName, msg string) {
 			country = fields[1]
 			switch len(fields) {
 			case 2:
-				daysahead = settings.Calendar.DaysAhead
+				daysahead = settings.API.Calendar.DaysAhead
 			case 3:
 				days, _ := strconv.ParseInt(fields[2], 10, 64)
 
