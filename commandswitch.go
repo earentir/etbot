@@ -2,11 +2,22 @@ package main
 
 import (
 	"fmt"
+	"strconv"
+	"time"
 )
 
 func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 	switch msgType {
 	case "PRIVMSG":
+
+		if settings.Servers.BotServers.Log {
+			var newmessage ChatMessage
+			newmessage.Date = strconv.Itoa(int(time.Now().Unix()))
+			newmessage.User = userName
+			newmessage.Message = msg
+
+			chatlog.ChatMessages = append(chatlog.ChatMessages, newmessage)
+		}
 
 		CPrint("c", fmt.Sprintf("[%s] %s: %s\n", timeStamp(), userName, msg))
 		// parse commands from user message

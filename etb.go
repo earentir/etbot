@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -50,6 +51,9 @@ func main() {
 
 		if _, err := os.Stat(etb.PrivatePath); err == nil {
 			LoadJSONFileTOStruct(etb.PrivatePath, &creds)
+
+			chatlog.Channel = settings.General.Twitch.Channel
+			chatlog.Date = strconv.Itoa(int(time.Now().Unix()))
 
 			//ffs we catch oob interupt, cause he keeps ctrl+c
 			c := make(chan os.Signal)

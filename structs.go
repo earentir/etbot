@@ -64,7 +64,8 @@ type Settings struct {
 		} `json:"web"`
 		BotServers struct {
 			Chat         bool `json:"chat"`
-			AllowedToSay bool `json:"allowedtosay"`
+			SendMessages bool `json:"sendmessages"`
+			Log          bool `json:"log"`
 		} `json:"bot"`
 	} `json:"servers"`
 	API struct {
@@ -438,13 +439,18 @@ type DaysOfF struct {
 	} `json:"response"`
 }
 
-type Chat struct {
-	Channel      string        `json:"channel"`
-	Date         string        `json:"date"`
-	ChatMessages []ChatMessage `json:"chatmessages"`
+type ChatLog struct {
+	Channel       string        `json:"channel"`
+	BroadcasterID string        `json:"broadcaster_id"`
+	Date          string        `json:"date"`
+	GameID        string        `json:"game_id"`
+	GameName      string        `json:"game_name"`
+	StreamTitle   string        `json:"title"`
+	ChatMessages  []ChatMessage `json:"chatmessages"`
 }
 
 type ChatMessage struct {
 	Date    string `json:"date"`
+	User    string `json:"user"`
 	Message string `json:"message"`
 }

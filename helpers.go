@@ -128,6 +128,9 @@ func saveSettings() {
 
 	usrcmdfile, _ := json.MarshalIndent(usercommands, "", "\t")
 	_ = ioutil.WriteFile("settings/usr-cmd.json", usrcmdfile, 0644)
+
+	chatlogfile, _ := json.MarshalIndent(chatlog, "", "\t")
+	_ = ioutil.WriteFile("chatlog.json", chatlogfile, 0644)
 }
 
 func cleanup() {
