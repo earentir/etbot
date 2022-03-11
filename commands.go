@@ -15,7 +15,20 @@ import (
 
 func botSay(bb *BasicBot, msg string) {
 	if settings.Servers.BotServers.AllowedToSay {
-		bb.Say(msg)
+
+		if len(msg) > 500 {
+			quo := len(msg) / 500
+			rem := len(msg) % 500
+
+			for i := 0; i < quo; i++ {
+				bb.Say(msg[i*500 : (i+1)*500])
+			}
+
+			if rem > 0 {
+				bb.Say(msg[quo*500:])
+			}
+
+		}
 	} else {
 		fmt.Println(msg)
 	}
