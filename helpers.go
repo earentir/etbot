@@ -157,7 +157,7 @@ func limitOverview(overview string) string {
 }
 
 func timeZone(location string) string {
-	locs := []string{"Europe", "Africa", "America", "Asia", "Atlantic", "Australia", "Brazil", "Canada", "Indian", "US"}
+	locs := []string{"", "Europe", "Africa", "America", "Asia", "Atlantic", "Australia", "Brazil", "Canada", "Indian", "US"}
 	var tme string
 	var msgOut string
 	var newloc string
@@ -167,12 +167,16 @@ func timeZone(location string) string {
 	} else {
 		for _, l := range locs {
 			fields := strings.Fields(location)
-			if len(fields) > 1 {
-				newloc = l + "/" + strings.Title(strings.ToLower(fields[0])) + "_" + strings.Title(strings.ToLower(fields[1]))
-			} else {
-				newloc = l + "/" + strings.Title(strings.ToLower(location))
-			}
 
+			if l == "" {
+				newloc = location
+			} else {
+				if len(fields) > 1 {
+					newloc = l + "/" + strings.Title(strings.ToLower(fields[0])) + "_" + strings.Title(strings.ToLower(fields[1]))
+				} else {
+					newloc = l + "/" + strings.Title(strings.ToLower(location))
+				}
+			}
 			tme = tzNow(newloc)
 			if tme != "" {
 				msgOut = tme
