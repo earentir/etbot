@@ -796,3 +796,46 @@ func cmdYear(bb *BasicBot, cmd, userName, msg string) {
 
 	botSay(bb, fmt.Sprintf("It is day %v of %v (%v days), We have used %2.2f%% of the year till now.\n", currentDay, time.Time.Year(time.Now()), totalDays, currentPercent))
 }
+
+func cmdDaysOff(bb *BasicBot, cmd, userName, msg string) {
+	var (
+		daysoffStr string = ""
+		outMessage string = ""
+		country    string = ""
+		daysahead  int    = settings.Calendar.DaysAhead
+	)
+	fields := strings.Fields(msg)
+
+	if isCMD(cmd, msg) {
+		country = settings.Calendar.Country
+		daysahead = settings.Calendar.DaysAhead
+	} else {
+		if len(fields[1]) != 2 {
+			botSay(bb, "Please use ISO 3166 country format, ex. !daysoff GR")
+		} else {
+			country = fields[1]
+			switch len(fields) {
+			case 2:
+				daysahead = settings.Calendar.DaysAhead
+			case 3:
+				days, _ := strconv.ParseInt(fields[2], 10, 64)
+
+				if days > 14 {
+					days = 14
+				}
+
+				daysahead = int(days)
+			}
+
+		}
+	}
+
+	daysoffStr = getDaysOff(country, daysahead)
+
+	if len(daysoffStr) > 1 {
+		outMessage = fmt.Sprintf("In the next %v days these are these days off in %s: %s", daysahead, country, daysoffStr)
+		botSay(bb, outMessage)
+	} else {
+		botSay(bb, fmt.Sprintf("No Days Off found in the next %v days for %s", daysahead, country))
+	}
+}

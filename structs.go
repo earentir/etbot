@@ -111,6 +111,10 @@ type Settings struct {
 		CurrencyTo      string `json:"to,omitempty"`
 		CryptoDefault   string `json:"cryptodefault,omitempty"`
 	} `json:"currency"`
+	Calendar struct {
+		Country   string `json:"country"`
+		DaysAhead int    `josn:"daysahead"`
+	}
 	UserLevels []UserLevelList `json:"userlevels"`
 }
 
@@ -426,8 +430,8 @@ type DaysOfF struct {
 			Description string   `json:"description"`
 			Locations   string   `json:"locations"`
 			Name        string   `json:"name"`
-			States      string   `json:"states"`
 			Type        []string `json:"type"`
+			//States      string   `json:"states"`
 		} `json:"holidays"`
 	} `json:"response"`
 }
