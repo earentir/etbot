@@ -28,6 +28,8 @@ func botSay(bb *BasicBot, msg string) {
 				bb.Say(msg[quo*500:])
 			}
 
+		} else {
+			bb.Say(msg)
 		}
 	} else {
 		fmt.Println(msg)
