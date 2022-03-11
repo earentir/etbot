@@ -235,27 +235,29 @@ func isUsrCmdAlias(index int, cmd string) bool {
 	return found
 }
 
-func cleanMessage(msg string) string {
+func getCleanMessage(msg string) string {
 	var (
-		cleanmsg string   = ""
-		cmd      string   = getCommand(msg)
-		attrUser string   = getAttributedUser(msg, false)
-		fields   []string = strings.Fields(msg)
+		cmd       string = getCommand(msg)
+		msgOut    string = ""
+		attrUser  string = ""
+		cmdIndex  int    = strings.Index(msg, cmd)
+		attrIndex int    = 0
 	)
 
-	if attrUser != "" {
-		cleanmsg = msg[len(cmd)+1+1+len(fields[1])+1+len(attrUser)+1:]
+	if len(cmd) >= 1 {
+		msgOut = msg[cmdIndex+len(cmd)+1:]
 	} else {
-		if len(fields) > 1 {
-			if len(msg) >= len(cmd)+1+1+len(fields[1])+1 {
-				cleanmsg = msg[len(cmd)+1+1+len(fields[1])+1:]
-			} else {
-				cleanmsg = msg[len(cmd)+1+1+len(fields[1]):]
-			}
-		}
+		msgOut = msg
 	}
 
-	return cleanmsg
+	attrUser = getAttributedUser(msgOut, false)
+	attrIndex = strings.Index(msgOut, attrUser)
+
+	if len(attrUser) > 0 {
+		msgOut = msgOut[attrIndex+len(attrUser)+1:]
+	}
+
+	return msgOut
 }
 
 func getCommand(msg string) string {
@@ -263,11 +265,14 @@ func getCommand(msg string) string {
 
 	var cmd string = ""
 
-	if len(cmdmatch[0]) > 1 {
-		cmd = cmdmatch[0][1:]
-	} else {
-		cmd = cmdmatch[0]
+	if len(cmdmatch) > 0 {
+		if len(cmdmatch[0]) > 0 {
+			cmd = cmdmatch[0][1:]
+		} else {
+			cmd = cmdmatch[0]
+		}
 	}
+
 	return cmd
 }
 

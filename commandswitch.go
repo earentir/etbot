@@ -21,9 +21,9 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 
 		CPrint("c", fmt.Sprintf("[%s] %s: %s\n", timeStamp(), userName, msg))
 		// parse commands from user message
-		cmdMatches := CmdRegex.FindStringSubmatch(msg)
-		if nil != cmdMatches {
-			cmd := cmdMatches[1]
+		cmdMatch := CommandRegex.FindStringSubmatch(msg)
+		if nil != cmdMatch {
+			cmd := cmdMatch[0][1:]
 			if CMDCanRun(userName, cmd) {
 
 				if isUsrCmd(cmd) {

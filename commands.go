@@ -14,7 +14,7 @@ import (
 )
 
 func botSay(bb *BasicBot, msg string) {
-	if settings.Servers.BotServers.AllowedToSay {
+	if settings.Servers.BotServers.SendMessages {
 		if len(msg) > 500 {
 			quo := len(msg) / 500
 			rem := len(msg) % 500
@@ -91,7 +91,7 @@ func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
 			botSay(bb, "!lurk | !lurk [optional reasons | !lurk list]")
 		default:
 			addLurker(userName, cmd, msg)
-			msgOut := fmt.Sprintf(getCMDOptions("lurk").Atmsg, userName, getCleanMessage(cmd, msg))
+			msgOut := fmt.Sprintf(getCMDOptions("lurk").Atmsg, userName, getCleanMessage(msg))
 			botSay(bb, msgOut)
 		}
 	}
@@ -166,10 +166,10 @@ func cmdWeather(bb *BasicBot, cmd, msg string) {
 		botSay(bb, getWeather(settings.API.Weather.DefaultCity))
 	} else {
 		if isAttr(msg) {
-			msgOut := getWeather(getCleanMessage(cmd, msg)) + " " + getAttributedUser(msg, true)
+			msgOut := getWeather(getCleanMessage(msg)) + " " + getAttributedUser(msg, true)
 			botSay(bb, msgOut)
 		} else {
-			msgOut := getWeather(getCleanMessage(cmd, msg))
+			msgOut := getWeather(getCleanMessage(msg))
 			botSay(bb, msgOut)
 		}
 	}
@@ -234,7 +234,7 @@ func cmdSO(bb *BasicBot, userName, cmd, msg string) {
 func cmdFr(bb *BasicBot, userName, cmd, msg string) {
 	var title string
 	if !isCMD(cmd, msg) {
-		title = getCleanMessage(cmd, msg)[1:]
+		title = getCleanMessage(msg)[1:]
 		cmdres := exec.Command("gh", "issue", "create", fmt.Sprintf("-t %s from %s", title, userName), "-b \"\" ", "-lchat-bot")
 
 		var out, errbuf bytes.Buffer
@@ -314,8 +314,8 @@ func cmdProject(bb *BasicBot, cmd, userName, msg string) {
 	if isCMD(cmd, msg) {
 		botSay(bb, settings.General.Project.Description)
 	} else {
-		if userName == settings.General.Twitch.Channel {
-			settings.General.Project.Description = msg[len(cmd)+1:]
+		if strings.EqualFold(userName, settings.General.Twitch.Channel) {
+			settings.General.Project.Description = getCleanMessage(msg)
 		}
 	}
 }
@@ -376,7 +376,13 @@ func cmdILOVE(bb *BasicBot, cmd, userName, msg string) {
 
 func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 	if isCMD(cmd, msg) {
-		botSay(bb, fmt.Sprintf("!zoe pet or !zoe feed or !zoe name | Treat: %v(%v)  Petting Minutes: %v", petlist.Pets[0].Feed, petlist.Pets[0].FeedLimit, petlist.Pets[0].Pet))
+		var petData = ""
+
+		if len(petlist.Pets) > 0 {
+			petData = fmt.Sprintf(" | Treat: %v/%v  Petting Minutes: %v", petlist.Pets[0].Feed, petlist.Pets[0].FeedLimit, petlist.Pets[0].Pet)
+		}
+
+		botSay(bb, fmt.Sprintf("!zoe pet or !zoe feed or !zoe name %s", petData))
 	} else {
 		cmdFields := strings.Fields(msg)
 		if len(cmdFields) > 1 {
@@ -600,7 +606,7 @@ func cmdSetting(bb *BasicBot, cmd, userName, msg string) {
 
 func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 	var (
-		cleanmsg  string   = cleanMessage(msg)
+		cleanmsg  string   = getCleanMessage(msg)
 		attrUser  string   = getAttributedUser(msg, false)
 		fields    []string = strings.Fields(msg)
 		quotelist QuoteList
@@ -618,8 +624,7 @@ func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 		case "add":
 			if len(fields) >= 3 {
 				if len(fields) > 3 {
-					addQuote(userName, attrUser, cleanmsg)
-
+					botSay(bb, addQuote(userName, attrUser, cleanmsg))
 				}
 			}
 
@@ -644,7 +649,7 @@ func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 
 func cmdJoke(bb *BasicBot, userName, cmd, msg string) {
 	var (
-		cleanmsg string   = cleanMessage(msg)
+		cleanmsg string   = getCleanMessage(msg)
 		attrUser string   = getAttributedUser(msg, false)
 		fields   []string = strings.Fields(msg)
 		jokelist JokeList
@@ -740,8 +745,8 @@ func cmdYear(bb *BasicBot, cmd, userName, msg string) {
 	currentDay := time.Time.YearDay(time.Now())
 	totalDays := time.Time.YearDay(time.Date(time.Time.Year(time.Now()), 12, 31, 00, 00, 00, 0, time.UTC))
 	currentPercent := (float64(currentDay) / float64(totalDays)) * 100
-
-	botSay(bb, fmt.Sprintf("It is day %v of %v (%v days), We have used %2.2f%% [%s] of the year till now.", currentDay, time.Time.Year(time.Now()), totalDays, currentPercent, progressbar(currentPercent)))
+	_, week := time.Time.ISOWeek(time.Now())
+	botSay(bb, fmt.Sprintf("It is day %v, week %v of %v (%v days), we have used %2.2f%% [%s] of the year till now.", currentDay, week, time.Time.Year(time.Now()), totalDays, currentPercent, progressbar(currentPercent)))
 }
 
 func cmdDaysOff(bb *BasicBot, cmd, userName, msg string) {
