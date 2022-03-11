@@ -37,6 +37,53 @@ type BasicBot struct {
 	startTime time.Time
 }
 
+//Settings struct
+type Settings struct {
+	General struct {
+		CredentialFile string `json:"credentialfile"`
+		Twitch         struct {
+			Channel     string `json:"channel"`
+			BotUserName string `json:"botusername"`
+			IRCPort     string `json:"ircport"`
+			Server      string `json:"server"`
+			MSGRate     int    `json:"msgrate"`
+		} `json:"twitch"`
+		Project struct {
+			Description string `json:"description,omitempty"`
+		} `json:"project"`
+	} `json:"general"`
+	Servers struct {
+		WebServers struct {
+			Enabled bool `json:"enabled"`
+			Spotify struct {
+				Currentlyplaying bool `json:"currentlyplaying,omitempty"`
+			} `json:"spotify"`
+			Twitch struct {
+				Goals bool `json:"goals,omitempty"`
+			} `json:"twitch"`
+		} `json:"web"`
+		BotServers struct {
+			Chat         bool `json:"chat"`
+			AllowedToSay bool `json:"allowedtosay"`
+		} `json:"bot"`
+	} `json:"servers"`
+	API struct {
+		Weather struct {
+			DefaultCity string `json:"default,omitempty"`
+		} `json:"weather"`
+		Curency struct {
+			DefaultCurrency string `json:"default,omitempty"`
+			CurrencyTo      string `json:"to,omitempty"`
+			CryptoDefault   string `json:"cryptodefault,omitempty"`
+		} `json:"currency"`
+		Calendar struct {
+			Country   string `json:"country"`
+			DaysAhead int    `josn:"daysahead"`
+		}
+	}
+	UserLevels []UserLevelList `json:"userlevels"`
+}
+
 //Credentials struct
 type Credentials struct {
 	TwitchPassword     string `json:"twitch_password,omitempty"`
@@ -71,51 +118,6 @@ type TwitchChannelData []struct {
 	GameName            string `json:"game_name"`
 	Title               string `json:"title"`
 	Delay               int    `json:"delay"`
-}
-
-//Settings struct
-type Settings struct {
-	General struct {
-		CredentialFile string `json:"credentialfile"`
-		Twitch         struct {
-			Channel     string `json:"channel"`
-			BotUserName string `json:"botusername"`
-			IRCPort     string `json:"ircport"`
-			Server      string `json:"server"`
-			MSGRate     int    `json:"msgrate"`
-		} `json:"twitch"`
-		Project struct {
-			Description string `json:"description,omitempty"`
-		} `json:"project"`
-	} `json:"general"`
-	Servers struct {
-		WebServers struct {
-			Enabled bool `json:"enabled"`
-			Spotify struct {
-				Currentlyplaying bool `json:"currentlyplaying,omitempty"`
-			} `json:"spotify"`
-			Twitch struct {
-				Goals bool `json:"goals,omitempty"`
-			} `json:"twitch"`
-		} `json:"web"`
-		BotServers struct {
-			Chat         bool `json:"chat"`
-			AllowedToSay bool `json:"allowedtosay"`
-		} `json:"bot"`
-	} `json:"servers"`
-	Weather struct {
-		DefaultCity string `json:"default,omitempty"`
-	} `json:"weather"`
-	Curency struct {
-		DefaultCurrency string `json:"default,omitempty"`
-		CurrencyTo      string `json:"to,omitempty"`
-		CryptoDefault   string `json:"cryptodefault,omitempty"`
-	} `json:"currency"`
-	Calendar struct {
-		Country   string `json:"country"`
-		DaysAhead int    `josn:"daysahead"`
-	}
-	UserLevels []UserLevelList `json:"userlevels"`
 }
 
 type PetList struct {
@@ -434,4 +436,15 @@ type DaysOfF struct {
 			//States      string   `json:"states"`
 		} `json:"holidays"`
 	} `json:"response"`
+}
+
+type Chat struct {
+	Channel      string        `json:"channel"`
+	Date         string        `json:"date"`
+	ChatMessages []ChatMessage `json:"chatmessages"`
+}
+
+type ChatMessage struct {
+	Date    string `json:"date"`
+	Message string `json:"message"`
 }
