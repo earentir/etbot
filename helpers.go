@@ -23,7 +23,7 @@ func getAttributedUser(msg string, at bool) string {
 		}
 	}
 
-	return attrUser
+	return strings.ToLower(attrUser)
 }
 
 // isAttr return if there is an attr user in msg

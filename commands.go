@@ -329,7 +329,9 @@ func cmdUPDSoc(bb *BasicBot, cmd, userName, msg string) {
 			fields := strings.Fields(msg[len(cmd)+2:])
 			if len(fields) == 3 {
 				for i := 0; i < len(userlist.Users); i++ {
-					if userlist.Users[i].Name == strings.ToLower(fields[0][1:]) {
+
+					if strings.EqualFold(userlist.Users[i].Name, strings.ToLower(fields[0][1:])) {
+						fmt.Println(userlist.Users[i].Name, strings.ToLower(fields[0][1:]))
 						var socexists = false
 						for j := 0; j < len(userlist.Users[i].Socials); j++ {
 							if userlist.Users[i].Socials[j].SocNet == fields[1] {
