@@ -44,15 +44,6 @@ func isCMD(cmd, msg string) bool {
 	}
 }
 
-// getCleanMessage removes attr and cmd from msg
-func getCleanMessage(cmd, msg string) string {
-	if strings.Contains(msg, "@") {
-		return msg[len(cmd)+1 : strings.Index(msg, "@")-1]
-	} else {
-		return msg[len(cmd)+1:]
-	}
-}
-
 func IsItOnTimeout(cmd, userName string) bool {
 	var allowed bool = false
 
@@ -266,6 +257,7 @@ func cleanMessage(msg string) string {
 
 func getCommand(msg string) string {
 	cmdmatch := CommandRegex.FindStringSubmatch(msg)
+
 	var cmd string = ""
 
 	if len(cmdmatch[0]) > 1 {
