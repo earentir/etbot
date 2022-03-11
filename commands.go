@@ -696,7 +696,7 @@ func cmdJoke(bb *BasicBot, userName, cmd, msg string) {
 		case "add":
 			if len(fields) >= 3 {
 				if len(fields) > 3 {
-					addJoke(userName, attrUser, cleanmsg)
+					botSay(bb, addJoke(userName, attrUser, cleanmsg))
 				}
 			}
 
