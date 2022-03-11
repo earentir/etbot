@@ -707,6 +707,7 @@ func cmdJoke(bb *BasicBot, userName, cmd, msg string) {
 					}
 				}
 			}
+
 		case "help":
 			msgOut := "!joke add @user joke | !joke search @user | !joke search string"
 			botSay(bb, msgOut)
