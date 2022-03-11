@@ -276,3 +276,8 @@ func getCommand(msg string) string {
 	return cmd
 }
 
+func getKeyWord(keyword, msg string) int {
+	var intOut int = -1
+	intOut = strings.Index(msg, keyword)
+	return intOut
+}
