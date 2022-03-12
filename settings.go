@@ -54,7 +54,7 @@ func getCMDOptions(cmd string) CommandOption {
 		}
 	} else {
 		for i := 0; i <= len(systemcommands.Commands)-1; i++ {
-			if (cmd == systemcommands.Commands[i].Name) || (cmd == systemcommands.Commands[i].Options.Alias) {
+			if cmd == systemcommands.Commands[i].Name || isSysCmdAlias(i, cmd) {
 				commandOption = systemcommands.Commands[i].Options
 				cmdFound = true
 			}
@@ -80,17 +80,23 @@ func setCMDUsed(cmd string) {
 				if (cmd == usercommands[i].UserCmdName) || isUsrCmdAlias(i, cmd) {
 					usercommands[i].UserCmdOptions.Lastuse = int(time.Now().Unix())
 					usercommands[i].UserCmdOptions.Counter++
+
+					usrcmdfile, _ := json.MarshalIndent(usercommands, "", "\t")
+					_ = ioutil.WriteFile("settings/usr-cmd.json", usrcmdfile, 0644)
 				}
 			}
 		} else {
-			for i := 0; i <= len(systemcommands.Commands)-1; i++ {
-				if (cmd == systemcommands.Commands[i].Name) || (cmd == systemcommands.Commands[i].Options.Alias) {
-					systemcommands.Commands[i].Options.Lastuse = int(time.Now().Unix())
-					systemcommands.Commands[i].Options.Counter++
-				}
+			cmdIndex := isSysCmd(cmd)
+			if cmdIndex > -1 {
+				systemcommands.Commands[cmdIndex].Options.Lastuse = int(time.Now().Unix())
+				systemcommands.Commands[cmdIndex].Options.Counter++
+
+				systemcmdfile, _ := json.MarshalIndent(systemcommands, "", "\t")
+				_ = ioutil.WriteFile("settings/systemcommands.json", systemcmdfile, 0644)
 			}
 		}
 	}
+
 }
 
 func getUserSocials(userName string) string {

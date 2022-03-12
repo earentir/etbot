@@ -210,7 +210,7 @@ func progressbar(percent float64) string {
 func isUsrCmd(cmd string) bool {
 	var found bool = false
 	for i := 0; i < len(usercommands); i++ {
-		if usercommands[i].UserCmdName == cmd || isUsrCmdAlias(i, cmd) {
+		if strings.EqualFold(usercommands[i].UserCmdName, cmd) || isUsrCmdAlias(i, cmd) {
 			found = true
 		}
 	}
@@ -228,6 +228,28 @@ func isUsrCmdAlias(index int, cmd string) bool {
 	var found bool = false
 	for i := 0; i < len(usercommands[index].Alias); i++ {
 		if usercommands[index].Alias[i] == cmd {
+			found = true
+		}
+	}
+
+	return found
+}
+
+func isSysCmd(cmd string) int {
+	var found int = -1
+	for i := 0; i < len(systemcommands.Commands); i++ {
+		if strings.EqualFold(systemcommands.Commands[i].Name, cmd) || isSysCmdAlias(i, cmd) {
+			found = i
+		}
+	}
+
+	return found
+}
+
+func isSysCmdAlias(index int, cmd string) bool {
+	var found bool = false
+	for i := 0; i < len(systemcommands.Commands[index].Alias); i++ {
+		if systemcommands.Commands[index].Alias[i] == cmd {
 			found = true
 		}
 	}
