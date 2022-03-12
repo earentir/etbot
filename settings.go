@@ -357,3 +357,26 @@ func getUserSocial(socnet string) string {
 
 	return outMessage
 }
+
+func saveData(settingsName string) {
+	// datafile, _ := json.MarshalIndent(usercommands, "", "\t")
+	// _ = ioutil.WriteFile(settings.FilePaths.SettingsDir+t.Name, datafile, 0644)
+
+	// for i := 0; i < reflect.TypeOf(settings.FilePaths).NumField(); i++ {
+	// tag := reflect.TypeOf(settings.FilePaths).Field(i).Tag
+
+	// tags, err := structtag.Parse(string(tag))
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// for _, t := range tags.Tags() {
+	// 	fmt.Println(t.String())
+	// 	if strings.EqualFold(t.Name, settingsName) {
+	// 		fmt.Printf("%s\n", t.Name)
+	// datafile, _ := json.MarshalIndent(usercommands, "", "\t")
+	// _ = ioutil.WriteFile(settings.FilePaths.SettingsDir+t.Name, datafile, 0644)
+	// 	}
+	// }
+	// }
+}

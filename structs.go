@@ -52,6 +52,19 @@ type Settings struct {
 			Description string `json:"description,omitempty"`
 		} `json:"project"`
 	} `json:"general"`
+	FilePaths struct {
+		SettingsDir    string `json:"settingsdir"`
+		ChatLogDir     string `json:"chatlogdir"`
+		CredentialFile string `json:"credentials"`
+		Settings       string `json:"settings"`
+		Users          string `json:"users"`
+		Jokes          string `json:"jokes"`
+		Lurkers        string `json:"lurkers"`
+		Pets           string `json:"pets"`
+		Quotes         string `json:"quotes"`
+		SystemCommands string `json:"system-commands"`
+		UserCommands   string `json:"user-commands"`
+	} `json:"filepaths"`
 	Servers struct {
 		WebServers struct {
 			Enabled bool `json:"enabled"`
