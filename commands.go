@@ -234,7 +234,7 @@ func cmdSO(bb *BasicBot, userName, cmd, msg string) {
 func cmdFr(bb *BasicBot, userName, cmd, msg string) {
 	var title string
 	if !isCMD(cmd, msg) {
-		title = getCleanMessage(msg)[1:]
+		title = getCleanMessage(msg)
 		cmdres := exec.Command("gh", "issue", "create", fmt.Sprintf("-t %s from %s", title, userName), "-b \"\" ", "-lchat-bot")
 
 		var out, errbuf bytes.Buffer
