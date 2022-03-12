@@ -307,8 +307,13 @@ func addUser(userToAdd, userType string) string {
 	}
 
 	if !found {
+		var soc Social
+		soc.SocNet = "twitch"
+		soc.Link = "https://twitch.tv/" + userToAdd
+
 		newUser.Name = strings.ToLower(userToAdd)
 		newUser.Type = strings.ToLower(userType)
+		newUser.Socials = append(newUser.Socials, soc)
 
 		userlist.Users = append(userlist.Users, newUser)
 		msgOut = fmt.Sprintf("User %s was added as a %s", userToAdd, userType)
