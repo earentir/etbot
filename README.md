@@ -154,7 +154,7 @@ attributed user (@earentir for example) and ^u for the activating users username
 	},
 ```
 
-#### varpunchline
+#### counter
 
 A classic counter command, when its activated it just increases the countr (all
 commands have a counter, in this case the count is getting reported)
