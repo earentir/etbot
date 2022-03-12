@@ -55,12 +55,12 @@ func main() {
 			chatlog.Channel = settings.General.Twitch.Channel
 			chatlog.Date = strconv.Itoa(int(time.Now().Unix()))
 
-			//ffs we catch oob interupt, cause he keeps ctrl+c
+			//ffs we catch oob interupt, cause the noop keeps ctrl+c
 			c := make(chan os.Signal)
 			signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 			go func() {
 				<-c
-				cleanup()
+				cleanup() //we cleanup here
 				os.Exit(1)
 			}()
 

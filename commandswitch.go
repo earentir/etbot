@@ -25,7 +25,6 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 		if nil != cmdMatch {
 			cmd := cmdMatch[0][1:]
 			if CMDCanRun(userName, cmd) {
-
 				if isUsrCmd(cmd) {
 					usrCmdSay(bb, userName, cmd, msg)
 				} else {

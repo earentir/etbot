@@ -323,7 +323,6 @@ func addUser(userToAdd, userType string) string {
 }
 
 func delUser(userToDelete string) string {
-
 	var (
 		newUserList []User
 		msgOut      string = ""
