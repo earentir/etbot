@@ -95,3 +95,86 @@ channel)
 - sudo
 - unban
 - yogurt
+
+#### punchline
+
+In this example the command !oil will output a random line from the messages. It
+will also cativate for all the aliases !olive, !olives, !oliveoil and it can be
+used by any user in the default config (userlevel 10).
+
+```
+{
+		"name": "oil",
+		"type": "punchline",
+		"messages": [
+			"Olive Oil is BESTEST Oil",
+			"If your oil is NOT olive oil, then its for your car",
+			"Olive Oil FTW",
+			"Olive Oil For Life",
+			"Did you know Olive oil is good for you health compared to every other oil?"
+		],
+		"alias": [
+			"olive",
+			"olives",
+			"oliveoil"
+		],
+		"options": {
+			"lastuse": 1646330233,
+			"counter": 18,
+			"userlevel": 10,
+			"cooldown": 1000,
+			"enabled": true
+		}
+	},
+```
+
+#### varpunchline
+
+A varpunchline is the same as a punchline but it accepts variables, ^a for
+attributed user (@earentir for example) and ^u for the activating users username
+
+```
+{
+		"name": "hype",
+		"type": "varpunchline",
+		"messages": [
+			"earentFfs ^a, dont you think there is better places to spend your money ? Stop wasting it !!!",
+			"Go rent a movie instead earentFfs, ^a dont waste money!!!"
+		],
+		"alias": [
+			""
+		],
+		"options": {
+			"lastuse": 1647043141,
+			"counter": 13,
+			"userlevel": 10,
+			"cooldown": 2000,
+			"enabled": true
+		}
+	},
+```
+
+#### varpunchline
+
+A classic counter command, when its activated it just increases the countr (all
+commands have a counter, in this case the count is getting reported)
+
+````
+	{
+		"name": "f",
+		"type": "counter",
+		"messages": [
+			"!%s has been used %v times."
+		],
+		"alias": [
+			""
+		],
+		"options": {
+			"lastuse": 1646507586,
+			"counter": 2,
+			"userlevel": 10,
+			"cooldown": 3000,
+			"enabled": true
+		}
+	},```
+````
