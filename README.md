@@ -20,8 +20,12 @@ the ability to customize messages (all wii have that in the future)
 
 - bofh
   - Pulls a BOFH quote from an API
+- commands
+  - Print all commands (including user commands)
 - crypto \*
   - Does crypto currency conversions
+- daysoff \*
+  - Prints the next days off in specified country
 - etbdown
   - Does a bot reload (not fully yet)
 - exchange \*
@@ -49,8 +53,9 @@ the ability to customize messages (all wii have that in the future)
     printed out including what they love (fully customizable message soon)
 - socials
   - Prints streamers socials
-- time -Prints the streamers time or the time of any country if you append the
-  tz city
+- time
+  - Prints the streamers time or the time of any country if you append the tz
+    city
 - tmdb \*
   - Pulls data for tv/movie from tmdb
 - updsoc
