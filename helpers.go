@@ -334,3 +334,27 @@ func getField(v *Settings, fields []string) string {
 	f := reflect.Indirect(r).FieldByName(fields[0]).FieldByName(fields[1])
 	return f.String()
 }
+
+func Call(funcName string, params ...interface{}) (result interface{}, err error) {
+	StubStorage = map[string]interface{}{
+		"cmdHi": cmdHi,
+		"cmdSO": cmdSO,
+	}
+
+	f := reflect.ValueOf(StubStorage[funcName])
+	if len(params) != f.Type().NumIn() {
+		fmt.Println("too many parameters")
+		return
+	}
+
+	in := make([]reflect.Value, len(params))
+	for k, param := range params {
+		in[k] = reflect.ValueOf(param)
+	}
+
+	res := f.Call(in)
+	if len(res) > 0 {
+		result = res[0].Interface()
+	}
+	return
+}

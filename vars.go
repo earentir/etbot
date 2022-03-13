@@ -56,4 +56,7 @@ var (
 	userlist       UserList
 	petlist        PetList
 	chatlog        ChatLog
+
+	//Store Maps
+	StubStorage = stubMapping{}
 )
