@@ -75,6 +75,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						cmdQuote(bb, cmd, userName, msg)
 					case "year":
 						cmdYear(bb, cmd, userName, msg)
+					case "holidays":
+						fallthrough
 					case "daysoff":
 						cmdDaysOff(bb, cmd, userName, msg)
 
