@@ -18,3 +18,5 @@ redemptions.txt
 owapikey.txt
 *.json
 builds/
+settings/
+chatlog/
