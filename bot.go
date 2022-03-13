@@ -9,29 +9,6 @@ import (
 	"time"
 )
 
-type Bot interface {
-	// Opens a connection to the Twitch.tv IRC chat server.
-	Connect()
-
-	// Closes a connection to the Twitch.tv IRC chat server.
-	Disconnect()
-
-	// Listens to chat messages and PING request from the IRC server.
-	HandleChat() error
-
-	// Joins a specific chat channel.
-	JoinChannel()
-
-	// Parses credentials needed for authentication.
-	ReadCredentials() error
-
-	// Sends a message to the connected channel.
-	Say(msg string) error
-
-	// Attempts to keep the bot connected and handling chat.
-	Start()
-}
-
 // Connects the bot to the Twitch IRC server. The bot will continue to try to connect until it
 // succeeds or is forcefully shutdown.
 func (bb *BasicBot) Connect() {

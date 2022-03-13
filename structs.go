@@ -6,41 +6,20 @@ import (
 )
 
 type BasicBot struct {
-
-	// The channel that the bot is supposed to join. Note: The name MUST be lowercase, regardless
-	// of how the username is displayed on Twitch.tv.
-	Channel string
-
-	// A reference to the bot's connection to the server.
-	conn net.Conn
-
-	// A forced delay between bot responses. This prevents the bot from breaking the message limit
-	// rules. A 20/30 millisecond delay is enough for a non-modded bot. If you decrease the delay
-	// make sure you're still within the limit!
-	//
-	// Message Rate Guidelines: https://dev.twitch.tv/docs/irc#irc-command-and-message-limits
-	MsgRate time.Duration
-
-	// The name that the bot will use in the chat that it's attempting to join.
-	Name string
-
-	// The port of the IRC server.
-	Port string
-
-	// A path to a limited-access directory containing the bot's OAuth credentials.
-	PrivatePath string
-
-	// The domain of the IRC server.
-	Server string
-
-	// The time at which the bot achieved a connection to the server.
-	startTime time.Time
+	Channel     string        // The channel that the bot is supposed to join. Note: The name MUST be lowercase
+	conn        net.Conn      // A reference to the bot's connection to the server.
+	MsgRate     time.Duration // Message Rate Guidelines: https://dev.twitch.tv/docs/irc#irc-command-and-message-limits
+	Name        string        // The bot name
+	Port        string        // The port of the IRC server.
+	Server      string        // The domain of the IRC server.
+	PrivatePath string        //credentials path (to be replaced with the Filepaths entry)
+	startTime   time.Time     //Time when we connected
 }
 
 //Settings struct
 type Settings struct {
 	General struct {
-		CredentialFile string `json:"credentialfile"`
+		CredentialFile string `json:"credentialfile"` //credentials file, to be replace with new filepaths
 		Twitch         struct {
 			Channel     string `json:"channel"`
 			BotUserName string `json:"botusername"`

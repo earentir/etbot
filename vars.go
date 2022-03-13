@@ -10,6 +10,31 @@ const (
 	etbver    = "20220312A"
 )
 
+type stubMapping map[string]interface{}
+
+type Bot interface {
+	// Opens a connection to the Twitch.tv IRC chat server.
+	Connect()
+
+	// Closes a connection to the Twitch.tv IRC chat server.
+	Disconnect()
+
+	// Listens to chat messages and PING request from the IRC server.
+	HandleChat() error
+
+	// Joins a specific chat channel.
+	JoinChannel()
+
+	// Parses credentials needed for authentication.
+	ReadCredentials() error
+
+	// Sends a message to the connected channel.
+	Say(msg string) error
+
+	// Attempts to keep the bot connected and handling chat.
+	Start()
+}
+
 var (
 	// Regex for parsing PRIVMSG strings.
 	// First matched group is the user's name and the second matched group is the content of the
