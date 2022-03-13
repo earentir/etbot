@@ -358,3 +358,7 @@ func Call(funcName string, params ...interface{}) (result interface{}, err error
 	}
 	return
 }
+
+func checkLoadStatus() bool {
+	return true
+}

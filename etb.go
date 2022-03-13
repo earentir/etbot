@@ -33,6 +33,10 @@ func main() {
 			MsgRate:     time.Duration(settings.General.Twitch.MSGRate),
 		}
 
+		if !checkLoadStatus() {
+			return
+		}
+
 		if _, err := os.Stat("settings/systemcommands.json"); err == nil {
 			LoadJSONFileTOStruct("settings/systemcommands.json", &systemcommands)
 		}
@@ -63,6 +67,8 @@ func main() {
 				cleanup() //we cleanup here
 				os.Exit(1)
 			}()
+
+			saveData([]string{"FilePaths", "Settings"}, settings)
 
 			if settings.Servers.WebServers.Enabled {
 				go startWebServer()
