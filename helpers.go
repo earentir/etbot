@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
+	"path/filepath"
+	"reflect"
 	"strings"
 	"time"
 )
@@ -302,4 +305,32 @@ func getKeyWord(keyword, msg string) int {
 	var intOut int = -1
 	intOut = strings.Index(msg, keyword)
 	return intOut
+}
+
+func saveData(settingsName []string, thestruct interface{}) {
+	var settingsPath string = settings.FilePaths.SettingsDir
+	var fileName string = filepath.Join(settingsPath, getField(&settings, settingsName))
+	var datafile []byte
+
+	datafile, _ = json.MarshalIndent(thestruct, "", "\t")
+
+	err := ioutil.WriteFile(fileName, datafile, 0644)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func loadData(settingsName []string, thestruct interface{}) {
+	var settingsPath string = settings.FilePaths.SettingsDir
+	var fileName string = filepath.Join(settingsPath, getField(&settings, settingsName))
+
+	if _, err := os.Stat(fileName); err == nil {
+		LoadJSONFileTOStruct(fileName, thestruct)
+	}
+}
+
+func getField(v *Settings, fields []string) string {
+	r := reflect.ValueOf(v)
+	f := reflect.Indirect(r).FieldByName(fields[0]).FieldByName(fields[1])
+	return f.String()
 }
