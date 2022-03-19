@@ -47,6 +47,7 @@ func isCMD(cmd, msg string) bool {
 	}
 }
 
+// IstItOnTimeout return the user current timeout
 func IsItOnTimeout(cmd, userName string) bool {
 	var allowed bool = false
 
@@ -56,6 +57,7 @@ func IsItOnTimeout(cmd, userName string) bool {
 	return allowed
 }
 
+// CPrint print out the msg in the selected colour
 func CPrint(color, msg string) {
 	var colorCode string
 	var resetcolor string = "\033[0m"
@@ -99,15 +101,17 @@ func CPrint(color, msg string) {
 	fmt.Print(string(resetcolor))
 }
 
+// return time in utc format
 func timeStamp() string {
 	return TimeStamp(UTCFormat)
 }
 
+// create time in the selected format
 func TimeStamp(format string) string {
 	return time.Now().Format(format)
 }
 
-//read json file to struct here
+// read json file to struct here
 func LoadJSONFileTOStruct(jsonFileName string, onTo interface{}) {
 	jsonFile, err := ioutil.ReadFile(jsonFileName)
 	if nil != err {
@@ -116,7 +120,7 @@ func LoadJSONFileTOStruct(jsonFileName string, onTo interface{}) {
 	json.Unmarshal([]byte(jsonFile), &onTo)
 }
 
-//read json data to struct here
+// read json data to struct here
 func LoadJSONTOStruct(jsondata []byte, onTo interface{}) {
 	if err := json.Unmarshal(jsondata, &onTo); err != nil {
 		fmt.Println("LoadJSONTOStruct>\n", err)
@@ -124,17 +128,20 @@ func LoadJSONTOStruct(jsondata []byte, onTo interface{}) {
 
 }
 
+// save settings (default data only)
 func saveSettings() {
 	saveData([]string{"FilePaths", "Settings"}, settings)
 	saveData([]string{"FilePaths", "UserCommands"}, usercommands)
 	saveData([]string{"FilePaths", "ChatLogDir"}, chatlog)
 }
 
+// we cleanup when user terminates
 func cleanup() {
 	saveSettings()
 	fmt.Println("Saved Data")
 }
 
+// we cut off the overview to fit inside the minimum 512 bytes message
 func limitOverview(overview string) string {
 	var newOverview string
 
@@ -147,6 +154,7 @@ func limitOverview(overview string) string {
 	return newOverview
 }
 
+// calculate the timezone of current time by using the tz capital city name
 func timeZone(location string) string {
 	locs := []string{"", "Europe", "Africa", "America", "Asia", "Atlantic", "Australia", "Brazil", "Canada", "Indian", "US"}
 	var tme string
@@ -178,6 +186,7 @@ func timeZone(location string) string {
 	return msgOut
 }
 
+// convert tz to time now
 func tzNow(locationToLookup string) string {
 	loc, err := time.LoadLocation(locationToLookup)
 	outMsg := ""
@@ -189,6 +198,7 @@ func tzNow(locationToLookup string) string {
 	return outMsg
 }
 
+// simple progress bar for use in the year commands
 func progressbar(percent float64) string {
 	var equals int = int(percent / 10)
 	var msgOUt string = ""
@@ -204,6 +214,7 @@ func progressbar(percent float64) string {
 	return msgOUt
 }
 
+// check if cmd is in the users commands
 func isUsrCmd(cmd string) bool {
 	var found bool = false
 	for i := 0; i < len(usercommands); i++ {
@@ -221,6 +232,7 @@ func isUsrCmd(cmd string) bool {
 	return found
 }
 
+// loop over user commands aliase and return true if its in the array
 func isUsrCmdAlias(index int, cmd string) bool {
 	var found bool = false
 	for i := 0; i < len(usercommands[index].Alias); i++ {
@@ -232,6 +244,7 @@ func isUsrCmdAlias(index int, cmd string) bool {
 	return found
 }
 
+// check if cmd is in the system commands
 func isSysCmd(cmd string) int {
 	var found int = -1
 	for i := 0; i < len(systemcommands.Commands); i++ {
@@ -243,6 +256,7 @@ func isSysCmd(cmd string) int {
 	return found
 }
 
+// loop over system command aliases and return true if its in the array
 func isSysCmdAlias(index int, cmd string) bool {
 	var found bool = false
 	for i := 0; i < len(systemcommands.Commands[index].Alias); i++ {
@@ -254,6 +268,7 @@ func isSysCmdAlias(index int, cmd string) bool {
 	return found
 }
 
+// clean everything from a msg
 func getCleanMessage(msg string) string {
 	var (
 		cmd       string = getCommand(msg)
@@ -279,6 +294,7 @@ func getCleanMessage(msg string) string {
 	return msgOut
 }
 
+// parse msg to get a command from it (if it exists)
 func getCommand(msg string) string {
 	var cmdmatch []string = CommandRegex.FindStringSubmatch(msg)
 	var cmd string = ""
@@ -294,18 +310,17 @@ func getCommand(msg string) string {
 	return cmd
 }
 
+// parse message for a keyword and get its starting possition
 func getKeyWord(keyword, msg string) int {
 	var intOut int = -1
 	intOut = strings.Index(msg, keyword)
 	return intOut
 }
 
+// save data by giving it the path in the settings file and the struct that holds the data
 func saveData(settingsName []string, thestruct interface{}) {
 	var settingsPath string = settings.FilePaths.SettingsDir
 	var fileName string = filepath.Join(settingsPath, getField(&settings, settingsName))
-	var datafile []byte
-
-	datafile, _ = json.MarshalIndent(thestruct, "", "\t")
 
 	if datafile, err := json.MarshalIndent(thestruct, "", "\t"); err == nil {
 		if err = ioutil.WriteFile(fileName, datafile, 0644); err != nil {
@@ -316,6 +331,7 @@ func saveData(settingsName []string, thestruct interface{}) {
 	}
 }
 
+// load data by giving it the path in the settings file and the struct that holds the data
 func loadData(settingsName []string, thestruct interface{}) {
 	var settingsPath string = settings.FilePaths.SettingsDir
 	var fileName string = filepath.Join(settingsPath, getField(&settings, settingsName))
@@ -325,12 +341,14 @@ func loadData(settingsName []string, thestruct interface{}) {
 	}
 }
 
+// from struct field name using reflection
 func getField(v *Settings, fields []string) string {
 	r := reflect.ValueOf(v)
 	f := reflect.Indirect(r).FieldByName(fields[0]).FieldByName(fields[1])
 	return f.String()
 }
 
+// call a func using its name stored in a string
 func Call(funcName string, params ...interface{}) (result interface{}, err error) {
 	StubStorage = map[string]interface{}{
 		"cmdHi": cmdHi,
@@ -355,6 +373,7 @@ func Call(funcName string, params ...interface{}) (result interface{}, err error
 	return
 }
 
+// check if we can load the bot
 func checkLoadStatus() bool {
 	return true
 }
