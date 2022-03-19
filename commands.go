@@ -2,9 +2,7 @@ package main
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"math/rand"
 	"os/exec"
 	"regexp"
@@ -74,7 +72,7 @@ func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
 		lurklist LurkList
 	)
 
-	LoadJSONFileTOStruct("settings/lurkers.json", &lurklist)
+	loadData([]string{"FilePaths", "Lurkers"}, lurklist)
 
 	if isCMD(cmd, msg) {
 		msgOut := fmt.Sprintf(getCMDOptions("lurk").Msg, userName)
@@ -102,7 +100,7 @@ func cmdUnlurk(bb *BasicBot, userName string) {
 		lurklist LurkList
 	)
 
-	LoadJSONFileTOStruct("settings/lurkers.json", &lurklist)
+	loadData([]string{"FilePaths", "Lurkers"}, lurklist)
 
 	for i := 0; i < len(lurklist.Lurkers); i++ {
 		if strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
@@ -348,8 +346,7 @@ func cmdUPDSoc(bb *BasicBot, cmd, userName, msg string) {
 							botSay(bb, fmt.Sprintf("%s's %s profile is now %s", fields[0][1:], fields[1], fields[2]))
 						}
 
-						userfile, _ := json.MarshalIndent(userlist, "", "\t")
-						_ = ioutil.WriteFile("settings/etb-users.json", userfile, 0644)
+						saveData([]string{"FilePaths", "Users"}, userlist)
 					}
 				}
 			} else {
@@ -452,8 +449,7 @@ func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 				}
 			}
 			//save the pets
-			petfile, _ := json.MarshalIndent(petlist, "", "\t")
-			_ = ioutil.WriteFile("settings/pets.json", petfile, 0644)
+			saveData([]string{"FilePaths", "Pets"}, petlist)
 		} else {
 			botSay(bb, fmt.Sprintf("%s | Treat: %v (%v)  Petting Minutes: %v", "!zoe pet or !zoe feed or !zoe name", petlist.Pets[0].Feed, petlist.Pets[0].FeedLimit, petlist.Pets[0].Pet))
 		}
@@ -612,7 +608,7 @@ func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 		quotelist QuoteList
 	)
 
-	LoadJSONFileTOStruct("settings/quotes.json", &quotelist)
+	loadData([]string{"FilePaths", "Quotes"}, quotelist)
 
 	if isCMD(cmd, msg) {
 		if len(quotelist.QuoteItems) > 0 {
@@ -655,7 +651,7 @@ func cmdJoke(bb *BasicBot, userName, cmd, msg string) {
 		jokelist JokeList
 	)
 
-	LoadJSONFileTOStruct("settings/jokes.json", &jokelist)
+	loadData([]string{"FilePaths", "Jokes"}, jokelist)
 
 	if isCMD(cmd, msg) {
 		if len(jokelist.JokeItems) > 0 {
@@ -778,7 +774,6 @@ func cmdDaysOff(bb *BasicBot, cmd, userName, msg string) {
 
 				daysahead = int(days)
 			}
-
 		}
 	}
 

@@ -126,14 +126,9 @@ func LoadJSONTOStruct(jsondata []byte, onTo interface{}) {
 }
 
 func saveSettings() {
-	settingsfile, _ := json.MarshalIndent(settings, "", "\t")
-	_ = ioutil.WriteFile("settings/etb-settings.json", settingsfile, 0644)
-
-	usrcmdfile, _ := json.MarshalIndent(usercommands, "", "\t")
-	_ = ioutil.WriteFile("settings/usr-cmd.json", usrcmdfile, 0644)
-
-	chatlogfile, _ := json.MarshalIndent(chatlog, "", "\t")
-	_ = ioutil.WriteFile("chatlog.json", chatlogfile, 0644)
+	saveData([]string{"FilePaths", "Settings"}, settings)
+	saveData([]string{"FilePaths", "UserCommands"}, usercommands)
+	saveData([]string{"FilePaths", "ChatLogDir"}, chatlog)
 }
 
 func cleanup() {

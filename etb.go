@@ -21,8 +21,7 @@ func main() {
 	})
 
 	if _, err := os.Stat("settings/etb-settings.json"); err == nil {
-
-		LoadJSONFileTOStruct("settings/etb-settings.json", &settings)
+		loadData([]string{"FilePaths", "Settings"}, settings)
 
 		etb := BasicBot{
 			Channel:     settings.General.Twitch.Channel,
@@ -37,24 +36,14 @@ func main() {
 			return
 		}
 
-		if _, err := os.Stat("settings/systemcommands.json"); err == nil {
-			LoadJSONFileTOStruct("settings/systemcommands.json", &systemcommands)
-		}
-
-		if _, err := os.Stat("settings/etb-users.json"); err == nil {
-			LoadJSONFileTOStruct("settings/etb-users.json", &userlist)
-		}
-
-		if _, err := os.Stat("settings/usr-cmd.json"); err == nil {
-			LoadJSONFileTOStruct("settings/usr-cmd.json", &usercommands)
-		}
-
-		if _, err := os.Stat("settings/pets.json"); err == nil {
-			LoadJSONFileTOStruct("settings/pets.json", &petlist)
-		}
+		loadData([]string{"FilePaths", "Settings"}, systemcommands)
+		loadData([]string{"FilePaths", "Users"}, userlist)
+		loadData([]string{"FilePaths", "UserCommands"}, usercommands)
+		loadData([]string{"FilePaths", "Pets"}, petlist)
+		loadData([]string{"FilePaths", "CredentialFile"}, creds)
 
 		if _, err := os.Stat(etb.PrivatePath); err == nil {
-			LoadJSONFileTOStruct(etb.PrivatePath, &creds)
+			loadData([]string{"FilePaths", "CredentialFile"}, creds)
 
 			chatlog.Channel = settings.General.Twitch.Channel
 			chatlog.Date = strconv.Itoa(int(time.Now().Unix()))

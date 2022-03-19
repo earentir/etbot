@@ -1,9 +1,7 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"sort"
 	"strings"
 	"time"
@@ -81,8 +79,7 @@ func setCMDUsed(cmd string) {
 					usercommands[i].UserCmdOptions.Lastuse = int(time.Now().Unix())
 					usercommands[i].UserCmdOptions.Counter++
 
-					usrcmdfile, _ := json.MarshalIndent(usercommands, "", "\t")
-					_ = ioutil.WriteFile("settings/usr-cmd.json", usrcmdfile, 0644)
+					saveData([]string{"FilePaths", "UserCommands"}, usercommands)
 				}
 			}
 		} else {
@@ -91,8 +88,7 @@ func setCMDUsed(cmd string) {
 				systemcommands.Commands[cmdIndex].Options.Lastuse = int(time.Now().Unix())
 				systemcommands.Commands[cmdIndex].Options.Counter++
 
-				systemcmdfile, _ := json.MarshalIndent(systemcommands, "", "\t")
-				_ = ioutil.WriteFile("settings/systemcommands.json", systemcmdfile, 0644)
+				saveData([]string{"FilePaths", "SystemCommands"}, systemcommands)
 			}
 		}
 	}
@@ -189,7 +185,7 @@ func addLurker(userName, cmd, msg string) {
 		found  bool = false
 	)
 
-	LoadJSONFileTOStruct("settings/lurkers.json", &lurklist)
+	loadData([]string{"FilePaths", "Lurkers"}, lurklist)
 
 	for i := 0; i < len(lurklist.Lurkers); i++ {
 		if strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
@@ -210,15 +206,14 @@ func addLurker(userName, cmd, msg string) {
 		lurklist.Lurkers = append(lurklist.Lurkers, lurker)
 	}
 
-	lurkfile, _ := json.MarshalIndent(lurklist, "", "\t")
-	_ = ioutil.WriteFile("settings/lurkers.json", lurkfile, 0644)
+	saveData([]string{"FilePaths", "Lurkers"}, lurklist)
 }
 
 func removeLurker(userName string) {
 	var newLurkList []Lurker
 	var lurklist LurkList
 
-	LoadJSONFileTOStruct("settings/lurkers.json", &lurklist)
+	loadData([]string{"FilePaths", "Lurkers"}, lurklist)
 
 	for i := len(lurklist.Lurkers) - 1; i >= 0; i-- {
 		if !strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
@@ -230,8 +225,7 @@ func removeLurker(userName string) {
 
 	lurklist.Lurkers = newLurkList
 
-	lurkfile, _ := json.MarshalIndent(lurklist, "", "\t")
-	_ = ioutil.WriteFile("settings/lurkers.json", lurkfile, 0644)
+	saveData([]string{"FilePaths", "Lurkers"}, lurklist)
 }
 
 func addQuote(userName, attrUser, cleanmsg string) string {
@@ -241,7 +235,7 @@ func addQuote(userName, attrUser, cleanmsg string) string {
 		found     bool = false
 	)
 
-	LoadJSONFileTOStruct("settings/quotes.json", &quotelist)
+	loadData([]string{"FilePaths", "Quotes"}, quotelist)
 
 	for i := 0; i < len(quotelist.QuoteItems); i++ {
 		if quotelist.QuoteItems[i].QuotedMessage == cleanmsg {
@@ -257,9 +251,7 @@ func addQuote(userName, attrUser, cleanmsg string) string {
 		quotelist.QuoteItems = append(quotelist.QuoteItems, qitem)
 	}
 
-	quotefile, _ := json.MarshalIndent(quotelist, "", "\t")
-	_ = ioutil.WriteFile("settings/quotes.json", quotefile, 0644)
-
+	saveData([]string{"FilePaths", "Quotes"}, quotelist)
 	return fmt.Sprintf("Quote from %s. \"%s\" added ", userName, cleanmsg)
 }
 
@@ -270,7 +262,7 @@ func addJoke(userName, attrUser, cleanmsg string) string {
 		found    bool = false
 	)
 
-	LoadJSONFileTOStruct("settings/jokes.json", &jokelist)
+	loadData([]string{"FilePaths", "Jokes"}, jokelist)
 
 	for i := 0; i < len(jokelist.JokeItems); i++ {
 		if jokelist.JokeItems[i].JokeMessage == cleanmsg {
@@ -286,9 +278,7 @@ func addJoke(userName, attrUser, cleanmsg string) string {
 		jokelist.JokeItems = append(jokelist.JokeItems, jitem)
 	}
 
-	jokefile, _ := json.MarshalIndent(jokelist, "", "\t")
-	_ = ioutil.WriteFile("settings/jokes.json", jokefile, 0644)
-
+	saveData([]string{"FilePaths", "Jokes"}, jokelist)
 	return fmt.Sprintf("Joke from %s. \"%s\" added ", userName, cleanmsg)
 }
 
@@ -321,9 +311,7 @@ func addUser(userToAdd, userType string) string {
 		msgOut = fmt.Sprintf("User %s already exists", userToAdd)
 	}
 
-	userfile, _ := json.MarshalIndent(userlist, "", "\t")
-	_ = ioutil.WriteFile("settings/etb-users.json", userfile, 0644)
-
+	saveData([]string{"FilePaths", "Users"}, userlist)
 	return msgOut
 }
 
@@ -350,9 +338,7 @@ func delUser(userToDelete string) string {
 
 	userlist.Users = newUserList
 
-	userfile, _ := json.MarshalIndent(userlist, "", "\t")
-	_ = ioutil.WriteFile("settings/etb-users.json", userfile, 0644)
-
+	saveData([]string{"FilePaths", "Users"}, userlist)
 	return msgOut
 }
 
