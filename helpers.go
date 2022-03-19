@@ -278,7 +278,7 @@ func getCleanMessage(msg string) string {
 		attrIndex int    = 0
 	)
 
-	if len(cmd) >= 1 {
+	if len(cmd) > len(msg) {
 		msgOut = msg[cmdIndex+len(cmd)+1:]
 	} else {
 		msgOut = msg
