@@ -19,9 +19,9 @@ func getAttributedUser(msg string, at bool) string {
 	for _, j := range fields {
 		if strings.Contains(j, "@") {
 			if at {
-				return j // msg[strings.Index(msg, "@"):]
+				return j
 			} else {
-				return j[1:] //msg[strings.Index(msg, "@")+1:]
+				return j[1:]
 			}
 		}
 	}
@@ -118,8 +118,7 @@ func LoadJSONFileTOStruct(jsonFileName string, onTo interface{}) {
 
 //read json data to struct here
 func LoadJSONTOStruct(jsondata []byte, onTo interface{}) {
-	err := json.Unmarshal(jsondata, &onTo)
-	if err != nil {
+	if err := json.Unmarshal(jsondata, &onTo); err != nil {
 		fmt.Println("LoadJSONTOStruct>\n", err)
 	}
 
@@ -281,8 +280,7 @@ func getCleanMessage(msg string) string {
 }
 
 func getCommand(msg string) string {
-	cmdmatch := CommandRegex.FindStringSubmatch(msg)
-
+	var cmdmatch []string = CommandRegex.FindStringSubmatch(msg)
 	var cmd string = ""
 
 	if len(cmdmatch) > 0 {
@@ -309,8 +307,11 @@ func saveData(settingsName []string, thestruct interface{}) {
 
 	datafile, _ = json.MarshalIndent(thestruct, "", "\t")
 
-	err := ioutil.WriteFile(fileName, datafile, 0644)
-	if err != nil {
+	if datafile, err := json.MarshalIndent(thestruct, "", "\t"); err == nil {
+		if err = ioutil.WriteFile(fileName, datafile, 0644); err != nil {
+			fmt.Println(err)
+		}
+	} else {
 		fmt.Println(err)
 	}
 }
