@@ -7,7 +7,7 @@ import (
 
 const (
 	UTCFormat = time.RFC3339
-	etbver    = "20220312A"
+	etbver    = "20220326A"
 )
 
 type stubMapping map[string]interface{}
