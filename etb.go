@@ -20,8 +20,10 @@ func main() {
 		twitchbot.Command("start", "Start Bot", cliTBStart)
 	})
 
-	if _, err := os.Stat("settings/etb-settings.json"); err == nil {
-		loadData([]string{"FilePaths", "Settings"}, settings)
+	if !checkLoadStatus() {
+		return
+	}
+
 
 		etb := BasicBot{
 			Channel:     settings.General.Twitch.Channel,

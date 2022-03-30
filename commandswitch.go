@@ -30,7 +30,6 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 				} else {
 					switch cmd {
 					case "hi":
-						// cmdHi(bb, userName, cmd, msg)
 						Call("cmdHi", bb, userName, cmd, msg)
 					case "bofh":
 						cmdJokeAPI(bb, cmd, msg)
