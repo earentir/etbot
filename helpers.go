@@ -397,5 +397,15 @@ func Call(funcName string, params ...interface{}) (result interface{}, err error
 
 // check if we can load the bot
 func checkLoadStatus() bool {
+	//Find Settings File
+
+	if _, err := os.Stat("settings"); err != nil {
+		os.Mkdir("settings", 0755)
+	}
+
+	if _, err := os.Stat("chatlog"); err != nil {
+		os.Mkdir("chatlog", 0755)
+	}
+
 	return true
 }
