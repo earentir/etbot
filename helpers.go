@@ -331,6 +331,23 @@ func saveData(settingsName string, thestruct interface{}) {
 	}
 }
 
+// save data by giving it the path in the settings file and the struct that holds the data
+func saveChatLog() {
+	var settingsPath string = settings.FilePaths.ChatLogDir
+
+	streamname := "cl-" + timeStamp() + ".json"
+
+	var fileName string = filepath.Join(settingsPath, streamname)
+
+	if datafile, err := json.MarshalIndent(&chatlog, "", "\t"); err == nil {
+		if err = ioutil.WriteFile(fileName, datafile, 0644); err != nil {
+			fmt.Println(err)
+		}
+	} else {
+		fmt.Println(err)
+	}
+}
+
 // load data by giving it the path in the settings file and the struct that holds the data
 func loadData(settingsName []string, thestruct interface{}) {
 	var settingsPath string = settings.FilePaths.SettingsDir
