@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"os/signal"
+	"path"
 	"strconv"
 	"syscall"
 	"time"
@@ -24,6 +25,8 @@ func main() {
 		return
 	}
 
+	if _, err := os.Stat("settings/settings.json"); err == nil {
+		LoadJSONFileTOStruct("settings/settings.json", &settings)
 
 		etb := BasicBot{
 			Channel:     settings.General.Twitch.Channel,
