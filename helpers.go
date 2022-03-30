@@ -341,6 +341,11 @@ func loadData(settingsName []string, thestruct interface{}) {
 	}
 }
 
+//get field name from struct for FilePaths
+func getFieldFP(path string) string {
+	return getField(&settings, []string{"FilePaths", path})
+}
+
 // from struct field name using reflection
 func getField(v *Settings, fields []string) string {
 	r := reflect.ValueOf(v)
