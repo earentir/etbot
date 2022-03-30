@@ -349,9 +349,9 @@ func saveChatLog() {
 }
 
 // load data by giving it the path in the settings file and the struct that holds the data
-func loadData(settingsName []string, thestruct interface{}) {
+func loadData(settingName string, thestruct interface{}) {
 	var settingsPath string = settings.FilePaths.SettingsDir
-	var fileName string = filepath.Join(settingsPath, getField(&settings, settingsName))
+	var fileName string = filepath.Join(settingsPath, getFieldFP(settingName))
 
 	if _, err := os.Stat(fileName); err == nil {
 		LoadJSONFileTOStruct(fileName, thestruct)
