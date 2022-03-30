@@ -32,18 +32,13 @@ func main() {
 			MsgRate:     time.Duration(settings.General.Twitch.MSGRate),
 		}
 
-		if !checkLoadStatus() {
-			return
-		}
+		loadData("SystemCommands", &systemcommands)
+		loadData("Users", &userlist)
+		loadData("UserCommands", &usercommands)
+		loadData("Pets", &petlist)
 
-		loadData([]string{"FilePaths", "Settings"}, systemcommands)
-		loadData([]string{"FilePaths", "Users"}, userlist)
-		loadData([]string{"FilePaths", "UserCommands"}, usercommands)
-		loadData([]string{"FilePaths", "Pets"}, petlist)
-		loadData([]string{"FilePaths", "CredentialFile"}, creds)
-
-		if _, err := os.Stat(etb.PrivatePath); err == nil {
-			loadData([]string{"FilePaths", "CredentialFile"}, creds)
+		if _, err := os.Stat(path.Join(settings.FilePaths.SettingsDir, settings.FilePaths.CredentialFile)); err == nil {
+			loadData("CredentialFile", &creds)
 
 			chatlog.Channel = settings.General.Twitch.Channel
 			chatlog.Date = strconv.Itoa(int(time.Now().Unix()))
@@ -57,7 +52,7 @@ func main() {
 				os.Exit(1)
 			}()
 
-			saveData([]string{"FilePaths", "Settings"}, settings)
+			saveData("Settings", settings)
 
 			if settings.Servers.WebServers.Enabled {
 				go startWebServer()

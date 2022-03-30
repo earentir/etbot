@@ -79,7 +79,7 @@ func setCMDUsed(cmd string) {
 					usercommands[i].UserCmdOptions.Lastuse = int(time.Now().Unix())
 					usercommands[i].UserCmdOptions.Counter++
 
-					saveData([]string{"FilePaths", "UserCommands"}, usercommands)
+					saveData("UserCommands", usercommands)
 				}
 			}
 		} else {
@@ -88,7 +88,7 @@ func setCMDUsed(cmd string) {
 				systemcommands.Commands[cmdIndex].Options.Lastuse = int(time.Now().Unix())
 				systemcommands.Commands[cmdIndex].Options.Counter++
 
-				saveData([]string{"FilePaths", "SystemCommands"}, systemcommands)
+				saveData("SystemCommands", systemcommands)
 			}
 		}
 	}
@@ -185,7 +185,7 @@ func addLurker(userName, cmd, msg string) {
 		found  bool = false
 	)
 
-	loadData([]string{"FilePaths", "Lurkers"}, lurklist)
+	loadData("Lurkers", lurklist)
 
 	for i := 0; i < len(lurklist.Lurkers); i++ {
 		if strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
@@ -206,14 +206,14 @@ func addLurker(userName, cmd, msg string) {
 		lurklist.Lurkers = append(lurklist.Lurkers, lurker)
 	}
 
-	saveData([]string{"FilePaths", "Lurkers"}, lurklist)
+	saveData("Lurkers", lurklist)
 }
 
 func removeLurker(userName string) {
 	var newLurkList []Lurker
 	var lurklist LurkList
 
-	loadData([]string{"FilePaths", "Lurkers"}, lurklist)
+	loadData("Lurkers", lurklist)
 
 	for i := len(lurklist.Lurkers) - 1; i >= 0; i-- {
 		if !strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
@@ -225,7 +225,7 @@ func removeLurker(userName string) {
 
 	lurklist.Lurkers = newLurkList
 
-	saveData([]string{"FilePaths", "Lurkers"}, lurklist)
+	saveData("Lurkers", lurklist)
 }
 
 func addQuote(userName, attrUser, cleanmsg string) string {
@@ -235,7 +235,7 @@ func addQuote(userName, attrUser, cleanmsg string) string {
 		found     bool = false
 	)
 
-	loadData([]string{"FilePaths", "Quotes"}, quotelist)
+	loadData("Quotes", quotelist)
 
 	for i := 0; i < len(quotelist.QuoteItems); i++ {
 		if quotelist.QuoteItems[i].QuotedMessage == cleanmsg {
@@ -251,7 +251,7 @@ func addQuote(userName, attrUser, cleanmsg string) string {
 		quotelist.QuoteItems = append(quotelist.QuoteItems, qitem)
 	}
 
-	saveData([]string{"FilePaths", "Quotes"}, quotelist)
+	saveData("Quotes", quotelist)
 	return fmt.Sprintf("Quote from %s. \"%s\" added ", userName, cleanmsg)
 }
 
@@ -262,7 +262,7 @@ func addJoke(userName, attrUser, cleanmsg string) string {
 		found    bool = false
 	)
 
-	loadData([]string{"FilePaths", "Jokes"}, jokelist)
+	loadData("Jokes", jokelist)
 
 	for i := 0; i < len(jokelist.JokeItems); i++ {
 		if jokelist.JokeItems[i].JokeMessage == cleanmsg {
@@ -278,7 +278,7 @@ func addJoke(userName, attrUser, cleanmsg string) string {
 		jokelist.JokeItems = append(jokelist.JokeItems, jitem)
 	}
 
-	saveData([]string{"FilePaths", "Jokes"}, jokelist)
+	saveData("Jokes", jokelist)
 	return fmt.Sprintf("Joke from %s. \"%s\" added ", userName, cleanmsg)
 }
 
@@ -311,7 +311,7 @@ func addUser(userToAdd, userType string) string {
 		msgOut = fmt.Sprintf("User %s already exists", userToAdd)
 	}
 
-	saveData([]string{"FilePaths", "Users"}, userlist)
+	saveData("Users", userlist)
 	return msgOut
 }
 
@@ -338,7 +338,7 @@ func delUser(userToDelete string) string {
 
 	userlist.Users = newUserList
 
-	saveData([]string{"FilePaths", "Users"}, userlist)
+	saveData("Users", userlist)
 	return msgOut
 }
 

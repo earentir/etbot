@@ -130,9 +130,9 @@ func LoadJSONTOStruct(jsondata []byte, onTo interface{}) {
 
 // save settings (default data only)
 func saveSettings() {
-	saveData([]string{"FilePaths", "Settings"}, settings)
-	saveData([]string{"FilePaths", "UserCommands"}, usercommands)
-	saveData([]string{"FilePaths", "ChatLogDir"}, chatlog)
+	saveData("Settings", settings)
+	saveData("UserCommands", usercommands)
+	saveChatLog()
 }
 
 // we cleanup when user terminates
@@ -318,9 +318,9 @@ func getKeyWord(keyword, msg string) int {
 }
 
 // save data by giving it the path in the settings file and the struct that holds the data
-func saveData(settingsName []string, thestruct interface{}) {
+func saveData(settingsName string, thestruct interface{}) {
 	var settingsPath string = settings.FilePaths.SettingsDir
-	var fileName string = filepath.Join(settingsPath, getField(&settings, settingsName))
+	var fileName string = filepath.Join(settingsPath, getFieldFP(settingsName))
 
 	if datafile, err := json.MarshalIndent(thestruct, "", "\t"); err == nil {
 		if err = ioutil.WriteFile(fileName, datafile, 0644); err != nil {

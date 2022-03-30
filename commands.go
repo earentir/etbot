@@ -72,7 +72,7 @@ func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
 		lurklist LurkList
 	)
 
-	loadData([]string{"FilePaths", "Lurkers"}, lurklist)
+	loadData("Lurkers", lurklist)
 
 	if isCMD(cmd, msg) {
 		msgOut := fmt.Sprintf(getCMDOptions("lurk").Msg, userName)
@@ -100,7 +100,7 @@ func cmdUnlurk(bb *BasicBot, userName string) {
 		lurklist LurkList
 	)
 
-	loadData([]string{"FilePaths", "Lurkers"}, lurklist)
+	loadData("Lurkers", lurklist)
 
 	for i := 0; i < len(lurklist.Lurkers); i++ {
 		if strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
@@ -346,7 +346,7 @@ func cmdUPDSoc(bb *BasicBot, cmd, userName, msg string) {
 							botSay(bb, fmt.Sprintf("%s's %s profile is now %s", fields[0][1:], fields[1], fields[2]))
 						}
 
-						saveData([]string{"FilePaths", "Users"}, userlist)
+						saveData("Users", userlist)
 					}
 				}
 			} else {
@@ -449,7 +449,7 @@ func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
 				}
 			}
 			//save the pets
-			saveData([]string{"FilePaths", "Pets"}, petlist)
+			saveData("Pets", petlist)
 		} else {
 			botSay(bb, fmt.Sprintf("%s | Treat: %v (%v)  Petting Minutes: %v", "!zoe pet or !zoe feed or !zoe name", petlist.Pets[0].Feed, petlist.Pets[0].FeedLimit, petlist.Pets[0].Pet))
 		}
@@ -608,7 +608,7 @@ func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 		quotelist QuoteList
 	)
 
-	loadData([]string{"FilePaths", "Quotes"}, quotelist)
+	loadData("Quotes", quotelist)
 
 	if isCMD(cmd, msg) {
 		if len(quotelist.QuoteItems) > 0 {
@@ -651,7 +651,7 @@ func cmdJoke(bb *BasicBot, userName, cmd, msg string) {
 		jokelist JokeList
 	)
 
-	loadData([]string{"FilePaths", "Jokes"}, jokelist)
+	loadData("Jokes", jokelist)
 
 	if isCMD(cmd, msg) {
 		if len(jokelist.JokeItems) > 0 {
