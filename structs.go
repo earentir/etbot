@@ -34,7 +34,6 @@ type Settings struct {
 	FilePaths struct {
 		SettingsDir    string `json:"settingsdir"`
 		ChatLogDir     string `json:"chatlogdir"`
-		CredentialFile string `json:"credentials"`
 		Settings       string `json:"settings"`
 		Users          string `json:"users"`
 		Jokes          string `json:"jokes"`
@@ -43,6 +42,7 @@ type Settings struct {
 		Quotes         string `json:"quotes"`
 		SystemCommands string `json:"system-commands"`
 		UserCommands   string `json:"user-commands"`
+		// CredentialFile string `json:"credentials"`
 	} `json:"filepaths"`
 	Servers struct {
 		WebServers struct {
@@ -79,10 +79,10 @@ type Settings struct {
 
 //Credentials struct
 type Credentials struct {
-	TwitchPassword     string `json:"twitch_password,omitempty"`
-	TwitchAppToken     string `json:"twitch_apptoken,omitempty"`
-	TwitchClientID     string `json:"twitch_client_id,omitempty"`
-	TwitchClientsecret string `json:"twitch_client_secret,omitempty"`
+	TwitchPassword     string `json:"twitch_password"`
+	TwitchAppToken     string `json:"twitch_apptoken"`
+	TwitchClientID     string `json:"twitch_client_id"`
+	TwitchClientsecret string `json:"twitch_client_secret"`
 	OpenWeatherAPIKey  string `json:"openweathermapapi,omitempty"`
 	CurrencyAPIKey     string `json:"currconvapi,omitempty"`
 	TMDBToken          string `json:"tmdb_token,omitempty"`

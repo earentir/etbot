@@ -577,7 +577,7 @@ func cmdUser(bb *BasicBot, cmd, userName, msg string) {
 
 func cmdSaveSettings(bb *BasicBot, cmd, userName, msg string) {
 	if userName == settings.General.Twitch.Channel {
-		saveSettings()
+		saveDefaultData()
 		botSay(bb, "Settings Saved")
 	}
 }

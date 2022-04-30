@@ -44,10 +44,10 @@ var (
 	// Regex for parsing user commands, from already parsed PRIVMSG strings.
 	CommandRegex *regexp.Regexp = regexp.MustCompile(`!(.*?)[^\s]+`)
 
-	// Store credentials from etb-auth.json
+	// Store credentials from file
 	creds Credentials
 
-	// Store In Memory accessible settings from et-settings.json
+	// Store In Memory accessible settings from etb.json
 	settings Settings
 
 	//Store User Commands in memory
@@ -59,4 +59,7 @@ var (
 
 	//Store Maps
 	StubStorage = stubMapping{}
+
+	//Settings Path
+	settingFileName = "settings/etb.json"
 )

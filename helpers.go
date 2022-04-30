@@ -112,12 +112,14 @@ func TimeStamp(format string) string {
 }
 
 // read json file to struct here
-func LoadJSONFileTOStruct(jsonFileName string, onTo interface{}) {
+func LoadJSONFileTOStruct(jsonFileName string, onTo interface{}) bool {
 	jsonFile, err := ioutil.ReadFile(jsonFileName)
 	if nil != err {
 		fmt.Println(err)
+		return false
 	}
 	json.Unmarshal([]byte(jsonFile), &onTo)
+	return true
 }
 
 // read json data to struct here
@@ -128,8 +130,8 @@ func LoadJSONTOStruct(jsondata []byte, onTo interface{}) {
 
 }
 
-// save settings (default data only)
-func saveSettings() {
+// saveDefaultData (settings. commands, userscommands) (default data only)
+func saveDefaultData() {
 	saveData("Settings", settings)
 	saveData("UserCommands", usercommands)
 	saveChatLog()
@@ -137,7 +139,7 @@ func saveSettings() {
 
 // we cleanup when user terminates
 func cleanup() {
-	saveSettings()
+	saveDefaultData()
 	fmt.Println("Saved Data")
 }
 
@@ -335,7 +337,7 @@ func saveData(settingsName string, thestruct interface{}) {
 func saveChatLog() {
 	var settingsPath string = settings.FilePaths.ChatLogDir
 
-	streamname := "cl-" + timeStamp() + ".json"
+	streamname := settings.General.Twitch.Channel + "-chatlog-" + strings.Replace(timeStamp(), ":", "", -1) + ".json"
 
 	var fileName string = filepath.Join(settingsPath, streamname)
 
@@ -395,8 +397,11 @@ func Call(funcName string, params ...interface{}) (result interface{}, err error
 	return
 }
 
-// check if we can load the bot
+// func savestructtofile(struct)
+
+// check if we can load the bot, Load Settings/Credentials
 func checkLoadStatus() bool {
+	var status bool = false
 	//Find Settings File
 
 	if _, err := os.Stat("settings"); err != nil {
@@ -407,5 +412,69 @@ func checkLoadStatus() bool {
 		os.Mkdir("chatlog", 0755)
 	}
 
-	return true
+	if _, err := os.Stat("/etc/etb.json"); err == nil {
+		settingFileName = "/etc/etb.json"
+	}
+
+	if _, err := os.Stat("etb.json"); err == nil {
+		settingFileName = "etb.json"
+	}
+
+	if _, err := os.Stat("settings/etb.json"); err == nil {
+		settingFileName = "settings/etb.json"
+	}
+
+	// Make this a savesettings() that will replace the old one that is NOT savingsettings
+	if _, err := os.Stat(settingFileName); err != nil {
+		{
+			if datafile, err := json.MarshalIndent(settings, "", "\t"); err == nil {
+				if err = ioutil.WriteFile(settingFileName, datafile, 0644); err != nil {
+					fmt.Println(err)
+					status = false
+				} else {
+					status = true
+					fmt.Printf("Settings file %s created\n", settingFileName)
+				}
+			} else {
+				fmt.Println(err)
+				status = false
+			}
+		}
+	}
+
+	//Load Settings
+	status = LoadJSONFileTOStruct(settingFileName, &settings)
+
+	//Load or Make default credentials file
+	var credentialsFileName = ""
+	credentialsFileName = "settings/" + settings.General.Twitch.Channel + "-creds.json"
+
+	if settings.General.Twitch.Channel != "" {
+		if _, err := os.Stat(credentialsFileName); err == nil {
+			status = LoadJSONFileTOStruct(credentialsFileName, &creds)
+		} else {
+			if datafile, err := json.MarshalIndent(creds, "", "\t"); err == nil {
+				if err = ioutil.WriteFile(credentialsFileName, datafile, 0644); err != nil {
+					fmt.Println(err)
+					status = false
+				} else {
+					status = true
+					fmt.Printf("Credentials file (%s) created\n", credentialsFileName)
+				}
+			} else {
+				fmt.Println(err)
+				status = false
+			}
+		}
+	} else {
+		status = false
+		fmt.Printf("Please setup your Twitch channel information in (%s)\n", settingFileName)
+	}
+
+	if (settings.General.Twitch.Channel != "") && (creds.TwitchAppToken == "") {
+		status = false
+		fmt.Printf("Please setup your Twitch credentials in (%s)\n", credentialsFileName)
+	}
+
+	return status
 }
