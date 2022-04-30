@@ -484,6 +484,7 @@ func cmdTMDB(bb *BasicBot, cmd, userName, msg string) {
 			id, err := strconv.Atoi(strings.Fields(msg)[1])
 			if err != nil {
 				fmt.Println(err)
+				botSay(bb, fmt.Sprintf("Incorrect Usage: ex. !tmdb movie Blade Runner or !tmdb tv Supernatural or use an ID: !tmdb 78 movie or !tmdb 1622 tv"))
 			} else {
 				movieData := tmdbMovie(id)
 				botSay(bb, fmt.Sprintf("📇 %s | %v | 📅 %s  🎥%s", movieData.Title, movieData.ID, movieData.ReleaseDate, movieData.Overview))
