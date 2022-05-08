@@ -42,6 +42,7 @@ func HTTPGetBody(url string) string {
 
 		return string(bdystrmsg)
 	} else {
+		fmt.Printf("HTTP Error Code: %v", responce.StatusCode)
 		return ""
 	}
 
