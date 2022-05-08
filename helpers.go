@@ -173,9 +173,9 @@ func timeZone(location string) string {
 				newloc = location
 			} else {
 				if len(fields) > 1 {
-					newloc = l + "/" + strings.Title(strings.ToLower(fields[0])) + "_" + strings.Title(strings.ToLower(fields[1]))
+					newloc = l + "/" + strings.ToTitle(strings.ToLower(fields[0])) + "_" + strings.ToTitle(strings.ToLower(fields[1]))
 				} else {
-					newloc = l + "/" + strings.Title(strings.ToLower(location))
+					newloc = l + "/" + strings.ToTitle(strings.ToLower(location))
 				}
 			}
 			tme = tzNow(newloc)
@@ -443,7 +443,7 @@ func checkLoadStatus() bool {
 	}
 
 	//Load Settings
-	status = LoadJSONFileTOStruct(settingFileName, &settings)
+	LoadJSONFileTOStruct(settingFileName, &settings)
 
 	//Load or Make default credentials file
 	var credentialsFileName = ""
