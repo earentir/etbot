@@ -11,13 +11,13 @@ func CurrencyConversion(ISOFROM, ISOTO string, amount float64) string {
 
 	var pairValue map[string]float64
 
-	if creds.OpenWeatherAPIKey != "" {
+	if creds.CurrencyAPIKey != "" {
 
 		exchangerate := HTTPGetBody(fmt.Sprintf("https://free.currconv.com/api/v7/convert?q=%s&compact=ultra&apiKey=%s", buildPair, creds.CurrencyAPIKey))
 		if len(exchangerate) > 0 && exchangerate != "{}" {
 			err := json.Unmarshal([]byte(exchangerate), &pairValue)
 			if err != nil {
-				fmt.Print(err)
+				fmt.Println(err)
 			}
 
 			return fmt.Sprintf("The Exchange Rate of %v %s to %s is %s", fmt.Sprintf("%.2f", amount), ISOFROM, ISOTO, fmt.Sprintf("%.2f", pairValue[buildPair]*amount))
