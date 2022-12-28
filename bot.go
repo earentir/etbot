@@ -99,8 +99,12 @@ func (bb *BasicBot) Say(msg string) error {
 		return errors.New("BasicBot.Say: msg exceeded 512 bytes")
 	}
 
-	_, err := bb.conn.Write([]byte(fmt.Sprintf("PRIVMSG #%s :%s\r\n", bb.Channel, msg)))
+	// send message to chat
+	res, err := bb.conn.Write([]byte(fmt.Sprintf("PRIVMSG #%s :%s\r\n", bb.Channel, msg)))
+
+	fmt.Printf("Result:%v, c:%s, m:%s", res, bb.Channel, msg)
 	if nil != err {
+		fmt.Println("err: ", err)
 		return err
 	}
 	return nil
