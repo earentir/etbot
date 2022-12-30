@@ -72,7 +72,7 @@ func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
 		lurklist LurkList
 	)
 
-	loadData("Lurkers", lurklist)
+	loadData("Lurkers", &lurklist)
 
 	if isCMD(cmd, msg) {
 		msgOut := fmt.Sprintf(getCMDOptions("lurk").Msg, userName)
@@ -100,7 +100,7 @@ func cmdUnlurk(bb *BasicBot, userName string) {
 		lurklist LurkList
 	)
 
-	loadData("Lurkers", lurklist)
+	loadData("Lurkers", &lurklist)
 
 	for i := 0; i < len(lurklist.Lurkers); i++ {
 		if strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
@@ -609,7 +609,7 @@ func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
 		quotelist QuoteList
 	)
 
-	loadData("Quotes", quotelist)
+	loadData("Quotes", &quotelist)
 
 	if isCMD(cmd, msg) {
 		if len(quotelist.QuoteItems) > 0 {
@@ -652,7 +652,7 @@ func cmdJoke(bb *BasicBot, userName, cmd, msg string) {
 		jokelist JokeList
 	)
 
-	loadData("Jokes", jokelist)
+	loadData("Jokes", &jokelist)
 
 	if isCMD(cmd, msg) {
 		if len(jokelist.JokeItems) > 0 {
