@@ -375,8 +375,9 @@ func getField(v *Settings, fields []string) string {
 // call a func using its name stored in a string
 func Call(funcName string, params ...interface{}) (result interface{}, err error) {
 	StubStorage = map[string]interface{}{
-		"cmdHi": cmdHi,
-		"cmdSO": cmdSO,
+		"cmdHi":      cmdHi,
+		"cmdSO":      cmdSO,
+		"cmdJokeAPI": cmdJokeAPI,
 	}
 
 	f := reflect.ValueOf(StubStorage[funcName])

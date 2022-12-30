@@ -32,9 +32,9 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					case "hi":
 						Call("cmdHi", bb, userName, cmd, msg)
 					case "bofh":
-						cmdJokeAPI(bb, cmd, msg)
+						Call("cmdJokeAPI", bb, cmd, msg)
 					case "yoke":
-						cmdJokeAPI(bb, cmd, msg)
+						Call("cmdJokeAPI", bb, cmd, msg)
 					case "joke":
 						cmdJoke(bb, userName, cmd, msg)
 					case "lurk":
