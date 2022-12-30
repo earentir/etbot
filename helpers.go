@@ -360,7 +360,7 @@ func loadData(settingName string, thestruct interface{}) {
 	}
 }
 
-//get field name from struct for FilePaths
+// get field name from struct for FilePaths
 func getFieldFP(path string) string {
 	return getField(&settings, []string{"FilePaths", path})
 }
@@ -404,17 +404,20 @@ func checkLoadStatus() bool {
 	var status bool = false
 	//Find Settings File
 
+	//Check if settings root folder exists
 	if _, err := os.Stat("settings"); err != nil {
 		os.Mkdir("settings", 0755)
 	}
 
+	//Check if chatlog folder exists
 	if _, err := os.Stat("chatlog"); err != nil {
 		os.Mkdir("chatlog", 0755)
 	}
 
-	if _, err := os.Stat("/etc/etb.json"); err == nil {
-		settingFileName = "/etc/etb.json"
-	}
+	//Check if channel settings folder exists if we find etb-server.json
+	// if _, err := os.Stat("settings/" + settings.General.Twitch.Channel); err != nil {
+	// 	os.Mkdir("settings/"+settings.General.Twitch.Channel, 0755)
+	// }
 
 	if _, err := os.Stat("etb.json"); err == nil {
 		settingFileName = "etb.json"
