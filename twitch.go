@@ -32,6 +32,9 @@ func getTwitchUser(userName string) TwitchUserData {
 	if err != nil {
 		fmt.Println(err)
 	}
+	if resp.Error != "" {
+		fmt.Println("Auth Error: ", resp.Error)
+	}
 
 	userdata := &resp.Data.Users
 	jsonuserdata, err := json.Marshal(userdata)
