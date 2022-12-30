@@ -16,11 +16,10 @@ type BasicBot struct {
 	startTime   time.Time     //Time when we connected
 }
 
-//Settings struct
+// Settings struct
 type Settings struct {
 	General struct {
-		CredentialFile string `json:"credentialfile"` //credentials file, to be replace with new filepaths
-		Twitch         struct {
+		Twitch struct {
 			Channel     string `json:"channel"`
 			BotUserName string `json:"botusername"`
 			IRCPort     string `json:"ircport"`
@@ -77,7 +76,7 @@ type Settings struct {
 	UserLevels []UserLevelList `json:"userlevels"`
 }
 
-//Credentials struct
+// Credentials struct
 type Credentials struct {
 	TwitchPassword     string `json:"twitch_password"`
 	TwitchAppToken     string `json:"twitch_apptoken"`
