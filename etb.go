@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/signal"
 	"strconv"
+	"strings"
 	"syscall"
 	"time"
 
@@ -39,8 +40,17 @@ func main() {
 	loadData("UserCommands", &usercommands)
 	loadData("Pets", &petlist)
 
+	//load chatlog and read channel data
+	var twitchChannelData TwitchChannelData = getChannelInfo(getTwitchUser(strings.ToLower(settings.General.Twitch.Channel))[0].ID)
+
 	chatlog.Channel = settings.General.Twitch.Channel
 	chatlog.Date = strconv.Itoa(int(time.Now().Unix()))
+
+	chatlog.Channel = settings.General.Twitch.Channel
+	chatlog.BroadcasterID = twitchChannelData[0].BroadcasterID
+	chatlog.GameID = twitchChannelData[0].GameID
+	chatlog.GameName = twitchChannelData[0].GameName
+	chatlog.StreamTitle = twitchChannelData[0].Title
 
 	//ffs we catch oob interupt, cause the noop keeps ctrl+c
 	c := make(chan os.Signal)
