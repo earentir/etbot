@@ -29,6 +29,7 @@ func botSay(bb *BasicBot, msg string) {
 			bb.Say(msg)
 		}
 	} else {
+		fmt.Println("Console Print Only")
 		fmt.Println(msg)
 	}
 }
@@ -41,6 +42,21 @@ func cmdHi(bb *BasicBot, userName, cmd, msg string) {
 		msgOut = fmt.Sprintf("earentHey @%s", userName)
 	}
 	botSay(bb, msgOut)
+}
+
+func cmdGPTCompletion(bb *BasicBot, cmd, userName, msg string) {
+	var msgOut string = completion(msg)
+
+	fmt.Println("msg:", msg)
+	fmt.Println("msgout:", msgOut, ":")
+
+	if msgOut != "" {
+		if isAttr(msg) {
+			botSay(bb, msgOut+" "+getAttributedUser(msg, true))
+		} else {
+			botSay(bb, msgOut)
+		}
+	}
 }
 
 func cmdJokeAPI(bb *BasicBot, cmd, msg string) {

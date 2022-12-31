@@ -79,6 +79,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						fallthrough
 					case "daysoff":
 						cmdDaysOff(bb, cmd, userName, msg)
+					case "gpt":
+						cmdGPTCompletion(bb, cmd, userName, msg)
 
 						//Not allowed to be renamed - System Commands
 					case "level":
