@@ -91,20 +91,22 @@ func (bb *BasicBot) JoinChannel() {
 // Makes the bot send a message to the chat channel.
 func (bb *BasicBot) Say(msg string) error {
 	if msg == "" {
+		fmt.Println("BasicBot.Say: msg was empty")
 		return errors.New("BasicBot.Say: msg was empty")
 	}
 
 	// check if message is too large for IRC
 	if len(msg) > 512 {
+		fmt.Println("BasicBot.Say: msg exceeded 512 bytes")
 		return errors.New("BasicBot.Say: msg exceeded 512 bytes")
 	}
 
 	// send message to chat
 	res, err := bb.conn.Write([]byte(fmt.Sprintf("PRIVMSG #%s :%s\r\n", bb.Channel, msg)))
 
-	fmt.Printf("Result:%v, c:%s, m:%s", res, bb.Channel, msg)
-	if nil != err {
-		fmt.Println("err: ", err)
+	fmt.Printf("Result: %v, channel: %s, message: [%s]", res, bb.Channel, msg)
+	if err != nil {
+		fmt.Println("BasicBot.Say Error Writing: ", err)
 		return err
 	}
 	return nil
