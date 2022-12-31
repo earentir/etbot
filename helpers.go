@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -113,7 +112,7 @@ func TimeStamp(format string) string {
 
 // read json file to struct here
 func LoadJSONFileTOStruct(jsonFileName string, onTo interface{}) bool {
-	jsonFile, err := ioutil.ReadFile(jsonFileName)
+	jsonFile, err := os.ReadFile(jsonFileName)
 	if nil != err {
 		fmt.Println(err)
 		return false
@@ -325,7 +324,7 @@ func saveData(settingsName string, thestruct interface{}) {
 	var fileName string = filepath.Join(settingsPath, getFieldFP(settingsName))
 
 	if datafile, err := json.MarshalIndent(thestruct, "", "\t"); err == nil {
-		if err = ioutil.WriteFile(fileName, datafile, 0644); err != nil {
+		if err = os.WriteFile(fileName, datafile, 0644); err != nil {
 			fmt.Println(err)
 		}
 	} else {
@@ -342,7 +341,7 @@ func saveChatLog() {
 	var fileName string = filepath.Join(settingsPath, streamname)
 
 	if datafile, err := json.MarshalIndent(&chatlog, "", "\t"); err == nil {
-		if err = ioutil.WriteFile(fileName, datafile, 0644); err != nil {
+		if err = os.WriteFile(fileName, datafile, 0644); err != nil {
 			fmt.Println(err)
 		}
 	} else {
@@ -432,7 +431,7 @@ func checkLoadStatus() bool {
 	if _, err := os.Stat(settingFileName); err != nil {
 		{
 			if datafile, err := json.MarshalIndent(settings, "", "\t"); err == nil {
-				if err = ioutil.WriteFile(settingFileName, datafile, 0644); err != nil {
+				if err = os.WriteFile(settingFileName, datafile, 0644); err != nil {
 					fmt.Println(err)
 					status = false
 				} else {
@@ -458,7 +457,7 @@ func checkLoadStatus() bool {
 			status = LoadJSONFileTOStruct(credentialsFileName, &creds)
 		} else {
 			if datafile, err := json.MarshalIndent(creds, "", "\t"); err == nil {
-				if err = ioutil.WriteFile(credentialsFileName, datafile, 0644); err != nil {
+				if err = os.WriteFile(credentialsFileName, datafile, 0644); err != nil {
 					fmt.Println(err)
 					status = false
 				} else {
