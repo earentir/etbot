@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -28,21 +28,31 @@ type CompletionReply struct {
 }
 
 type CompletionRequest struct {
-	Model     string `json:"model"`
-	Prompt    string `json:"prompt"`
-	MaxTokens int    `json:"max_tokens"`
+	Model            string  `json:"model"`
+	Prompt           string  `json:"prompt"`
+	Temperature      float64 `json:"temperature"`
+	MaxTokens        int     `json:"max_tokens"`
+	TopP             float64 `json:"top_p"`
+	FrequencyPenalty float64 `json:"frequency_penalty"`
+	PresencePenalty  float64 `json:"presence_penalty"`
+	Stop             string  `json:"stop"`
 }
 
 func completion(prompt string) string {
 	if creds.OpenAI != "" && prompt != "" {
-
 		// Set up the API endpoint URL and request body
 		endpoint := "https://api.openai.com/v1/completions"
 		requestBody := CompletionRequest{
-			Model:     "text-davinci-003",
-			Prompt:    prompt,
-			MaxTokens: 50,
+			Model:            "text-davinci-003",
+			Prompt:           prompt,
+			Temperature:      0.7,
+			MaxTokens:        50,
+			TopP:             1,
+			FrequencyPenalty: 0.0,
+			PresencePenalty:  0.0,
+			Stop:             "",
 		}
+
 		jsonRequest, err := json.Marshal(requestBody)
 		if err != nil {
 			fmt.Println(err)
@@ -63,7 +73,7 @@ func completion(prompt string) string {
 		defer resp.Body.Close()
 
 		// Read the response
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -75,7 +85,6 @@ func completion(prompt string) string {
 		}
 
 		// Print the 1st response
-		// fmt.Println(completionreply.Choices[0].Text)
 		return strings.TrimSpace(completionreply.Choices[0].Text)
 	}
 	return "Please setup your OpenAI API key @ https://openai.com"
