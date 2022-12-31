@@ -86,6 +86,7 @@ type Credentials struct {
 	CurrencyAPIKey     string `json:"currconvapi,omitempty"`
 	TMDBToken          string `json:"tmdb_token,omitempty"`
 	Calendarific       string `json:"calendarific_token,omitempty"`
+	OpenAI             string `json:"openai_token,omitempty"`
 }
 
 type TwitchUserData []struct {
