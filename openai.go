@@ -31,26 +31,31 @@ type CompletionRequest struct {
 	Model            string  `json:"model"`
 	Prompt           string  `json:"prompt"`
 	Temperature      float64 `json:"temperature"`
-	MaxTokens        int     `json:"max_tokens"`
-	TopP             float64 `json:"top_p"`
+	Max_Tokens       int     `json:"max_tokens"`
+	Top_P            float64 `json:"top_p"`
 	FrequencyPenalty float64 `json:"frequency_penalty"`
 	PresencePenalty  float64 `json:"presence_penalty"`
 	Stop             string  `json:"stop"`
 }
 
-func completion(prompt string) string {
+func completion(prompt, profile string) string {
+	var completionrequest CompletionRequest
+	var requestBody CompletionRequest
+
+	LoadJSONFileTOStruct("settings/openai.json", &completionrequest)
+
 	if creds.OpenAI != "" && prompt != "" {
 		// Set up the API endpoint URL and request body
 		endpoint := "https://api.openai.com/v1/completions"
-		requestBody := CompletionRequest{
-			Model:            "text-davinci-003",
-			Prompt:           prompt,
-			Temperature:      0.7,
-			MaxTokens:        50,
-			TopP:             1,
-			FrequencyPenalty: 0.0,
-			PresencePenalty:  0.0,
-			Stop:             "",
+
+		completionrequest.Prompt = prompt
+
+		if profile == "fact" {
+			completionrequest.Temperature = 0.0
+			requestBody = completionrequest
+		} else {
+			completionrequest.Temperature = 0.7
+			requestBody = completionrequest
 		}
 
 		jsonRequest, err := json.Marshal(requestBody)
@@ -83,9 +88,13 @@ func completion(prompt string) string {
 		if err != nil {
 			fmt.Println(err)
 		}
-
+		fmt.Println("gpt reply: ", completionreply)
 		// Print the 1st response
-		return strings.TrimSpace(completionreply.Choices[0].Text)
+		if len(completionreply.Choices) > 0 {
+			return strings.TrimSpace(completionreply.Choices[0].Text)
+		} else {
+			return "Please setup your OpenAI API key @ https://openai.com"
+		}
 	}
 	return "Please setup your OpenAI API key @ https://openai.com"
 }

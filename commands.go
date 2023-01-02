@@ -45,7 +45,7 @@ func cmdHi(bb *BasicBot, userName, cmd, msg string) {
 }
 
 func cmdGPTCompletion(bb *BasicBot, cmd, userName, msg string) {
-	var msgOut string = completion(msg)
+	var msgOut string = completion(msg, "completion")
 
 	fmt.Println("msg:", msg)
 	fmt.Println("msgout:", msgOut, ":")
