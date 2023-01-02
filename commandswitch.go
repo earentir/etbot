@@ -80,7 +80,9 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					case "daysoff":
 						cmdDaysOff(bb, cmd, userName, msg)
 					case "gpt":
-						cmdGPTCompletion(bb, cmd, userName, msg)
+						cmdGPTCompletion(bb, cmd, userName, msg, "completion")
+					case "fact":
+						cmdGPTCompletion(bb, cmd, userName, msg, "fact")
 
 						//Not allowed to be renamed - System Commands
 					case "lockdown":

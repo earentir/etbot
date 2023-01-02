@@ -44,8 +44,8 @@ func cmdHi(bb *BasicBot, userName, cmd, msg string) {
 	botSay(bb, msgOut)
 }
 
-func cmdGPTCompletion(bb *BasicBot, cmd, userName, msg string) {
-	var msgOut string = completion(msg, "completion")
+func cmdGPTCompletion(bb *BasicBot, cmd, userName, msg, mode string) {
+	var msgOut string = completion(msg, mode)
 
 	fmt.Println("msg:", msg)
 	fmt.Println("msgout:", msgOut, ":")
