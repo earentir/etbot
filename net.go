@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strconv"
 )
 
 func HTTPCheckResponse(uri string) bool {
@@ -43,7 +44,7 @@ func HTTPGetBody(url string) string {
 		return string(bdystrmsg)
 	} else {
 		fmt.Printf("HTTP Error Code: %v", responce.StatusCode)
-		return ""
+		return "http/error/" + strconv.Itoa(responce.StatusCode)
 	}
 
 }
