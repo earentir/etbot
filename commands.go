@@ -59,6 +59,16 @@ func cmdGPTCompletion(bb *BasicBot, cmd, userName, msg, mode string) {
 	}
 }
 
+func cmdGumroad(bb *BasicBot, cmd, userName, msg string) {
+	var gumroadproducts string = GumroadAPI()
+
+	if isAttr(msg) {
+		botSay(bb, gumroadproducts)
+	} else {
+		botSay(bb, gumroadproducts)
+	}
+}
+
 func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
 	var (
 		jokes []string
