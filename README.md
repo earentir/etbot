@@ -36,6 +36,8 @@ the ability to customize messages (all wii have that in the future)
   - Adds Issues in git hub
 - gpt \*
   - Sends the prompt to GPT-3, it cant receive multistep answers (yet)
+- gumroad \*
+  - Pulls gumroad products
 - joke
   - You can add/search/delete jokes
 - level
