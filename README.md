@@ -28,14 +28,21 @@ the ability to customize messages (all wii have that in the future)
   - Prints the next days off in specified country
 - etbdown
   - Does a bot reload (not fully yet)
-- exchange \*
+- exchange \* \#
   - Does FIAT currency conversions
+- fact \*
+  - Asks for a factual answer from GPT-3
 - fr $
   - Adds Issues in git hub
+- gpt \*
+  - Sends the prompt to GPT-3, it cant receive multistep answers (yet)
 - joke
   - You can add/search/delete jokes
 - level
   - Outputs the users level/type
+- lockdown
+  - Locks down the bot, only the owner can issue commands, its a toggle, running
+    it again will switch it off/on
 - love
   - Users can add something they love and it will be appended in the !so
 - lurk
@@ -75,8 +82,10 @@ the ability to customize messages (all wii have that in the future)
   - Pet feeding and petting mechanism, allows users to add treats/petting time
     to a que
 
-Commands with \* require an API key from a third party. Commands with a $
+\* Commands with \* require an API key from a third party. Commands with a $
 require a local client.
+
+\# Command dooes not work since the API is down
 
 ### User Commands
 
