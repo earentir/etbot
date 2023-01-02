@@ -91,6 +91,7 @@ type Credentials struct {
 	TMDBToken          string `json:"tmdb_token,omitempty"`
 	Calendarific       string `json:"calendarific_token,omitempty"`
 	OpenAI             string `json:"openai_token,omitempty"`
+	Gumroad            string `json:"gumroad_access_token,omitempty"`
 }
 
 type TwitchUserData []struct {
