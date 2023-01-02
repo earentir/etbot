@@ -83,6 +83,14 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						cmdGPTCompletion(bb, cmd, userName, msg)
 
 						//Not allowed to be renamed - System Commands
+					case "lockdown":
+						settings.General.Lockdown.Enabled = !settings.General.Lockdown.Enabled
+						if settings.General.Lockdown.Enabled {
+							botSay(bb, "Lockdown Initiated "+settings.General.Lockdown.Reason)
+						} else {
+							botSay(bb, "Lockdown Dissabled ")
+						}
+
 					case "level":
 						cmdLevel(bb, cmd, userName, msg)
 					case "setting":

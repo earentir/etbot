@@ -30,12 +30,23 @@ func CMDCanRun(userName, cmd string) bool {
 
 	ourcmdopts = getCMDOptions(cmd)
 
+	if settings.General.Lockdown.Enabled && userName != settings.General.Twitch.Channel {
+		fmt.Println("Lockdown: ", settings.General.Lockdown.Enabled)
+		return false
+	}
+
+	if userName == settings.General.Twitch.Channel {
+		itcan = true
+		fmt.Println("sudo command")
+		return itcan
+	}
+
 	if ourcmdopts.Enabled && (IsItOnTimeout(cmd, userName) || ourcmdopts.Lastuse == 0) {
 		itcan = ourcmdopts.UserLevel >= UserLevel(userName).Level
 		setCMDUsed(cmd)
 	}
 
-	fmt.Printf("usr: %s [%v] | cmd: %s [%v]\nen: %v | time: %v | usrCMD: %v\nperm: %v\n", userName, levelNameTolvl(getUserData(userName).Type), cmd, ourcmdopts.UserLevel, ourcmdopts.Enabled, IsItOnTimeout(cmd, userName), isUsrCmd(cmd), itcan)
+	fmt.Printf("usr: %s [%v] | cmd: %s [%v]\nen: %v | time: %v |\n usrCMD: %v perm: %v\n", userName, levelNameTolvl(getUserData(userName).Type), cmd, ourcmdopts.UserLevel, ourcmdopts.Enabled, IsItOnTimeout(cmd, userName), isUsrCmd(cmd), itcan)
 	return itcan
 }
 
@@ -282,7 +293,7 @@ func addJoke(userName, attrUser, cleanmsg string) string {
 	return fmt.Sprintf("Joke from %s. \"%s\" added ", userName, cleanmsg)
 }
 
-//add check for duplicates
+// add check for duplicates
 func addUser(userToAdd, userType string) string {
 	var (
 		found   bool = false

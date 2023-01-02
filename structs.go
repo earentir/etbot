@@ -29,6 +29,10 @@ type Settings struct {
 		Project struct {
 			Description string `json:"description,omitempty"`
 		} `json:"project"`
+		Lockdown struct {
+			Enabled bool   `json:"enabled"`
+			Reason  string `json:"reason,omitempty"`
+		} `json:"lockdown"`
 	} `json:"general"`
 	FilePaths struct {
 		SettingsDir    string `json:"settingsdir"`
