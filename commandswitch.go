@@ -83,6 +83,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						cmdGPTCompletion(bb, cmd, userName, msg, "completion")
 					case "fact":
 						cmdGPTCompletion(bb, cmd, userName, msg, "fact")
+					case "gumroad":
+						cmdGumroad(bb, cmd, userName, msg)
 
 						//Not allowed to be renamed - System Commands
 					case "lockdown":
@@ -92,7 +94,6 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						} else {
 							botSay(bb, "Lockdown Dissabled ")
 						}
-
 					case "level":
 						cmdLevel(bb, cmd, userName, msg)
 					case "setting":
