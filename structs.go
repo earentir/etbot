@@ -62,6 +62,11 @@ type Settings struct {
 			SendMessages bool `json:"sendmessages"`
 			Log          bool `json:"log"`
 		} `json:"bot"`
+		DiscordBot struct {
+			Enabled      bool `json:"enabled"`
+			SendMessages bool `json:"sendmessages"`
+			Log          bool `json:"log"`
+		}
 	} `json:"servers"`
 	API struct {
 		Weather struct {
@@ -75,7 +80,17 @@ type Settings struct {
 		Calendar struct {
 			Country   string `json:"country"`
 			DaysAhead int    `josn:"daysahead"`
-		}
+		} `json:"Calendar"`
+		OpenAI struct {
+			Model            string  `json:"model"`
+			Prompt           string  `json:"prompt"`
+			Temperature      float64 `json:"temperature"`
+			Max_Tokens       int     `json:"max_tokens"`
+			Top_P            float64 `json:"top_p"`
+			FrequencyPenalty float64 `json:"frequency_penalty"`
+			PresencePenalty  float64 `json:"presence_penalty"`
+			Stop             string  `json:"stop"`
+		} `json:"OpenAI"`
 	}
 	UserLevels []UserLevelList `json:"userlevels"`
 }
