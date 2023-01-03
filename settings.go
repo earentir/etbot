@@ -8,17 +8,25 @@ import (
 	"time"
 )
 
-func getCMDS(userName string) string {
+func getCMDS(userName string, showlevel bool) string {
 	var allcommands []string
 
 	for _, cm := range systemcommands.Commands {
 		if CMDCanRun(userName, cm.Name) {
-			allcommands = append(allcommands, cm.Name+" ["+strconv.Itoa(cm.Options.UserLevel)+"]")
+			var level string = ""
+			if showlevel {
+				level = " (" + strconv.Itoa(cm.Options.UserLevel) + ")"
+			}
+			allcommands = append(allcommands, cm.Name+level)
 		}
 	}
 
 	for _, cm := range usercommands {
-		allcommands = append(allcommands, cm.UserCmdName)
+		var level string = ""
+		if showlevel {
+			level = " (10)"
+		}
+		allcommands = append(allcommands, cm.UserCmdName+level)
 	}
 
 	sort.Strings(allcommands)

@@ -110,7 +110,7 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					case "version":
 						cmdVersion(bb)
 					case "commands":
-						cmdList(bb, userName)
+						cmdList(bb, userName, msg)
 					case "user":
 						fallthrough
 					case "usr":

@@ -96,8 +96,12 @@ func cmdSO(bb *BasicBot, userName, cmd, msg string) {
 	}
 }
 
-func cmdList(bb *BasicBot, userName string) {
-	msgOut := fmt.Sprintf("Available Commands:  %s", getCMDS(userName))
+func cmdList(bb *BasicBot, userName, msg string) {
+	var showlevels bool = false
+	if strings.Contains(msg, "levels") || strings.Contains(msg, "level") {
+		showlevels = true
+	}
+	msgOut := fmt.Sprintf("Available Commands:  %s", getCMDS(userName, showlevels))
 	botSay(bb, msgOut)
 }
 
