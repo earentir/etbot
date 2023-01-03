@@ -42,7 +42,7 @@ func completion(prompt, profile string) string {
 	var completionrequest CompletionRequest
 	var requestBody CompletionRequest
 
-	LoadJSONFileTOStruct("settings/openai.json", &completionrequest)
+	completionrequest = settings.API.OpenAI
 
 	if creds.OpenAI != "" && prompt != "" {
 		// Set up the API endpoint URL and request body
