@@ -73,3 +73,67 @@ func getChannelInfo(loginID string) TwitchChannelData {
 	LoadJSONTOStruct(jsonchanneldata, &twitchChannelData)
 	return twitchChannelData
 }
+
+type GoalsResponse struct {
+	Data []struct {
+		BroadcasterID    string `json:"broadcaster_id"`
+		BroadcasterLogin string `json:"broadcaster_login"`
+		BroadcasterName  string `json:"broadcaster_name"`
+		CreatedAt        string `json:"created_at"`
+		CurrentAmount    int64  `json:"current_amount"`
+		Description      string `json:"description"`
+		ID               string `json:"id"`
+		TargetAmount     int64  `json:"target_amount"`
+		Type             string `json:"type"`
+	} `json:"data"`
+}
+
+func GetGoals(client *http.Client, channel string) (GoalsResponse, error) {
+	var baseURL = "https://api.twitch.tv/helix/"
+	// Set up the API request
+	req, err := http.NewRequest("GET", baseURL+"goals?broadcaster_id="+getTwitchUser(channel)[0].ID, nil)
+	if err != nil {
+		fmt.Println(err)
+	}
+	req.Header.Set("Client-ID", creds.TwitchClientID)
+	req.Header.Set("Authorization", "Bearer "+creds.TwitchAppToken)
+	q := req.URL.Query()
+	req.URL.RawQuery = q.Encode()
+
+	// Send the request and retrieve the response
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer resp.Body.Close()
+
+	// Read the response and unmarshal it into a slice of Goal objects
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	var response GoalsResponse
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return response, nil
+}
+
+func showgoals(channel string) string {
+	var goalMessage string
+	client := &http.Client{}
+
+	goals, err := GetGoals(client, channel)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		for _, goal := range goals.Data {
+			goalMessage = channel + "'s Current Goal was created on " + goal.CreatedAt + " and is a " + goal.Type + " goal. " + goal.Description + " Its currently at " + fmt.Sprint(goal.CurrentAmount) + " out of " + fmt.Sprint(goal.TargetAmount) + "!"
+		}
+	}
+
+	return goalMessage
+}
