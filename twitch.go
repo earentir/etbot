@@ -9,6 +9,8 @@ import (
 	"strings"
 
 	"github.com/nicklaw5/helix/v2"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 func userExists(userName string) bool {
@@ -208,5 +210,5 @@ func cmdSubs(bb *BasicBot, cmd, userName, msg string) {
 	var channel string = settings.General.Twitch.Channel
 	var subs int = subscriberCount(channel)
 
-	botSay(bb, strings.Title(channel)+" has "+strconv.Itoa(subs)+" subscribers.")
+	botSay(bb, cases.Title(language.Und).String(channel)+" has "+strconv.Itoa(subs)+" subscribers.")
 }

@@ -7,6 +7,7 @@ require (
 	github.com/jawher/mow.cli v1.2.0
 	github.com/nicklaw5/helix/v2 v2.13.0
 	github.com/ryanbradynd05/go-tmdb v0.0.0-20220721194547-2ab6191c6273
+	golang.org/x/text v0.5.0
 )
 
 require (
