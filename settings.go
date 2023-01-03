@@ -201,14 +201,14 @@ func addLurker(userName, cmd, msg string) {
 	for i := 0; i < len(lurklist.Lurkers); i++ {
 		if strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
 			found = true
-			lurklist.Lurkers[i].Date = int(time.Now().Unix())
+			lurklist.Lurkers[i].Date = int64(time.Now().Unix())
 			lurklist.Lurkers[i].Message = msg[len(cmd)+1:]
 		}
 	}
 
 	if !found {
 		lurker.Name = userName
-		lurker.Date = int(time.Now().Unix())
+		lurker.Date = int64(time.Now().Unix())
 		if msg != "" {
 			lurker.Message = msg[len(cmd)+1:]
 		} else {
