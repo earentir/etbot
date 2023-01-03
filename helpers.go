@@ -272,11 +272,10 @@ func isSysCmdAlias(index int, cmd string) bool {
 // clean everything from a msg
 func getCleanMessage(msg string) string {
 	var (
-		cmd       string = getCommand(msg)
-		msgOut    string = ""
-		attrUser  string = ""
-		cmdIndex  int    = strings.Index(msg, cmd)
-		attrIndex int    = 0
+		cmd      string = getCommand(msg)
+		msgOut   string = ""
+		attrUser string = ""
+		cmdIndex int    = strings.Index(msg, cmd)
 	)
 
 	if len(msg) > len(cmd) {
@@ -286,11 +285,14 @@ func getCleanMessage(msg string) string {
 	}
 
 	attrUser = getAttributedUser(msgOut, false)
-	attrIndex = strings.Index(msgOut, attrUser)
+
+	fmt.Println("attruser:", attrUser, ":")
 
 	if len(attrUser) > 0 {
-		msgOut = msgOut[attrIndex+len(attrUser)+1:]
+		msgOut = strings.TrimSpace(strings.Replace(msgOut, "@"+attrUser, "", 1))
 	}
+
+	fmt.Println("msgOUT: ", msgOut, ":")
 
 	return msgOut
 }
