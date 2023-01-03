@@ -167,7 +167,7 @@ type LurkList struct {
 
 type Lurker struct {
 	Name    string `json:"name"`
-	Date    int    `json:"date,omitempty"`
+	Date    int64  `json:"date,omitempty"`
 	Message string `json:"message"`
 }
 
