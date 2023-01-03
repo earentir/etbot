@@ -3,6 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
+	"strings"
 
 	"github.com/nicklaw5/helix/v2"
 )
@@ -136,4 +139,56 @@ func showgoals(channel string) string {
 	}
 
 	return goalMessage
+}
+
+func subscriberCount(channel string) int {
+	var subscriberCount int
+	client, err := helix.NewClient(&helix.Options{
+		ClientID:        creds.TwitchClientID,
+		UserAccessToken: creds.TwitchAppToken,
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	channel = strings.ToLower(channel)
+	channel = strings.TrimSpace(channel)
+
+	resp, err := client.GetSubscriptions(&helix.SubscriptionsParams{
+		BroadcasterID: getTwitchUser(channel)[0].ID,
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	subscriberCount = resp.Data.Total
+	return subscriberCount
+}
+
+func issubbed(user, channel string) bool {
+	client, err := helix.NewClient(&helix.Options{
+		ClientID:        creds.TwitchClientID,
+		UserAccessToken: creds.TwitchAppToken,
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	resp, err := client.CheckUserSubscription(&helix.UserSubscriptionsParams{
+		BroadcasterID: string(getTwitchUser(channel)[0].ID),
+		UserID:        string(getTwitchUser(user)[0].ID),
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	var issubbed bool
+	// resp.Data.UserSubscriptions[0].IsGift
+	if resp.Data.UserSubscriptions[0].Tier != "" {
+		issubbed = true
+	} else {
+		issubbed = false
+	}
+
+	return issubbed
 }
