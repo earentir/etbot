@@ -144,10 +144,13 @@ func cmdUnlurk(bb *BasicBot, userName string) {
 
 	for i := 0; i < len(lurklist.Lurkers); i++ {
 		if strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
+			now := time.Unix(time.Now().Unix(), 0)
+			lurkedon := time.Unix(lurklist.Lurkers[i].Date, 0)
+
 			if lurklist.Lurkers[i].Message == "" {
-				botSay(bb, fmt.Sprintf("Welcome back @%s", userName))
+				botSay(bb, fmt.Sprintf("Welcome back @%s, you have been gone for %v", userName, now.Sub(lurkedon)))
 			} else {
-				botSay(bb, fmt.Sprintf("Welcome back @%s, how was your %s", userName, lurklist.Lurkers[i].Message))
+				botSay(bb, fmt.Sprintf("Welcome back @%s, how was your %s, you have been gone for %v", userName, lurklist.Lurkers[i].Message, now.Sub(lurkedon)))
 			}
 			removeLurker(userName)
 		}
