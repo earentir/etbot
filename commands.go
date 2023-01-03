@@ -47,9 +47,6 @@ func cmdHi(bb *BasicBot, userName, cmd, msg string) {
 func cmdGPTCompletion(bb *BasicBot, cmd, userName, msg, mode string) {
 	var msgOut string = completion(msg, mode)
 
-	fmt.Println("msg:", msg)
-	fmt.Println("msgout:", msgOut, ":")
-
 	if msgOut != "" {
 		if isAttr(msg) {
 			botSay(bb, msgOut+" "+getAttributedUser(msg, true))
