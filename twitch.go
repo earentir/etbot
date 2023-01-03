@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/nicklaw5/helix/v2"
@@ -191,4 +192,21 @@ func issubbed(user, channel string) bool {
 	}
 
 	return issubbed
+}
+
+func cmdGoals(bb *BasicBot, cmd, userName, msg string) {
+	var goals string = showgoals(settings.General.Twitch.Channel)
+
+	if isAttr(msg) {
+		botSay(bb, goals)
+	} else {
+		botSay(bb, goals)
+	}
+}
+
+func cmdSubs(bb *BasicBot, cmd, userName, msg string) {
+	var channel string = settings.General.Twitch.Channel
+	var subs int = subscriberCount(channel)
+
+	botSay(bb, strings.Title(channel)+" has "+strconv.Itoa(subs)+" subscribers.")
 }

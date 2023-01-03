@@ -1,11 +1,8 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"math/rand"
-	"os/exec"
-	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -44,18 +41,6 @@ func cmdHi(bb *BasicBot, userName, cmd, msg string) {
 	botSay(bb, msgOut)
 }
 
-func cmdGPTCompletion(bb *BasicBot, cmd, userName, msg, mode string) {
-	var msgOut string = completion(msg, mode)
-
-	if msgOut != "" {
-		if isAttr(msg) {
-			botSay(bb, msgOut+" "+getAttributedUser(msg, true))
-		} else {
-			botSay(bb, msgOut)
-		}
-	}
-}
-
 func cmdGumroad(bb *BasicBot, cmd, userName, msg string) {
 	var gumroadproducts string = GumroadAPI()
 
@@ -64,23 +49,6 @@ func cmdGumroad(bb *BasicBot, cmd, userName, msg string) {
 	} else {
 		botSay(bb, gumroadproducts)
 	}
-}
-
-func cmdGoals(bb *BasicBot, cmd, userName, msg string) {
-	var goals string = showgoals(settings.General.Twitch.Channel)
-
-	if isAttr(msg) {
-		botSay(bb, goals)
-	} else {
-		botSay(bb, goals)
-	}
-}
-
-func cmdSubs(bb *BasicBot, cmd, userName, msg string) {
-	var channel string = settings.General.Twitch.Channel
-	var subs int = subscriberCount(channel)
-
-	botSay(bb, strings.Title(channel)+" has "+strconv.Itoa(subs)+" subscribers.")
 }
 
 func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
@@ -103,57 +71,6 @@ func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
 		botSay(bb, jkstr+" "+getAttributedUser(msg, true))
 	} else {
 		botSay(bb, jkstr)
-	}
-}
-
-func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
-	var (
-		lurkers  []string
-		lurklist LurkList
-	)
-
-	loadData("Lurkers", &lurklist)
-
-	if isCMD(cmd, msg) {
-		msgOut := fmt.Sprintf(getCMDOptions("lurk").Msg, userName)
-		addLurker(userName, cmd, msg)
-		botSay(bb, msgOut)
-	} else {
-		switch strings.Fields(msg)[1] {
-		case "list":
-			for i := 0; i < len(lurklist.Lurkers); i++ {
-				lurkers = append(lurkers, lurklist.Lurkers[i].Name)
-			}
-			botSay(bb, fmt.Sprintf("Current Lurkers %s", lurkers))
-		case "help":
-			botSay(bb, "!lurk | !lurk [optional reasons | !lurk list]")
-		default:
-			addLurker(userName, cmd, msg)
-			msgOut := fmt.Sprintf(getCMDOptions("lurk").Atmsg, userName, getCleanMessage(msg))
-			botSay(bb, msgOut)
-		}
-	}
-}
-
-func cmdUnlurk(bb *BasicBot, userName string) {
-	var (
-		lurklist LurkList
-	)
-
-	loadData("Lurkers", &lurklist)
-
-	for i := 0; i < len(lurklist.Lurkers); i++ {
-		if strings.EqualFold(userName, lurklist.Lurkers[i].Name) {
-			now := time.Unix(time.Now().Unix(), 0)
-			lurkedon := time.Unix(lurklist.Lurkers[i].Date, 0)
-
-			if lurklist.Lurkers[i].Message == "" {
-				botSay(bb, fmt.Sprintf("Welcome back @%s, you have been gone for %v", userName, now.Sub(lurkedon)))
-			} else {
-				botSay(bb, fmt.Sprintf("Welcome back @%s, how was your %s, you have been gone for %v", userName, lurklist.Lurkers[i].Message, now.Sub(lurkedon)))
-			}
-			removeLurker(userName)
-		}
 	}
 }
 
@@ -277,60 +194,6 @@ func cmdSO(bb *BasicBot, userName, cmd, msg string) {
 	}
 }
 
-func cmdFr(bb *BasicBot, userName, cmd, msg string) {
-	var title string
-	if !isCMD(cmd, msg) {
-		title = getCleanMessage(msg)
-		cmdres := exec.Command("gh", "issue", "create", fmt.Sprintf("-t %s from %s", title, userName), "-b \"\" ", "-lchat-bot")
-
-		var out, errbuf bytes.Buffer
-		cmdres.Stderr = &errbuf
-		cmdres.Stdout = &out
-
-		cmdres.Run()
-		if len(errbuf.String()) == 0 {
-			msgOut := fmt.Sprintf("Feature Request Ticket Opened by %s with a title of \"%s\"", userName, title)
-			botSay(bb, msgOut)
-		}
-		fmt.Println(errbuf.String())
-	} else {
-		cmdFrList(bb, userName, cmd, msg)
-	}
-}
-
-func cmdFrList(bb *BasicBot, userName, cmd, msg string) {
-	cmdres := exec.Command("gh", "issue", "list")
-
-	var errbuf bytes.Buffer
-	var frs []string
-	cmdres.Stderr = &errbuf
-
-	out, err := cmdres.Output()
-	if err == nil {
-		msgOut := fmt.Sprintf("Feature Request List, Opened by %s", userName)
-		botSay(bb, msgOut)
-		outputLines := strings.Split(string(out), "\n")
-		for _, j := range outputLines {
-			if strings.Contains(j, "chat-bot") {
-				if strings.Contains(j, userName) {
-					str := regexp.MustCompile("\t").Split(j, -1)
-					date := strings.Fields(str[4])
-					line := str[0] + " " + strings.ReplaceAll(str[2], "from "+userName, "") + " on " + date[0] + " " + date[1]
-					frs = append(frs, line)
-				}
-			}
-		}
-		if len(frs) > 0 {
-			for _, j := range frs {
-				botSay(bb, j)
-			}
-		} else {
-			msgOut := "Please type your feature request after the cmd, ex: !fr add more stuff FFS"
-			botSay(bb, msgOut)
-		}
-	}
-}
-
 func cmdList(bb *BasicBot, userName string) {
 	msgOut := fmt.Sprintf("Available Commands:  %s", getCMDS(userName))
 	botSay(bb, msgOut)
@@ -362,144 +225,6 @@ func cmdProject(bb *BasicBot, cmd, userName, msg string) {
 	} else {
 		if strings.EqualFold(userName, settings.General.Twitch.Channel) {
 			settings.General.Project.Description = getCleanMessage(msg)
-		}
-	}
-}
-
-func cmdUPDSoc(bb *BasicBot, cmd, userName, msg string) {
-	var socs Social
-	if UserLevel(userName).Level <= levelNameTolvl("mod") {
-		if isCMD(cmd, msg) {
-			botSay(bb, "Set a users social. ex. !updsoc @earentir github https://github.com/earentir")
-		} else {
-			fields := strings.Fields(msg[len(cmd)+2:])
-			if len(fields) == 3 {
-				for i := 0; i < len(userlist.Users); i++ {
-
-					if strings.EqualFold(userlist.Users[i].Name, strings.ToLower(fields[0][1:])) {
-						fmt.Println(userlist.Users[i].Name, strings.ToLower(fields[0][1:]))
-						var socexists = false
-						for j := 0; j < len(userlist.Users[i].Socials); j++ {
-							if userlist.Users[i].Socials[j].SocNet == fields[1] {
-								userlist.Users[i].Socials[j].Link = fields[2]
-								botSay(bb, fmt.Sprintf("%s's %s profile is now %s", fields[0][1:], fields[1], fields[2]))
-								socexists = true
-							}
-						}
-
-						if !socexists {
-							socs.SocNet = fields[1]
-							socs.Link = fields[2]
-							userlist.Users[i].Socials = append(userlist.Users[i].Socials, socs)
-							botSay(bb, fmt.Sprintf("%s's %s profile is now %s", fields[0][1:], fields[1], fields[2]))
-						}
-
-						saveData("Users", userlist)
-					}
-				}
-			} else {
-				botSay(bb, "Set a users social. ex. !updsoc @earentir github https://github.com/earentir")
-			}
-		}
-	} else {
-		botSay(bb, "Only mods can update socials manually, please ask a mod for help.")
-	}
-}
-
-func cmdILOVE(bb *BasicBot, cmd, userName, msg string) {
-	if isCMD(cmd, msg) {
-		botSay(bb, "Add what you love and it will be included in your SO, ex. !love coffee")
-	} else {
-		for i := 0; i < len(userlist.Users); i++ {
-			if strings.EqualFold(userlist.Users[i].Name, userName) || strings.EqualFold(userlist.Users[i].Nick, userName) {
-				userlist.Users[i].Love = msg[len(cmd)+2:]
-				botSay(bb, fmt.Sprintf("You love %s, thank you for letting me know.", userlist.Users[i].Love))
-			}
-		}
-	}
-}
-
-func cmdZoe(bb *BasicBot, cmd, userName, msg string) {
-	if isCMD(cmd, msg) {
-		var petData = ""
-
-		if len(petlist.Pets) > 0 {
-			petData = fmt.Sprintf(" | Treat: %v/%v  Petting Minutes: %v", petlist.Pets[0].Feed, petlist.Pets[0].FeedLimit, petlist.Pets[0].Pet)
-		}
-
-		botSay(bb, fmt.Sprintf("!zoe pet or !zoe feed or !zoe name %s", petData))
-	} else {
-		cmdFields := strings.Fields(msg)
-		if len(cmdFields) > 1 {
-			if len(petlist.Pets) < 1 {
-				var pet Pet
-				pet.Feed = 0
-				pet.Pet = 0
-
-				petlist.Pets = append(petlist.Pets, pet)
-				botSay(bb, "Pet Registered")
-			} else {
-				switch cmdFields[1] {
-				case "pet":
-					if len(cmdFields) == 3 {
-						if userName == settings.General.Twitch.Channel {
-							rem, err := strconv.Atoi(cmdFields[2])
-							if err != nil {
-								petlist.Pets[0].Pet = 0
-								botSay(bb, "Pet Reset")
-							} else {
-								petlist.Pets[0].Pet = petlist.Pets[0].Pet - rem
-								botSay(bb, fmt.Sprintf("%s needs to be peted for %v minutes", petlist.Pets[0].Name, petlist.Pets[0].Pet))
-							}
-						}
-					} else {
-						petlist.Pets[0].Pet++
-						botSay(bb, fmt.Sprintf("%s needs to be peted for %v minutes", petlist.Pets[0].Name, petlist.Pets[0].Pet))
-					}
-				case "treat":
-					fallthrough
-				case "feed":
-					if len(cmdFields) == 3 {
-						if userName == settings.General.Twitch.Channel {
-							rem, err := strconv.Atoi(cmdFields[2])
-							if err != nil {
-								petlist.Pets[0].Feed = 0
-								botSay(bb, "Feed Reset")
-							} else {
-								petlist.Pets[0].Feed = petlist.Pets[0].Feed - rem
-								botSay(bb, fmt.Sprintf("%s needs to be given %v treats", petlist.Pets[0].Name, petlist.Pets[0].Feed))
-							}
-						}
-					} else {
-						if petlist.Pets[0].FeedLimit < petlist.Pets[0].Feed {
-							botSay(bb, "No more feed can be added, feed the pet first")
-						} else {
-							petlist.Pets[0].Feed++
-							botSay(bb, fmt.Sprintf("%s needs to be given %v treats", petlist.Pets[0].Name, petlist.Pets[0].Feed))
-						}
-					}
-				case "name":
-					if len(cmdFields) == 3 {
-						if userName == settings.General.Twitch.Channel {
-							petlist.Pets[0].Name = cmdFields[2]
-						}
-					} else {
-						botSay(bb, fmt.Sprintf("Pet name is %s", petlist.Pets[0].Name))
-					}
-				case "limit":
-					if len(cmdFields) == 3 {
-						flimit, err := strconv.Atoi(cmdFields[2])
-						if err != nil {
-						} else {
-							petlist.Pets[0].FeedLimit = flimit
-						}
-					}
-				}
-			}
-			//save the pets
-			saveData("Pets", petlist)
-		} else {
-			botSay(bb, fmt.Sprintf("%s | Treat: %v (%v)  Petting Minutes: %v", "!zoe pet or !zoe feed or !zoe name", petlist.Pets[0].Feed, petlist.Pets[0].FeedLimit, petlist.Pets[0].Pet))
 		}
 	}
 }

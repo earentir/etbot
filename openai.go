@@ -98,3 +98,15 @@ func completion(prompt, profile string) string {
 	}
 	return "Please setup your OpenAI API key @ https://openai.com"
 }
+
+func cmdGPTCompletion(bb *BasicBot, cmd, userName, msg, mode string) {
+	var msgOut string = completion(msg, mode)
+
+	if msgOut != "" {
+		if isAttr(msg) {
+			botSay(bb, msgOut+" "+getAttributedUser(msg, true))
+		} else {
+			botSay(bb, msgOut)
+		}
+	}
+}
