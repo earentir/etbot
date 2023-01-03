@@ -85,6 +85,10 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						cmdGPTCompletion(bb, cmd, userName, msg, "fact")
 					case "gumroad":
 						cmdGumroad(bb, cmd, userName, msg)
+					case "goals":
+						cmdGoals(bb, cmd, userName, msg)
+					case "subs":
+						cmdSubs(bb, cmd, userName, msg)
 
 						//Not allowed to be renamed - System Commands
 					case "lockdown":
