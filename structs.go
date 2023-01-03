@@ -12,8 +12,8 @@ type BasicBot struct {
 	Name        string        // The bot name
 	Port        string        // The port of the IRC server.
 	Server      string        // The domain of the IRC server.
-	PrivatePath string        //credentials path (to be replaced with the Filepaths entry)
-	startTime   time.Time     //Time when we connected
+	PrivatePath string        // credentials path (to be replaced with the Filepaths entry)
+	startTime   time.Time     // Time when we connected
 }
 
 // Settings struct
