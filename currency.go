@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -33,4 +34,49 @@ func CurrencyConversion(ISOFROM, ISOTO string, amount float64) string {
 		return "Please setup your Currency Conversion API key @ https://currconv.com"
 	}
 
+}
+
+func cmdExchange(bb *BasicBot, msg string) {
+	var fields []string = strings.Fields(strings.ToUpper(msg))
+	var petFound bool = false
+
+	for _, j := range fields {
+		if strings.EqualFold(j, petlist.Pets[0].Name) {
+			petFound = true
+		}
+	}
+
+	if !petFound {
+		switch len(fields) {
+		case 1:
+			botSay(bb, CurrencyConversion(settings.API.Curency.DefaultCurrency, settings.API.Curency.CurrencyTo, 1))
+
+		case 2:
+			amount, err := strconv.ParseFloat(fields[1], 64)
+			if err != nil {
+				msgOut := CurrencyConversion(settings.API.Curency.DefaultCurrency, fields[0], 1)
+				botSay(bb, msgOut)
+			} else {
+				msgOut := CurrencyConversion(settings.API.Curency.DefaultCurrency, settings.API.Curency.CurrencyTo, amount)
+				botSay(bb, msgOut)
+			}
+
+		case 3:
+			amount, err := strconv.ParseFloat(fields[1], 64)
+			if err != nil {
+				msgOut := CurrencyConversion(fields[1], fields[2], 1)
+				botSay(bb, msgOut)
+			} else {
+				msgOut := CurrencyConversion(settings.API.Curency.DefaultCurrency, fields[2], amount)
+				botSay(bb, msgOut)
+			}
+
+		case 4:
+			amount, _ := strconv.ParseFloat(fields[1], 64)
+			msgOut := CurrencyConversion(fields[2], fields[3], amount)
+			botSay(bb, msgOut)
+		}
+	} else {
+		botSay(bb, fmt.Sprintf("%s is Priceless.", petlist.Pets[0].Name))
+	}
 }

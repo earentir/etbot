@@ -3,6 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
+	"strings"
+	"time"
 )
 
 func JokesAPI(msg string) []string {
@@ -23,4 +26,48 @@ func JokesAPI(msg string) []string {
 		}
 	}
 	return retuarr
+}
+
+func cmdJoke(bb *BasicBot, userName, cmd, msg string) {
+	var (
+		cleanmsg string   = getCleanMessage(msg)
+		attrUser string   = getAttributedUser(msg, false)
+		fields   []string = strings.Fields(msg)
+		jokelist JokeList
+	)
+
+	loadData("Jokes", &jokelist)
+
+	if isCMD(cmd, msg) {
+		if len(jokelist.JokeItems) > 0 {
+			rand.Seed(time.Now().UnixNano())
+			botSay(bb, jokelist.JokeItems[rand.Intn(len(jokelist.JokeItems))].JokeMessage+" >by "+jokelist.JokeItems[rand.Intn(len(jokelist.JokeItems))].AtributedUser)
+		}
+	} else {
+		switch fields[1] {
+		case "add":
+			if len(fields) >= 3 {
+				if len(fields) > 3 {
+					botSay(bb, addJoke(userName, attrUser, cleanmsg))
+				}
+			}
+
+		case "search":
+			for i := 0; i < len(jokelist.JokeItems); i++ {
+				if strings.EqualFold(jokelist.JokeItems[i].AtributedUser, attrUser) {
+					time := time.Unix(jokelist.JokeItems[i].JokeDate, 0)
+					botSay(bb, fmt.Sprintf("%s Said \"%s\" on %v", jokelist.JokeItems[i].AtributedUser, jokelist.JokeItems[i].JokeMessage, time.UTC()))
+				} else {
+					if strings.Contains(jokelist.JokeItems[i].JokeMessage, cleanmsg) && cleanmsg != "" {
+						time := time.Unix(jokelist.JokeItems[i].JokeDate, 0)
+						botSay(bb, fmt.Sprintf("%s Said \"%s\" on %v", jokelist.JokeItems[i].AtributedUser, jokelist.JokeItems[i].JokeMessage, time.UTC()))
+					}
+				}
+			}
+
+		case "help":
+			msgOut := "!joke add @user joke | !joke search @user | !joke search string"
+			botSay(bb, msgOut)
+		}
+	}
 }

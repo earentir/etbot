@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -39,103 +38,6 @@ func cmdHi(bb *BasicBot, userName, cmd, msg string) {
 		msgOut = fmt.Sprintf("earentHey @%s", userName)
 	}
 	botSay(bb, msgOut)
-}
-
-func cmdGumroad(bb *BasicBot, cmd, userName, msg string) {
-	var gumroadproducts string = GumroadAPI()
-
-	if isAttr(msg) {
-		botSay(bb, gumroadproducts)
-	} else {
-		botSay(bb, gumroadproducts)
-	}
-}
-
-func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
-	var (
-		jokes []string
-		jkstr string
-	)
-
-	if cmd == "yoke" {
-		cmd = "joke"
-	}
-
-	jokes = JokesAPI(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/" + cmd))
-
-	for _, jk := range jokes {
-		jkstr = jkstr + jk + " "
-	}
-
-	if isAttr(msg) {
-		botSay(bb, jkstr+" "+getAttributedUser(msg, true))
-	} else {
-		botSay(bb, jkstr)
-	}
-}
-
-func cmdExchange(bb *BasicBot, msg string) {
-	var fields []string = strings.Fields(strings.ToUpper(msg))
-	var petFound bool = false
-
-	for _, j := range fields {
-		if strings.EqualFold(j, petlist.Pets[0].Name) {
-			petFound = true
-		}
-	}
-
-	if !petFound {
-		switch len(fields) {
-		case 1:
-			botSay(bb, CurrencyConversion(settings.API.Curency.DefaultCurrency, settings.API.Curency.CurrencyTo, 1))
-
-		case 2:
-			amount, err := strconv.ParseFloat(fields[1], 64)
-			if err != nil {
-				msgOut := CurrencyConversion(settings.API.Curency.DefaultCurrency, fields[0], 1)
-				botSay(bb, msgOut)
-			} else {
-				msgOut := CurrencyConversion(settings.API.Curency.DefaultCurrency, settings.API.Curency.CurrencyTo, amount)
-				botSay(bb, msgOut)
-			}
-
-		case 3:
-			amount, err := strconv.ParseFloat(fields[1], 64)
-			if err != nil {
-				msgOut := CurrencyConversion(fields[1], fields[2], 1)
-				botSay(bb, msgOut)
-			} else {
-				msgOut := CurrencyConversion(settings.API.Curency.DefaultCurrency, fields[2], amount)
-				botSay(bb, msgOut)
-			}
-
-		case 4:
-			amount, _ := strconv.ParseFloat(fields[1], 64)
-			msgOut := CurrencyConversion(fields[2], fields[3], amount)
-			botSay(bb, msgOut)
-		}
-	} else {
-		botSay(bb, fmt.Sprintf("%s is Priceless.", petlist.Pets[0].Name))
-	}
-}
-
-func cmdWeather(bb *BasicBot, cmd, msg string) {
-	if isCMD(cmd, msg) {
-		botSay(bb, getWeather(settings.API.Weather.DefaultCity))
-	} else {
-		var city string = getCleanMessage(msg)
-		if strings.TrimSpace(city) == "" {
-			city = settings.API.Weather.DefaultCity
-		}
-
-		if isAttr(msg) {
-			msgOut := getWeather(city) + " " + getAttributedUser(msg, true)
-			botSay(bb, msgOut)
-		} else {
-			msgOut := getWeather(city)
-			botSay(bb, msgOut)
-		}
-	}
 }
 
 func cmdSO(bb *BasicBot, userName, cmd, msg string) {
@@ -229,86 +131,12 @@ func cmdProject(bb *BasicBot, cmd, userName, msg string) {
 	}
 }
 
-func cmdTMDB(bb *BasicBot, cmd, userName, msg string) {
-	var searchresults []TMDBSearchResults
-
-	if isCMD(cmd, msg) {
-		botSay(bb, "Get Movie & TV Information. ex. !tmdb movie Blade Runner or !tmdb tv Supernatural or use an ID: !tmdb 78 movie or !tmdb 1622 tv")
-	} else {
-		if strings.Fields(msg)[1] == "movie" || strings.Fields(msg)[1] == "tv" {
-			searchresults = tmdbSearch(msg[len(cmd)+2+len(strings.Fields(msg)[1]):]).Results
-			if len(searchresults) > 0 {
-				for i := 0; i < len(searchresults); i++ {
-					if !searchresults[i].Adult {
-						if searchresults[i].MediaType == "movie" {
-							botSay(bb, fmt.Sprintf("📇 %s | %v | 📅 %s  🎥%s", searchresults[i].Title, searchresults[i].ID, searchresults[i].ReleaseDate, searchresults[i].Overview))
-						}
-						if searchresults[i].MediaType == "tv" {
-							botSay(bb, fmt.Sprintf("📇 %s | %v | 📅 %s  📺%s", searchresults[i].Name, searchresults[i].ID, searchresults[i].FirstAirDate, searchresults[i].Overview))
-						}
-					} else {
-						botSay(bb, "Cant return adult movies")
-					}
-				}
-			} else {
-				botSay(bb, fmt.Sprintf("%s Cant find your movie", getAttributedUser(msg, true)))
-			}
-		} else { //search by ID
-			id, err := strconv.Atoi(strings.Fields(msg)[1])
-			if err != nil {
-				fmt.Println(err)
-				botSay(bb, "Incorrect Usage: ex. !tmdb movie Blade Runner or !tmdb tv Supernatural or use an ID: !tmdb 78 movie or !tmdb 1622 tv")
-			} else {
-				movieData := tmdbMovie(id)
-				botSay(bb, fmt.Sprintf("📇 %s | %v | 📅 %s  🎥%s", movieData.Title, movieData.ID, movieData.ReleaseDate, movieData.Overview))
-
-				tvData := tmdbTV(id)
-				botSay(bb, fmt.Sprintf("📇 %s | %v | 📅 %s  📺%s", tvData.Name, tvData.ID, tvData.FirstAirDate, tvData.Overview))
-			}
-		}
-	}
-}
-
 func cmdLevel(bb *BasicBot, cmd, userName, msg string) {
 	if isAttr(msg) {
 		atrUser := getAttributedUser(msg, false)
 		botSay(bb, fmt.Sprintf("@%s level is %v as a %s", atrUser, UserLevel(atrUser).Level, UserLevel(atrUser).Name))
 	} else {
 		botSay(bb, fmt.Sprintf("@%s level is %v as a %s", userName, UserLevel(userName).Level, UserLevel(userName).Name))
-	}
-}
-
-func cmdCryptoExchange(bb *BasicBot, cmd, userName, msg string) {
-	if isCMD(cmd, msg) {
-		botSay(bb, "!crypto [amount] SYMBOL SYMBOL")
-	} else {
-		fields := strings.Fields(msg)
-
-		var marketData BinanceData
-		switch len(fields) {
-		case 2:
-			from := settings.API.Curency.CryptoDefault
-			to := fields[1]
-			marketData = getCCJSON(from, to)
-			lastprice, _ := strconv.ParseFloat(marketData.LastPrice, 64)
-
-			botSay(bb, fmt.Sprintf("The Exchange Rate of 1 %s to %s is %s", from, to, fmt.Sprintf("%.2f", lastprice)))
-		case 3:
-			from := fields[1]
-			to := fields[2]
-			marketData = getCCJSON(from, to)
-			lastprice, _ := strconv.ParseFloat(marketData.LastPrice, 64)
-
-			botSay(bb, fmt.Sprintf("The Exchange Rate of 1 %s to %s is %s", from, to, fmt.Sprintf("%.2f", lastprice)))
-		case 4:
-			from := fields[2]
-			to := fields[3]
-			marketData = getCCJSON(from, to)
-			amount, _ := strconv.Atoi(fields[1])
-			lastprice, _ := strconv.ParseFloat(marketData.LastPrice, 64)
-
-			botSay(bb, fmt.Sprintf("The Exchange Rate of %v %s to %s is %s", amount, from, to, fmt.Sprintf("%.2f", float64(amount)*lastprice)))
-		}
 	}
 }
 
@@ -374,93 +202,6 @@ func cmdSetting(bb *BasicBot, cmd, userName, msg string) {
 
 }
 
-func cmdQuote(bb *BasicBot, cmd, userName, msg string) {
-	var (
-		cleanmsg  string   = getCleanMessage(msg)
-		attrUser  string   = getAttributedUser(msg, false)
-		fields    []string = strings.Fields(msg)
-		quotelist QuoteList
-	)
-
-	loadData("Quotes", &quotelist)
-
-	if isCMD(cmd, msg) {
-		if len(quotelist.QuoteItems) > 0 {
-			rand.Seed(time.Now().UnixNano())
-			botSay(bb, quotelist.QuoteItems[rand.Intn(len(quotelist.QuoteItems))].QuotedMessage+" >by "+quotelist.QuoteItems[rand.Intn(len(quotelist.QuoteItems))].AtributedUser)
-		}
-	} else {
-		switch fields[1] {
-		case "add":
-			if len(fields) >= 3 {
-				if len(fields) > 3 {
-					botSay(bb, addQuote(userName, attrUser, cleanmsg))
-				}
-			}
-
-		case "search":
-			for i := 0; i < len(quotelist.QuoteItems); i++ {
-				if strings.EqualFold(quotelist.QuoteItems[i].AtributedUser, attrUser) {
-					time := time.Unix(quotelist.QuoteItems[i].QuoteDate, 0)
-					botSay(bb, fmt.Sprintf("%s Said \"%s\" on %v", quotelist.QuoteItems[i].AtributedUser, quotelist.QuoteItems[i].QuotedMessage, time.UTC()))
-				} else {
-					if strings.Contains(quotelist.QuoteItems[i].QuotedMessage, cleanmsg) && cleanmsg != "" {
-						time := time.Unix(quotelist.QuoteItems[i].QuoteDate, 0)
-						botSay(bb, fmt.Sprintf("%s Said \"%s\" on %v", quotelist.QuoteItems[i].AtributedUser, quotelist.QuoteItems[i].QuotedMessage, time.UTC()))
-					}
-				}
-			}
-		case "help":
-			msgOut := "!quote add @user message | !quote search @user | !quote search string"
-			botSay(bb, msgOut)
-		}
-	}
-}
-
-func cmdJoke(bb *BasicBot, userName, cmd, msg string) {
-	var (
-		cleanmsg string   = getCleanMessage(msg)
-		attrUser string   = getAttributedUser(msg, false)
-		fields   []string = strings.Fields(msg)
-		jokelist JokeList
-	)
-
-	loadData("Jokes", &jokelist)
-
-	if isCMD(cmd, msg) {
-		if len(jokelist.JokeItems) > 0 {
-			rand.Seed(time.Now().UnixNano())
-			botSay(bb, jokelist.JokeItems[rand.Intn(len(jokelist.JokeItems))].JokeMessage+" >by "+jokelist.JokeItems[rand.Intn(len(jokelist.JokeItems))].AtributedUser)
-		}
-	} else {
-		switch fields[1] {
-		case "add":
-			if len(fields) >= 3 {
-				if len(fields) > 3 {
-					botSay(bb, addJoke(userName, attrUser, cleanmsg))
-				}
-			}
-
-		case "search":
-			for i := 0; i < len(jokelist.JokeItems); i++ {
-				if strings.EqualFold(jokelist.JokeItems[i].AtributedUser, attrUser) {
-					time := time.Unix(jokelist.JokeItems[i].JokeDate, 0)
-					botSay(bb, fmt.Sprintf("%s Said \"%s\" on %v", jokelist.JokeItems[i].AtributedUser, jokelist.JokeItems[i].JokeMessage, time.UTC()))
-				} else {
-					if strings.Contains(jokelist.JokeItems[i].JokeMessage, cleanmsg) && cleanmsg != "" {
-						time := time.Unix(jokelist.JokeItems[i].JokeDate, 0)
-						botSay(bb, fmt.Sprintf("%s Said \"%s\" on %v", jokelist.JokeItems[i].AtributedUser, jokelist.JokeItems[i].JokeMessage, time.UTC()))
-					}
-				}
-			}
-
-		case "help":
-			msgOut := "!joke add @user joke | !joke search @user | !joke search string"
-			botSay(bb, msgOut)
-		}
-	}
-}
-
 func usrCmdSay(bb *BasicBot, userName, cmd, msg string) {
 	botSay(bb, usrCmd(userName, cmd, msg))
 }
@@ -517,46 +258,4 @@ func cmdYear(bb *BasicBot, cmd, userName, msg string) {
 	currentPercent := (float64(currentDay) / float64(totalDays)) * 100
 	_, week := time.Time.ISOWeek(time.Now())
 	botSay(bb, fmt.Sprintf("It is day %v, week %v of %v (%v days), we have used %2.2f%% [%s] of the year till now.", currentDay, week, time.Time.Year(time.Now()), totalDays, currentPercent, progressbar(currentPercent)))
-}
-
-func cmdDaysOff(bb *BasicBot, cmd, userName, msg string) {
-	var (
-		daysoffStr string = ""
-		outMessage string = ""
-		country    string = ""
-		daysahead  int    = settings.API.Calendar.DaysAhead
-	)
-	fields := strings.Fields(msg)
-
-	if isCMD(cmd, msg) {
-		country = settings.API.Calendar.Country
-		daysahead = settings.API.Calendar.DaysAhead
-	} else {
-		if len(fields[1]) != 2 {
-			botSay(bb, "Please use ISO 3166 country format, ex. !daysoff GR")
-		} else {
-			country = fields[1]
-			switch len(fields) {
-			case 2:
-				daysahead = settings.API.Calendar.DaysAhead
-			case 3:
-				days, _ := strconv.ParseInt(fields[2], 10, 64)
-
-				if days > 14 {
-					days = 14
-				}
-
-				daysahead = int(days)
-			}
-		}
-	}
-
-	daysoffStr = getDaysOff(country, daysahead)
-
-	if len(daysoffStr) > 1 {
-		outMessage = fmt.Sprintf("In the next %v days these are these days off in %s: %s", daysahead, country, daysoffStr)
-		botSay(bb, outMessage)
-	} else {
-		botSay(bb, fmt.Sprintf("No Days Off found in the next %v days for %s", daysahead, country))
-	}
 }

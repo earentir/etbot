@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/agnivade/levenshtein"
@@ -172,4 +173,44 @@ func tmdbTV(mediaID int) TMDBTV {
 	LoadJSONTOStruct([]byte(mediaInfoJSON), &tmdbtvData)
 
 	return tmdbtvData
+}
+
+func cmdTMDB(bb *BasicBot, cmd, userName, msg string) {
+	var searchresults []TMDBSearchResults
+
+	if isCMD(cmd, msg) {
+		botSay(bb, "Get Movie & TV Information. ex. !tmdb movie Blade Runner or !tmdb tv Supernatural or use an ID: !tmdb 78 movie or !tmdb 1622 tv")
+	} else {
+		if strings.Fields(msg)[1] == "movie" || strings.Fields(msg)[1] == "tv" {
+			searchresults = tmdbSearch(msg[len(cmd)+2+len(strings.Fields(msg)[1]):]).Results
+			if len(searchresults) > 0 {
+				for i := 0; i < len(searchresults); i++ {
+					if !searchresults[i].Adult {
+						if searchresults[i].MediaType == "movie" {
+							botSay(bb, fmt.Sprintf("📇 %s | %v | 📅 %s  🎥%s", searchresults[i].Title, searchresults[i].ID, searchresults[i].ReleaseDate, searchresults[i].Overview))
+						}
+						if searchresults[i].MediaType == "tv" {
+							botSay(bb, fmt.Sprintf("📇 %s | %v | 📅 %s  📺%s", searchresults[i].Name, searchresults[i].ID, searchresults[i].FirstAirDate, searchresults[i].Overview))
+						}
+					} else {
+						botSay(bb, "Cant return adult movies")
+					}
+				}
+			} else {
+				botSay(bb, fmt.Sprintf("%s Cant find your movie", getAttributedUser(msg, true)))
+			}
+		} else { //search by ID
+			id, err := strconv.Atoi(strings.Fields(msg)[1])
+			if err != nil {
+				fmt.Println(err)
+				botSay(bb, "Incorrect Usage: ex. !tmdb movie Blade Runner or !tmdb tv Supernatural or use an ID: !tmdb 78 movie or !tmdb 1622 tv")
+			} else {
+				movieData := tmdbMovie(id)
+				botSay(bb, fmt.Sprintf("📇 %s | %v | 📅 %s  🎥%s", movieData.Title, movieData.ID, movieData.ReleaseDate, movieData.Overview))
+
+				tvData := tmdbTV(id)
+				botSay(bb, fmt.Sprintf("📇 %s | %v | 📅 %s  📺%s", tvData.Name, tvData.ID, tvData.FirstAirDate, tvData.Overview))
+			}
+		}
+	}
 }

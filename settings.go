@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -12,7 +13,7 @@ func getCMDS(userName string) string {
 
 	for _, cm := range systemcommands.Commands {
 		if CMDCanRun(userName, cm.Name) {
-			allcommands = append(allcommands, cm.Name)
+			allcommands = append(allcommands, cm.Name+" ["+strconv.Itoa(cm.Options.UserLevel)+"]")
 		}
 	}
 

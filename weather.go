@@ -32,3 +32,22 @@ func getWeather(city string) string {
 		return "Please setup your OpenWeather API key @ https://openweathermap.org"
 	}
 }
+
+func cmdWeather(bb *BasicBot, cmd, msg string) {
+	if isCMD(cmd, msg) {
+		botSay(bb, getWeather(settings.API.Weather.DefaultCity))
+	} else {
+		var city string = getCleanMessage(msg)
+		if strings.TrimSpace(city) == "" {
+			city = settings.API.Weather.DefaultCity
+		}
+
+		if isAttr(msg) {
+			msgOut := getWeather(city) + " " + getAttributedUser(msg, true)
+			botSay(bb, msgOut)
+		} else {
+			msgOut := getWeather(city)
+			botSay(bb, msgOut)
+		}
+	}
+}
