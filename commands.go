@@ -206,11 +206,16 @@ func cmdWeather(bb *BasicBot, cmd, msg string) {
 	if isCMD(cmd, msg) {
 		botSay(bb, getWeather(settings.API.Weather.DefaultCity))
 	} else {
+		var city string = getCleanMessage(msg)
+		if strings.TrimSpace(city) == "" {
+			city = settings.API.Weather.DefaultCity
+		}
+
 		if isAttr(msg) {
-			msgOut := getWeather(getCleanMessage(msg)) + " " + getAttributedUser(msg, true)
+			msgOut := getWeather(city) + " " + getAttributedUser(msg, true)
 			botSay(bb, msgOut)
 		} else {
-			msgOut := getWeather(getCleanMessage(msg))
+			msgOut := getWeather(city)
 			botSay(bb, msgOut)
 		}
 	}
