@@ -27,6 +27,7 @@ func main() {
 		return
 	}
 
+	// Setup the bot settings
 	etb := BasicBot{
 		Channel: settings.General.Twitch.Channel,
 		Name:    settings.General.Twitch.BotUserName,
@@ -35,29 +36,31 @@ func main() {
 		MsgRate: time.Duration(settings.General.Twitch.MSGRate),
 	}
 
+	//Load the data from the json files
 	loadData("SystemCommands", &systemcommands)
 	loadData("Users", &userlist)
 	loadData("UserCommands", &usercommands)
 	loadData("Pets", &petlist)
 
-	//load chatlog and read channel data
+	// get the channel info
 	var twitchChannelData TwitchChannelData = getChannelInfo(getTwitchUser(strings.ToLower(settings.General.Twitch.Channel))[0].ID)
 
-	chatlog.Channel = settings.General.Twitch.Channel
-	chatlog.Date = strconv.Itoa(int(time.Now().Unix()))
+	// Setup chatlog and read channel data
+	chatlog = ChatLog{
+		Channel:       settings.General.Twitch.Channel,
+		BroadcasterID: twitchChannelData[0].BroadcasterID,
+		Date:          strconv.Itoa(int(time.Now().Unix())),
+		GameID:        twitchChannelData[0].GameID,
+		GameName:      twitchChannelData[0].GameName,
+		StreamTitle:   twitchChannelData[0].Title,
+	}
 
-	chatlog.Channel = settings.General.Twitch.Channel
-	chatlog.BroadcasterID = twitchChannelData[0].BroadcasterID
-	chatlog.GameID = twitchChannelData[0].GameID
-	chatlog.GameName = twitchChannelData[0].GameName
-	chatlog.StreamTitle = twitchChannelData[0].Title
-
-	//ffs we catch oob interupt, cause the noop keeps ctrl+c
+	// ffs we catch oob interupt, cause the noop keeps ctrl+c
 	c := make(chan os.Signal)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
-		cleanup() //we cleanup here
+		cleanup() // we cleanup here
 		os.Exit(1)
 	}()
 

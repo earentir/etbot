@@ -11,10 +11,12 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 	case "PRIVMSG":
 
 		if settings.Servers.BotServers.Log {
-			var newmessage ChatMessage
-			newmessage.Date = strconv.Itoa(int(time.Now().Unix()))
-			newmessage.User = userName
-			newmessage.Message = msg
+			//Sstup chatlog header struct
+			newmessage := ChatMessage{
+				Date:    strconv.Itoa(int(time.Now().Unix())),
+				User:    userName,
+				Message: msg,
+			}
 
 			chatlog.ChatMessages = append(chatlog.ChatMessages, newmessage)
 		}

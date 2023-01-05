@@ -76,11 +76,13 @@ func tmdbSearch(mediaTitle string) TMDBSearch {
 				relDate = jsonreply.Results[i].ReleaseDate
 			}
 
-			searchresults.Title = cannonical
-			searchresults.ID = jsonreply.Results[i].ID
-			searchresults.FirstAirDate = relDate
-			searchresults.MediaType = jsonreply.Results[i].MediaType
-			searchresults.Overview = limitOverview(jsonreply.Results[i].Overview)
+			searchresults = TMDBSearchResults{
+				Title:        cannonical,
+				ID:           jsonreply.Results[i].ID,
+				FirstAirDate: relDate,
+				MediaType:    jsonreply.Results[i].MediaType,
+				Overview:     limitOverview(jsonreply.Results[i].Overview),
+			}
 
 			search.Results = append(search.Results, searchresults)
 		}

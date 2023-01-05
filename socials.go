@@ -6,7 +6,6 @@ import (
 )
 
 func cmdUPDSoc(bb *BasicBot, cmd, userName, msg string) {
-	var socs Social
 	if UserLevel(userName).Level <= levelNameTolvl("mod") {
 		if isCMD(cmd, msg) {
 			botSay(bb, "Set a users social. ex. !updsoc @earentir github https://github.com/earentir")
@@ -27,9 +26,13 @@ func cmdUPDSoc(bb *BasicBot, cmd, userName, msg string) {
 						}
 
 						if !socexists {
-							socs.SocNet = fields[1]
-							socs.Link = fields[2]
+							socs := Social{
+								SocNet: fields[1],
+								Link:   fields[2],
+							}
+
 							userlist.Users[i].Socials = append(userlist.Users[i].Socials, socs)
+
 							botSay(bb, fmt.Sprintf("%s's %s profile is now %s", fields[0][1:], fields[1], fields[2]))
 						}
 

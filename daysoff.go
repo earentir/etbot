@@ -8,9 +8,11 @@ import (
 )
 
 func getDaysOff(country string, days int) string {
-	var daysoff DaysOfF
-	var outMessage string = ""
-	var date string
+	var (
+		daysoff    DaysOfF
+		outMessage string = ""
+		date       string
+	)
 
 	if creds.Calendarific != "" {
 		daysoffjson := HTTPGetBody(fmt.Sprintf("https://calendarific.com/api/v2/holidays?api_key=%s&country=%s&year=%v", creds.Calendarific, country, time.Time.Year(time.Now())))

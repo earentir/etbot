@@ -81,10 +81,12 @@ func getCMDOptions(cmd string) CommandOption {
 
 	if !cmdFound {
 		if getUserSocial(cmd) != "" {
-			commandOption.UserLevel = 10
-			commandOption.Enabled = true
-			commandOption.Cooldown = 4000
-			commandOption.Lastuse = 0
+			commandOption = CommandOption{
+				UserLevel: 10,
+				Enabled:   true,
+				Cooldown:  4000,
+				Lastuse:   0,
+			}
 		}
 	}
 
@@ -159,9 +161,11 @@ func UserLevel(userName string) UserLevelList {
 	}
 
 	if found == -1 {
-		userLevelReturn.Cooldown = 10
-		userLevelReturn.Name = "viewer"
-		userLevelReturn.Level = 10
+		userLevelReturn = UserLevelList{
+			Level:    10,
+			Name:     "viewer",
+			Cooldown: 10,
+		}
 	}
 
 	return userLevelReturn
@@ -200,9 +204,8 @@ func getUserData(userName string) User {
 func addLurker(userName, cmd, msg string) {
 	var (
 		lurklist LurkList
-
-		lurker Lurker
-		found  bool = false
+		lurker   Lurker
+		found    bool = false
 	)
 
 	loadData("Lurkers", lurklist)
@@ -264,10 +267,13 @@ func addQuote(userName, attrUser, cleanmsg string) string {
 	}
 
 	if !found {
-		qitem.Quoter = userName
-		qitem.QuotedMessage = cleanmsg
-		qitem.AtributedUser = attrUser
-		qitem.QuoteDate = time.Now().Unix()
+		qitem = QuoteItem{
+			Quoter:        userName,
+			QuotedMessage: cleanmsg,
+			AtributedUser: attrUser,
+			QuoteDate:     time.Now().Unix(),
+		}
+
 		quotelist.QuoteItems = append(quotelist.QuoteItems, qitem)
 	}
 
@@ -291,10 +297,13 @@ func addJoke(userName, attrUser, cleanmsg string) string {
 	}
 
 	if !found {
-		jitem.Jokster = userName
-		jitem.JokeMessage = cleanmsg
-		jitem.AtributedUser = attrUser
-		jitem.JokeDate = time.Now().Unix()
+		jitem = JokeItem{
+			Jokster:       userName,
+			JokeMessage:   cleanmsg,
+			AtributedUser: attrUser,
+			JokeDate:      time.Now().Unix(),
+		}
+
 		jokelist.JokeItems = append(jokelist.JokeItems, jitem)
 	}
 
@@ -321,11 +330,14 @@ func addUser(userToAdd, userType string) string {
 		soc.SocNet = "twitch"
 		soc.Link = "https://twitch.tv/" + userToAdd
 
-		newUser.Name = strings.ToLower(userToAdd)
-		newUser.Type = strings.ToLower(userType)
-		newUser.Socials = append(newUser.Socials, soc)
+		newUser = User{
+			Name:    strings.ToLower(userToAdd),
+			Type:    strings.ToLower(userType),
+			Socials: append(newUser.Socials, soc),
+		}
 
 		userlist.Users = append(userlist.Users, newUser)
+
 		msgOut = fmt.Sprintf("User %s was added as a %s", userToAdd, userType)
 	} else {
 		msgOut = fmt.Sprintf("User %s already exists", userToAdd)

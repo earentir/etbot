@@ -71,3 +71,26 @@ func cmdJoke(bb *BasicBot, userName, cmd, msg string) {
 		}
 	}
 }
+
+func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
+	var (
+		jokes []string
+		jkstr string
+	)
+
+	if cmd == "yoke" {
+		cmd = "joke"
+	}
+
+	jokes = JokesAPI(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/" + cmd))
+
+	for _, jk := range jokes {
+		jkstr = jkstr + jk + " "
+	}
+
+	if isAttr(msg) {
+		botSay(bb, jkstr+" "+getAttributedUser(msg, true))
+	} else {
+		botSay(bb, jkstr)
+	}
+}

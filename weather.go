@@ -23,7 +23,6 @@ func getWeather(city string) string {
 				fmt.Print(err)
 			}
 
-			// fmt.Println(openweathermapdata.Weather[0].Description)
 			return fmt.Sprintf("The temp in %s is %v° (feels like %v°) with %s", city, openweathermapdata.Main.Temp, openweathermapdata.Main.FeelsLike, openweathermapdata.Weather[0].Description)
 		}
 

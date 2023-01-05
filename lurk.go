@@ -36,9 +36,7 @@ func cmdLurk(bb *BasicBot, userName, cmd, msg string) {
 }
 
 func cmdUnlurk(bb *BasicBot, userName string) {
-	var (
-		lurklist LurkList
-	)
+	var lurklist LurkList
 
 	loadData("Lurkers", &lurklist)
 
