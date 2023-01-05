@@ -465,3 +465,107 @@ type ChatMessage struct {
 	User    string `json:"user"`
 	Message string `json:"message"`
 }
+
+type GoalsResponse struct {
+	Data []struct {
+		BroadcasterID    string `json:"broadcaster_id"`
+		BroadcasterLogin string `json:"broadcaster_login"`
+		BroadcasterName  string `json:"broadcaster_name"`
+		CreatedAt        string `json:"created_at"`
+		CurrentAmount    int64  `json:"current_amount"`
+		Description      string `json:"description"`
+		ID               string `json:"id"`
+		TargetAmount     int64  `json:"target_amount"`
+		Type             string `json:"type"`
+	} `json:"data"`
+}
+
+type CompletionReply struct {
+	ID      string `json:"id"`
+	Object  string `json:"object"`
+	Created int    `json:"created"`
+	Model   string `json:"model"`
+	Choices []struct {
+		Text         string      `json:"text"`
+		Index        int         `json:"index"`
+		Logprobs     interface{} `json:"logprobs"`
+		FinishReason string      `json:"finish_reason"`
+	} `json:"choices"`
+	Usage struct {
+		PromptTokens     int `json:"prompt_tokens"`
+		CompletionTokens int `json:"completion_tokens"`
+		TotalTokens      int `json:"total_tokens"`
+	} `json:"usage"`
+}
+
+type CompletionRequest struct {
+	Model            string  `json:"model"`
+	Prompt           string  `json:"prompt"`
+	Temperature      float64 `json:"temperature"`
+	Max_Tokens       int     `json:"max_tokens"`
+	Top_P            float64 `json:"top_p"`
+	FrequencyPenalty float64 `json:"frequency_penalty"`
+	PresencePenalty  float64 `json:"presence_penalty"`
+	Stop             string  `json:"stop"`
+}
+
+type gumroadProducts struct {
+	Success  bool `json:"success"`
+	Products []struct {
+		Name                 string        `json:"name"`
+		PreviewURL           string        `json:"preview_url"`
+		Description          string        `json:"description"`
+		CustomizablePrice    bool          `json:"customizable_price"`
+		RequireShipping      bool          `json:"require_shipping"`
+		CustomReceipt        string        `json:"custom_receipt"`
+		CustomPermalink      string        `json:"custom_permalink"`
+		SubscriptionDuration string        `json:"subscription_duration"`
+		ID                   string        `json:"id"`
+		URL                  interface{}   `json:"url"`
+		Price                int           `json:"price"`
+		Currency             string        `json:"currency"`
+		ShortURL             string        `json:"short_url"`
+		ThumbnailURL         string        `json:"thumbnail_url"`
+		Tags                 []interface{} `json:"tags"`
+		FormattedPrice       string        `json:"formatted_price"`
+		Published            bool          `json:"published"`
+		ShownOnProfile       bool          `json:"shown_on_profile"`
+		FileInfo             struct {
+		} `json:"file_info"`
+		MaxPurchaseCount   int           `json:"max_purchase_count"`
+		Deleted            bool          `json:"deleted"`
+		CustomFields       []interface{} `json:"custom_fields"`
+		CustomSummary      string        `json:"custom_summary"`
+		IsTieredMembership bool          `json:"is_tiered_membership"`
+		Recurrences        []string      `json:"recurrences"`
+		Variants           []struct {
+			Title   string `json:"title"`
+			Options []struct {
+				Name             string `json:"name"`
+				PriceDifference  int    `json:"price_difference"`
+				IsPayWhatYouWant bool   `json:"is_pay_what_you_want"`
+				RecurrencePrices struct {
+					Monthly struct {
+						PriceCents          int `json:"price_cents"`
+						SuggestedPriceCents int `json:"suggested_price_cents"`
+					} `json:"monthly"`
+					Quarterly struct {
+						PriceCents          int `json:"price_cents"`
+						SuggestedPriceCents int `json:"suggested_price_cents"`
+					} `json:"quarterly"`
+					Biannually struct {
+						PriceCents          int `json:"price_cents"`
+						SuggestedPriceCents int `json:"suggested_price_cents"`
+					} `json:"biannually"`
+					Yearly struct {
+						PriceCents          int `json:"price_cents"`
+						SuggestedPriceCents int `json:"suggested_price_cents"`
+					} `json:"yearly"`
+				} `json:"recurrence_prices"`
+				URL interface{} `json:"url"`
+			} `json:"options"`
+		} `json:"variants"`
+		SalesCount    int     `json:"sales_count"`
+		SalesUsdCents float64 `json:"sales_usd_cents"`
+	} `json:"products"`
+}

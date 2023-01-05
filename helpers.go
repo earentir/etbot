@@ -158,9 +158,11 @@ func limitOverview(overview string) string {
 // calculate the timezone of current time by using the tz capital city name
 func timeZone(location string) string {
 	locs := []string{"", "Europe", "Africa", "America", "Asia", "Atlantic", "Australia", "Brazil", "Canada", "Indian", "US"}
-	var tme string
-	var msgOut string
-	var newloc string
+	var (
+		tme    string
+		msgOut string
+		newloc string
+	)
 
 	if strings.Contains(location, "/") {
 		msgOut = tzNow(location)

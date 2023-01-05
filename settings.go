@@ -46,7 +46,7 @@ func CMDCanRun(userName, cmd string) bool {
 
 	if userName == settings.General.Twitch.Channel {
 		itcan = true
-		fmt.Println("sudo command")
+		fmt.Println("sudo: true")
 		return itcan
 	}
 

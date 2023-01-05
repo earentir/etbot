@@ -15,6 +15,7 @@ func cmdFr(bb *BasicBot, userName, cmd, msg string) {
 		cmdres := exec.Command("gh", "issue", "create", fmt.Sprintf("-t %s from %s", title, userName), "-b \"\" ", "-lchat-bot")
 
 		var out, errbuf bytes.Buffer
+
 		cmdres.Stderr = &errbuf
 		cmdres.Stdout = &out
 
