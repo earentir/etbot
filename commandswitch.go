@@ -91,6 +91,8 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 						cmdGoals(bb, cmd, userName, msg)
 					case "subs":
 						cmdSubs(bb, cmd, userName, msg)
+					case "gh":
+						cmdGithub(bb, cmd, userName, msg)
 
 						//Not allowed to be renamed - System Commands
 					case "lockdown":

@@ -2,7 +2,9 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"net/http"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -61,4 +63,59 @@ func cmdFrList(bb *BasicBot, userName, cmd, msg string) {
 			botSay(bb, msgOut)
 		}
 	}
+}
+
+func cmdGithub(bb *BasicBot, userName, cmd, msg string) {
+	var msgOut string
+	if !isCMD(cmd, msg) {
+		msgOut = getGists(settings.General.Twitch.Channel)
+	} else {
+		msgOut = getGists(userName)
+	}
+	botSay(bb, msgOut)
+}
+
+func getGists(ghuser string) string {
+	// Make the HTTP request
+	var gisturl string = "https://api.github.com/users/" + ghuser + "/gists"
+	resp, err := http.Get(gisturl)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer resp.Body.Close()
+
+	// Decode the response
+	var gists []Gist
+	var msgOut string
+	if err := json.NewDecoder(resp.Body).Decode(&gists); err != nil {
+		fmt.Println(err)
+	}
+
+	var sep string
+	if len(gists) > 0 {
+		for _, gist := range gists {
+			if gist.Description != "" {
+				msgOut += gist.Description + ", "
+			}
+			msgOut += "Files: "
+			var iterator int
+			for _, gfile := range gist.Files {
+				iterator++
+				if len(gist.Files) > 1 && iterator < len(gist.Files) {
+					sep = ", "
+				} else {
+					sep = ""
+				}
+
+				msgOut += gfile.Filename + sep
+			}
+			msgOut += " | "
+		}
+
+		msgOut += "https://gist.github.com/" + ghuser
+	} else {
+		msgOut = "No Gists"
+	}
+
+	return msgOut
 }
