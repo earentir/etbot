@@ -65,16 +65,48 @@ func cmdFrList(bb *BasicBot, userName, cmd, msg string) {
 	}
 }
 
-func cmdGithub(bb *BasicBot, userName, cmd, msg string) {
+func cmdGithub(bb *BasicBot, cmd, userName, msg string) {
 	var msgOut string
 	if isCMD(cmd, msg) {
-		msgOut = getGists(settings.General.Twitch.Channel)
+		msgOut = getRepos(settings.General.Twitch.Channel)
+		// msgOut = getGists(settings.General.Twitch.Channel)
 	} else {
 		if isAttr(msg) {
-			msgOut = getGists(getAttributedUser(msg, false))
+			msgOut = getRepos(getAttributedUser(msg, false))
+			// msgOut = getGists(getAttributedUser(msg, false))
 		}
 	}
+
 	botSay(bb, msgOut)
+}
+
+func getRepos(ghuser string) string {
+	var repourl string = fmt.Sprintf("https://api.github.com/users/%s/repos", ghuser)
+	resp, err := http.Get(repourl)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer resp.Body.Close()
+
+	var repos []GithubRepositories
+	var msgOut string
+	if err := json.NewDecoder(resp.Body).Decode(&repos); err != nil {
+		fmt.Println("error: ", err)
+	}
+
+	if len(repos) > 0 {
+		var reponames string
+		for _, repo := range repos {
+			reponames += fmt.Sprintf("%s, ", repo.Name)
+		}
+
+		msgOut = fmt.Sprintf("%s, https://github.com/%s?tab=repositories", strings.TrimSuffix(reponames, ", "), ghuser)
+	} else {
+		msgOut = fmt.Sprintf("No Repositories found for %s", ghuser)
+	}
+	fmt.Println(msgOut)
+
+	return "Repositories: " + msgOut
 }
 
 func getGists(ghuser string) string {

@@ -600,7 +600,7 @@ type GistUser struct {
 	URL       string `json:"url"`
 }
 
-type GithubRepositories []struct {
+type GithubRepositories struct {
 	ID       int    `json:"id"`
 	NodeID   string `json:"node_id"`
 	Name     string `json:"name"`
