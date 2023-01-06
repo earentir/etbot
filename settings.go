@@ -15,7 +15,7 @@ func getCMDS(userName string, showlevel bool) string {
 		if CMDCanRun(userName, cm.Name) {
 			var level string = ""
 			if showlevel {
-				level = " (" + strconv.Itoa(cm.Options.UserLevel) + ")"
+				level = fmt.Sprintf(" (%s)", strconv.Itoa(cm.Options.UserLevel))
 			}
 			allcommands = append(allcommands, cm.Name+level)
 		}
@@ -123,7 +123,7 @@ func getUserSocials(userName string) string {
 	for _, usr := range userlist.Users {
 		if usr.Name == userName {
 			for _, k := range usr.Socials {
-				found = found + k.Link + " "
+				found += fmt.Sprintf("%s ", k.Link)
 			}
 		}
 	}
@@ -328,7 +328,7 @@ func addUser(userToAdd, userType string) string {
 	if !found {
 		var soc Social
 		soc.SocNet = "twitch"
-		soc.Link = "https://twitch.tv/" + userToAdd
+		soc.Link = fmt.Sprintf("https://twitch.tv/%s", userToAdd)
 
 		newUser = User{
 			Name:    strings.ToLower(userToAdd),

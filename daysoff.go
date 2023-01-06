@@ -21,7 +21,7 @@ func getDaysOff(country string, days int) string {
 		for _, k := range daysoff.Response.Holidays {
 
 			if len(k.Date.Iso) == 10 {
-				date = k.Date.Iso + "T00:00:01.000Z"
+				date = fmt.Sprintf("%sT00:00:01.000Z", k.Date.Iso)
 			} else {
 				date = k.Date.Iso
 			}
@@ -29,7 +29,7 @@ func getDaysOff(country string, days int) string {
 			daydiff, _ := time.Parse(time.RFC3339, date)
 
 			if int((time.Until(daydiff).Hours()/24)) > 0 && int((time.Until(daydiff).Hours()/24)) <= days {
-				outMessage = outMessage + fmt.Sprintf("%s on %v", k.Name, k.Date.Iso) + " | "
+				outMessage += fmt.Sprintf("%s on %v | ", k.Name, k.Date.Iso)
 			}
 		}
 

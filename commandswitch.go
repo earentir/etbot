@@ -98,7 +98,7 @@ func ParseCommand(bb *BasicBot, msgType, msg, userName string) {
 					case "lockdown":
 						settings.General.Lockdown.Enabled = !settings.General.Lockdown.Enabled
 						if settings.General.Lockdown.Enabled {
-							botSay(bb, "Lockdown Initiated "+settings.General.Lockdown.Reason)
+							botSay(bb, fmt.Sprintf("Lockdown Initiated %s", settings.General.Lockdown.Reason))
 						} else {
 							botSay(bb, "Lockdown Dissabled ")
 						}

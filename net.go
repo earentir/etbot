@@ -44,7 +44,6 @@ func HTTPGetBody(url string) string {
 		return string(bdystrmsg)
 	} else {
 		fmt.Printf("HTTP Error Code: %v", responce.StatusCode)
-		return "http/error/" + strconv.Itoa(responce.StatusCode)
+		return fmt.Sprintf("http/error/%s", strconv.Itoa(responce.StatusCode))
 	}
-
 }

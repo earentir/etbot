@@ -123,7 +123,7 @@ func showgoals(channel string) string {
 		fmt.Println(err)
 	} else {
 		for _, goal := range goals.Data {
-			goalMessage = channel + "'s Current Goal was created on " + goal.CreatedAt + " and is a " + goal.Type + " goal. " + goal.Description + " Its currently at " + fmt.Sprint(goal.CurrentAmount) + " out of " + fmt.Sprint(goal.TargetAmount) + "!"
+			goalMessage = fmt.Sprintf("%s Current Goal was created on %s and is a %s goal. %s Its currently at %s out of %s!", channel, goal.CreatedAt, goal.Type, goal.Description, fmt.Sprint(goal.CurrentAmount), fmt.Sprint(goal.TargetAmount))
 		}
 	}
 
@@ -154,33 +154,33 @@ func subscriberCount(channel string) int {
 	return subscriberCount
 }
 
-func issubbed(user, channel string) bool {
-	client, err := helix.NewClient(&helix.Options{
-		ClientID:        creds.TwitchClientID,
-		UserAccessToken: creds.TwitchAppToken,
-	})
-	if err != nil {
-		fmt.Println(err)
-	}
+// func issubbed(user, channel string) bool {
+// 	client, err := helix.NewClient(&helix.Options{
+// 		ClientID:        creds.TwitchClientID,
+// 		UserAccessToken: creds.TwitchAppToken,
+// 	})
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
 
-	resp, err := client.CheckUserSubscription(&helix.UserSubscriptionsParams{
-		BroadcasterID: string(getTwitchUser(channel)[0].ID),
-		UserID:        string(getTwitchUser(user)[0].ID),
-	})
-	if err != nil {
-		fmt.Println(err)
-	}
+// 	resp, err := client.CheckUserSubscription(&helix.UserSubscriptionsParams{
+// 		BroadcasterID: string(getTwitchUser(channel)[0].ID),
+// 		UserID:        string(getTwitchUser(user)[0].ID),
+// 	})
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
 
-	var issubbed bool
-	// resp.Data.UserSubscriptions[0].IsGift
-	if resp.Data.UserSubscriptions[0].Tier != "" {
-		issubbed = true
-	} else {
-		issubbed = false
-	}
+// 	var issubbed bool
+// 	// resp.Data.UserSubscriptions[0].IsGift
+// 	if resp.Data.UserSubscriptions[0].Tier != "" {
+// 		issubbed = true
+// 	} else {
+// 		issubbed = false
+// 	}
 
-	return issubbed
-}
+// 	return issubbed
+// }
 
 func cmdGoals(bb *BasicBot, cmd, userName, msg string) {
 	var goals string = showgoals(settings.General.Twitch.Channel)

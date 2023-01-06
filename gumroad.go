@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 )
 
 func GumroadAPI() string {
@@ -17,7 +16,7 @@ func GumroadAPI() string {
 		var products string
 
 		for _, product := range gumroadproducts.Products {
-			products += product.Name + " @ " + product.FormattedPrice + " buy at " + product.ShortURL + " " + strconv.Itoa(product.SalesCount) + " of " + strconv.Itoa(product.MaxPurchaseCount) + " sold |  "
+			products += fmt.Sprintf("%s @ %s buy at %s %d of %d sold |", product.Name, product.FormattedPrice, product.ShortURL, product.SalesCount, product.MaxPurchaseCount)
 		}
 		return products
 	}

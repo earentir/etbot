@@ -82,10 +82,10 @@ func cmdJokeAPI(bb *BasicBot, cmd, msg string) {
 		cmd = "joke"
 	}
 
-	jokes = JokesAPI(HTTPGetBody("http://api.esgr.xyz/fun.json/jokes/" + cmd))
+	jokes = JokesAPI(HTTPGetBody(fmt.Sprintf("http://api.esgr.xyz/fun.json/jokes/%s", cmd)))
 
 	for _, jk := range jokes {
-		jkstr = jkstr + jk + " "
+		jkstr = fmt.Sprintf("%s%s ", jkstr, jk)
 	}
 
 	if isAttr(msg) {

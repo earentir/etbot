@@ -42,7 +42,7 @@ func cmdWeather(bb *BasicBot, cmd, msg string) {
 		}
 
 		if isAttr(msg) {
-			msgOut := getWeather(city) + " " + getAttributedUser(msg, true)
+			msgOut := fmt.Sprintf("%s %s", getWeather(city), getAttributedUser(msg, true))
 			botSay(bb, msgOut)
 		} else {
 			msgOut := getWeather(city)

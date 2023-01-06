@@ -8,6 +8,9 @@ import (
 	"reflect"
 	"strings"
 	"time"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 // getAttributedUser at returns @ or not in the reply
@@ -15,12 +18,12 @@ func getAttributedUser(msg string, at bool) string {
 	var attrUser string = ""
 	fields := strings.Fields(msg)
 
-	for _, j := range fields {
-		if strings.Contains(j, "@") {
+	for _, field := range fields {
+		if strings.Contains(field, "@") {
 			if at {
-				return j
+				return field
 			} else {
-				return j[1:]
+				return field[1:]
 			}
 		}
 	}
@@ -174,11 +177,12 @@ func timeZone(location string) string {
 				newloc = location
 			} else {
 				if len(fields) > 1 {
-					newloc = l + "/" + strings.ToTitle(strings.ToLower(fields[0])) + "_" + strings.ToTitle(strings.ToLower(fields[1]))
+					newloc = fmt.Sprintf("%s/%s_%s", l, cases.Title(language.Und).String(strings.ToLower(fields[0])), strings.ToTitle(strings.ToLower(fields[1])))
 				} else {
-					newloc = l + "/" + strings.ToTitle(strings.ToLower(location))
+					newloc = fmt.Sprintf("%s/%s", l, cases.Title(language.Und).String(strings.ToLower(location)))
 				}
 			}
+
 			tme = tzNow(newloc)
 			if tme != "" {
 				msgOut = tme
@@ -208,9 +212,9 @@ func progressbar(percent float64) string {
 
 	for i := 0; i < 10; i++ {
 		if i <= equals {
-			msgOUt = msgOUt + "="
+			msgOUt = fmt.Sprintf("%s=", msgOUt)
 		} else {
-			msgOUt = msgOUt + "-"
+			msgOUt = fmt.Sprintf("%s-", msgOUt)
 		}
 	}
 
@@ -316,11 +320,11 @@ func getCommand(msg string) string {
 }
 
 // parse message for a keyword and get its starting possition
-func getKeyWord(keyword, msg string) int {
-	var intOut int = -1
-	intOut = strings.Index(msg, keyword)
-	return intOut
-}
+// func getKeyWord(keyword, msg string) int {
+// 	var intOut int = -1
+// 	intOut = strings.Index(msg, keyword)
+// 	return intOut
+// }
 
 // save data by giving it the path in the settings file and the struct that holds the data
 func saveData(settingsName string, thestruct interface{}) {
@@ -338,11 +342,11 @@ func saveData(settingsName string, thestruct interface{}) {
 
 // save data by giving it the path in the settings file and the struct that holds the data
 func saveChatLog() {
-	var settingsPath string = settings.FilePaths.ChatLogDir
-
-	streamname := settings.General.Twitch.Channel + "-chatlog-" + strings.Replace(timeStamp(), ":", "", -1) + ".json"
-
-	var fileName string = filepath.Join(settingsPath, streamname)
+	var (
+		settingsPath string = settings.FilePaths.ChatLogDir
+		streamname   string = fmt.Sprintf("%s-chatlog-%s.json", settings.General.Twitch.Channel, strings.Replace(timeStamp(), ":", "", -1))
+		fileName     string = filepath.Join(settingsPath, streamname)
+	)
 
 	if datafile, err := json.MarshalIndent(&chatlog, "", "\t"); err == nil {
 		if err = os.WriteFile(fileName, datafile, 0644); err != nil {
@@ -418,8 +422,8 @@ func checkLoadStatus() bool {
 		os.Mkdir("chatlog", 0755)
 	}
 
-	//Check if channel settings folder exists if we find etb-server.json
-	// if _, err := os.Stat("settings/" + settings.General.Twitch.Channel); err != nil {
+	// //Check if channel settings folder exists if we find etb-server.json
+	// if _, err := os.Stat(fmt.Sprintf("settings/%s", settings.General.Twitch.Channel)); err != nil {
 	// 	os.Mkdir("settings/"+settings.General.Twitch.Channel, 0755)
 	// }
 
@@ -453,8 +457,7 @@ func checkLoadStatus() bool {
 	LoadJSONFileTOStruct(settingFileName, &settings)
 
 	//Load or Make default credentials file
-	var credentialsFileName = ""
-	credentialsFileName = "settings/" + settings.General.Twitch.Channel + "-creds.json"
+	var credentialsFileName string = fmt.Sprintf("settings/%s-creds.json", settings.General.Twitch.Channel)
 
 	if settings.General.Twitch.Channel != "" {
 		if _, err := os.Stat(credentialsFileName); err == nil {

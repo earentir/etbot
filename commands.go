@@ -69,7 +69,7 @@ func cmdSO(bb *BasicBot, userName, cmd, msg string) {
 
 			var solinks string = getUserSocials(strings.ToLower(atrUser))
 			if solinks == "" {
-				solinks = "https://twitch.tv/" + strings.ToLower(atrUser)
+				solinks = fmt.Sprintf("https://twitch.tv/%s", strings.ToLower(atrUser))
 			}
 
 			if twitchChannelData[0].GameName == "" || twitchChannelData[0].Title == "" {

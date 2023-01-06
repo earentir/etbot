@@ -49,7 +49,7 @@ func cmdFrList(bb *BasicBot, userName, cmd, msg string) {
 				if strings.Contains(j, userName) {
 					str := regexp.MustCompile("\t").Split(j, -1)
 					date := strings.Fields(str[4])
-					line := str[0] + " " + strings.ReplaceAll(str[2], "from "+userName, "") + " on " + date[0] + " " + date[1]
+					line := fmt.Sprintf("%s %s on %s %s", str[0], strings.ReplaceAll(str[2], fmt.Sprintf("from %s", userName), ""), date[0], date[1])
 					frs = append(frs, line)
 				}
 			}
@@ -67,17 +67,19 @@ func cmdFrList(bb *BasicBot, userName, cmd, msg string) {
 
 func cmdGithub(bb *BasicBot, userName, cmd, msg string) {
 	var msgOut string
-	if !isCMD(cmd, msg) {
+	if isCMD(cmd, msg) {
 		msgOut = getGists(settings.General.Twitch.Channel)
 	} else {
-		msgOut = getGists(userName)
+		if isAttr(msg) {
+			msgOut = getGists(getAttributedUser(msg, false))
+		}
 	}
 	botSay(bb, msgOut)
 }
 
 func getGists(ghuser string) string {
 	// Make the HTTP request
-	var gisturl string = "https://api.github.com/users/" + ghuser + "/gists"
+	var gisturl string = fmt.Sprintf("https://api.github.com/users/%s/gists", ghuser)
 	resp, err := http.Get(gisturl)
 	if err != nil {
 		fmt.Println(err)
@@ -95,7 +97,7 @@ func getGists(ghuser string) string {
 	if len(gists) > 0 {
 		for _, gist := range gists {
 			if gist.Description != "" {
-				msgOut += gist.Description + ", "
+				msgOut += fmt.Sprintf("%s, ", gist.Description)
 			}
 			msgOut += "Files: "
 			var iterator int
@@ -107,12 +109,12 @@ func getGists(ghuser string) string {
 					sep = ""
 				}
 
-				msgOut += gfile.Filename + sep
+				msgOut += fmt.Sprintf("%s%s", gfile.Filename, sep)
 			}
 			msgOut += " | "
 		}
 
-		msgOut += "https://gist.github.com/" + ghuser
+		msgOut += fmt.Sprintf("https://gist.github.com/%s", ghuser)
 	} else {
 		msgOut = "No Gists"
 	}
