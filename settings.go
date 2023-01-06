@@ -47,15 +47,14 @@ func CMDCanRun(userName, cmd string) bool {
 	if userName == settings.General.Twitch.Channel {
 		itcan = true
 		fmt.Println("sudo: true")
-		return itcan
+	} else {
+		if ourcmdopts.Enabled && (IsItOnTimeout(cmd, userName) || ourcmdopts.Lastuse == 0) {
+			itcan = ourcmdopts.UserLevel >= UserLevel(userName).Level
+			setCMDUsed(cmd)
+		}
 	}
 
-	if ourcmdopts.Enabled && (IsItOnTimeout(cmd, userName) || ourcmdopts.Lastuse == 0) {
-		itcan = ourcmdopts.UserLevel >= UserLevel(userName).Level
-		setCMDUsed(cmd)
-	}
-
-	fmt.Printf("usr: %s [%v] | cmd: %s [%v]\nen: %v | time: %v |\n usrCMD: %v perm: %v\n", userName, levelNameTolvl(getUserData(userName).Type), cmd, ourcmdopts.UserLevel, ourcmdopts.Enabled, IsItOnTimeout(cmd, userName), isUsrCmd(cmd), itcan)
+	fmt.Printf("User: %s [%v] | cmd: %s [%v]\nEnabled: %v | Time: %v |\n usrCMD: %v Permited: %v\n", userName, levelNameTolvl(getUserData(userName).Type), cmd, ourcmdopts.UserLevel, ourcmdopts.Enabled, IsItOnTimeout(cmd, userName), isUsrCmd(cmd), itcan)
 	return itcan
 }
 
